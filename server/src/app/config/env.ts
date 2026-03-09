@@ -36,6 +36,8 @@ interface IEnvVars {
   // REDIS_PORT: string;
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
+  OPENAI_API_KEY: string;
+  GEMINI_API_KEY: string;
 }
 
 const loadEnv = (): IEnvVars => {
@@ -73,6 +75,8 @@ const loadEnv = (): IEnvVars => {
     // "REDIS_PORT",
     "STRIPE_SECRET_KEY",
     "STRIPE_WEBHOOK_SECRET",
+    "OPENAI_API_KEY",
+    "GEMINI_API_KEY",
   ];
 
   requiredEnv.forEach((envVar) => {
@@ -119,6 +123,8 @@ const loadEnv = (): IEnvVars => {
     // REDIS_PORT: process.env.REDIS_PORT as string,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET as string,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY as string,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY as string,
   };
 };
 

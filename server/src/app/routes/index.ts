@@ -11,6 +11,7 @@ import { PaymentRoutes } from "../modules/payment/payment.routes";
 import bookingRouter from "../modules/booking/booking.routes";
 import reviewRouter from "../modules/review/review.routes";
 import otpRouter from "../modules/otp/otp.routes";
+import aiRoutes from "../modules/ai/ai.route";
 
 const router = express.Router();
 
@@ -58,6 +59,10 @@ const moduleRoutes: { path: string; route: Router }[] = [
   {
     path: "/bookings",
     route: bookingRouter,
+  },
+  {
+    path: "/ai",
+    route: aiRoutes,
   },
 ];
 

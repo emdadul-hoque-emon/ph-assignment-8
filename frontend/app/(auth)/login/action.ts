@@ -14,7 +14,9 @@ import { zodValidator } from "@/lib/zod-validator";
 const serverUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1`;
 
 const schema = z.object({
-  email: z.email("Invalid email address"),
+  email: z
+    .string("Invalid email or username")
+    .min(1, "email or username is required"),
   password: z
     .string("password is required")
     .min(6, "password must be minimum 6 digit"),
@@ -91,7 +93,7 @@ export const login = async (prevState: unknown, formData: FormData) => {
 
     const verifiedToken: JwtPayload | string = jwt.verify(
       accessTokenObject["accessToken"],
-      process.env.JWT_ACCESS_TOKEN_SECRET as string
+      process.env.JWT_ACCESS_TOKEN_SECRET as string,
     );
     if (typeof verifiedToken === "string") {
       throw new Error("Failed to verify token");
