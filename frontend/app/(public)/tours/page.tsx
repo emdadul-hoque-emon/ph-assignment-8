@@ -221,7 +221,7 @@ const ToursPage = async ({
                 {/* <!-- City --> */}
                 <div>
                   <label className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white mb-3">
-                    <MapPin className="text-primary" />
+                    <MapPin size={15} />
                     City
                   </label>
                   <select className="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:border-primary focus:ring-primary dark:text-slate-300">
@@ -234,7 +234,7 @@ const ToursPage = async ({
                 {/* <!-- Price Range --> */}
                 <div>
                   <label className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white mb-3">
-                    <DollarSign className="text-primary" />
+                    <DollarSign size={15} />
                     Price Range
                   </label>
                   <div className="space-y-2">
@@ -251,7 +251,7 @@ const ToursPage = async ({
                 {/* <!-- Category --> */}
                 <div>
                   <label className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white mb-3">
-                    <ChartBarStacked />
+                    <ChartBarStacked size={15} />
                     Category
                   </label>
                   <div className="grid grid-cols-1 gap-2">
@@ -288,7 +288,7 @@ const ToursPage = async ({
                 {/* <!-- Language --> */}
                 <div>
                   <label className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white mb-3">
-                    <Globe />
+                    <Globe size={15} />
                     Language
                   </label>
                   <div className="grid grid-cols-1 gap-2">
