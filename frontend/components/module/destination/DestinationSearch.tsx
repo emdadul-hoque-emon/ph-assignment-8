@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 
 const DestinationSearch = ({
-  target = "/destination",
+  target = "/destinations",
 }: {
   target?: string;
 }) => {

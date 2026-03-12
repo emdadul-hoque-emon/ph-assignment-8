@@ -27,3 +27,18 @@ export type Destination = Prisma.DestinationModel
  * 
  */
 export type TopAttraction = Prisma.TopAttractionModel
+/**
+ * Model Tour
+ * 
+ */
+export type Tour = Prisma.TourModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model GuideProfile
+ * 
+ */
+export type GuideProfile = Prisma.GuideProfileModel

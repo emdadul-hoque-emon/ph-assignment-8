@@ -1,5 +1,7 @@
 import prisma from "../../src/app/config/db";
 import { destinations } from "./destination";
+import { guides } from "./guides";
+import { travelers } from "./traveler";
 
 function getContinent(country: string) {
   const map: Record<string, string> = {
@@ -146,23 +148,39 @@ function expandMonthRange(range: string): string[] {
 }
 
 async function main() {
-  const destinations = await prisma.destination.findMany({
-    select: {
-      id: true,
-      bestSeason: true,
+  await prisma.user.create({
+    data: {
+      name: "Admin One",
+      email: "admin@tourbuddy.com",
+      password: "userrole123@#",
+      role: "ADMIN",
+      country: "Bangladesh",
+      city: "Cumilla",
     },
   });
 
-  for (const destination of destinations) {
-    const months = expandMonthRange(destination.bestSeason[0]);
-    await prisma.destination.update({
-      where: {
-        id: destination.id,
-      },
+  for (const { languages, specialties, aboutMe, ...g } of guides) {
+    const rating = Number((Math.random() * (5 - 4) + 4).toFixed(1));
+    await prisma.user.create({
       data: {
-        bestSeason: months,
+        ...g,
+        guideProfile: {
+          create: {
+            rating: rating,
+            hourlyRate: Math.round(Math.random() * (40 - 20) + 20),
+            experience: Math.floor(Math.random() * (10 - 3) + 3),
+            aboutMe: aboutMe,
+            specialties: specialties,
+            languages: languages,
+            isTopRated: rating >= 4.6,
+          },
+        },
       },
     });
+  }
+
+  for (const t of travelers) {
+    await prisma.user.create({ data: t });
   }
 }
 

@@ -52,7 +52,10 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Destination: 'Destination',
-  TopAttraction: 'TopAttraction'
+  TopAttraction: 'TopAttraction',
+  Tour: 'Tour',
+  User: 'User',
+  GuideProfile: 'GuideProfile'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -107,6 +110,68 @@ export const TopAttractionScalarFieldEnum = {
 export type TopAttractionScalarFieldEnum = (typeof TopAttractionScalarFieldEnum)[keyof typeof TopAttractionScalarFieldEnum]
 
 
+export const TourScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  destinationId: 'destinationId',
+  createdById: 'createdById',
+  price: 'price',
+  durationDays: 'durationDays',
+  maxGroupSize: 'maxGroupSize',
+  difficulty: 'difficulty',
+  category: 'category',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  rating: 'rating',
+  totalReviews: 'totalReviews',
+  isAiGenerated: 'isAiGenerated',
+  visibility: 'visibility',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TourScalarFieldEnum = (typeof TourScalarFieldEnum)[keyof typeof TourScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  role: 'role',
+  avatar: 'avatar',
+  bio: 'bio',
+  phone: 'phone',
+  city: 'city',
+  country: 'country',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const GuideProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  experience: 'experience',
+  languages: 'languages',
+  specialties: 'specialties',
+  aboutMe: 'aboutMe',
+  hourlyRate: 'hourlyRate',
+  rating: 'rating',
+  totalTours: 'totalTours',
+  bio: 'bio',
+  verified: 'verified',
+  isTopRated: 'isTopRated',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GuideProfileScalarFieldEnum = (typeof GuideProfileScalarFieldEnum)[keyof typeof GuideProfileScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -121,4 +186,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

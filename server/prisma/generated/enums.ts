@@ -9,7 +9,40 @@
 * 🟢 You can import this file directly.
 */
 
+export const Difficulty = {
+  EASY: 'EASY',
+  MODERATE: 'MODERATE',
+  HARD: 'HARD'
+} as const
+
+export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const Visibility = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE'
+} as const
+
+export type Visibility = (typeof Visibility)[keyof typeof Visibility]
+
+
+export const TourCategory = {
+  BEACH: 'BEACH',
+  ADVENTURE: 'ADVENTURE',
+  CULTURE: 'CULTURE',
+  CITY: 'CITY',
+  NATURE: 'NATURE',
+  FOOD: 'FOOD',
+  NIGHTLIFE: 'NIGHTLIFE'
+} as const
+
+export type TourCategory = (typeof TourCategory)[keyof typeof TourCategory]
+
+
+export const UserRole = {
+  TRAVELER: 'TRAVELER',
+  GUIDE: 'GUIDE',
+  ADMIN: 'ADMIN'
+} as const
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]

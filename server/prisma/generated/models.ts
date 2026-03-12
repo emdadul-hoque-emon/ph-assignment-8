@@ -10,4 +10,7 @@
  */
 export type * from './models/Destination'
 export type * from './models/TopAttraction'
+export type * from './models/Tour'
+export type * from './models/User'
+export type * from './models/GuideProfile'
 export type * from './commonInputTypes'
