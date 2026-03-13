@@ -9,13 +9,13 @@
 * 🟢 You can import this file directly.
 */
 
-export const Difficulty = {
+export const TourDifficulty = {
   EASY: 'EASY',
   MODERATE: 'MODERATE',
   HARD: 'HARD'
 } as const
 
-export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty]
+export type TourDifficulty = (typeof TourDifficulty)[keyof typeof TourDifficulty]
 
 
 export const Visibility = {
@@ -37,6 +37,16 @@ export const TourCategory = {
 } as const
 
 export type TourCategory = (typeof TourCategory)[keyof typeof TourCategory]
+
+
+export const TripStatus = {
+  SCHEDULED: 'SCHEDULED',
+  FULL: 'FULL',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type TripStatus = (typeof TripStatus)[keyof typeof TripStatus]
 
 
 export const UserRole = {

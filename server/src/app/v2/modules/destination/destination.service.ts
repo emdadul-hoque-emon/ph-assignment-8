@@ -14,6 +14,7 @@ const getDestinationsFromDb = async (
     paginationHelper.calculatePagination(options);
 
   const andConditions: Prisma.DestinationWhereInput[] = [];
+
   if (filters.searchTerm) {
     andConditions.push({
       OR: destinationSearchableField.map((field) => ({
@@ -23,6 +24,11 @@ const getDestinationsFromDb = async (
         },
       })),
     });
+  }
+
+  if (filters.popular) {
+    // For "popular", we will later order by tour count
+    // No need to add a WHERE condition; we'll order by tour count
   }
 
   if (filters.date) {
@@ -36,24 +42,47 @@ const getDestinationsFromDb = async (
       },
     });
   }
+
+  // Fetch destinations along with their tour counts
   const destinations = await prisma.destination.findMany({
     where: {
       AND: andConditions,
     },
     skip,
     take: limit,
-    orderBy: {
-      [sortBy]: sortOrder,
+    orderBy: filters.popular
+      ? {
+          tours: {
+            _count: "desc", // always descending for popular
+          },
+        }
+      : {
+          [sortBy]: sortOrder as "asc" | "desc", // cast to Prisma SortOrder
+        },
+    include: {
+      _count: {
+        select: { tours: true }, // only count tours, don't fetch all tour data
+      },
     },
   });
+
+  // Map to include tourCount
+  const destinationsWithTourCount = destinations.map((dest) => ({
+    ...dest,
+    tourCount: dest._count.tours,
+  }));
+
   const meta = {
-    total: await prisma.destination.count(),
+    total: await prisma.destination.count({
+      where: { AND: andConditions },
+    }),
     page: Number(options.page) || 1,
     limit: Number(options.limit) || 10,
   };
+
   return {
     meta,
-    destinations,
+    destinations: destinationsWithTourCount,
   };
 };
 

@@ -12,6 +12,7 @@ export interface IDestination {
   lng: number;
   rating: number;
   averageCost: number;
+  tourCount: number;
   bestSeason: string[]; // first element will be consider as peak season
   continent: string;
   currency: string;

@@ -1,35 +1,57 @@
 model Tour {
-  id          String  @id @default(uuid())
-  title       String
-  description String?
-
+  id            String @id @default(uuid())
+  title         String
+  slug          String @unique
+  description   String
+  image         String
   destinationId String
   createdById   String
 
-  price        Float
   durationDays Int
   maxGroupSize Int
+  priceFrom    Float
 
-  difficulty Difficulty?
-  category   TourCategory?
+  difficulty TourDifficulty
+  category   TourCategory
 
-  startDate DateTime?
-  endDate   DateTime?
+  rating       Float @default(0)
+  totalReviews Int   @default(0)
 
-  rating       Float?
-  totalReviews Int    @default(0)
+  featured    Boolean @default(false)
+  isPublished Boolean @default(true)
 
-  isAiGenerated Boolean    @default(false)
-  visibility    Visibility @default(PUBLIC)
-
-  creator     User        @relation("TourCreator", fields: [createdById], references: [id])
   destination Destination @relation(fields: [destinationId], references: [id])
+  creator     User        @relation(fields: [createdById], references: [id])
+
+  trips       Trip[]
+  itineraries TourItinerary[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-enum Difficulty {
+model TourItinerary {
+  id String @id @default(uuid())
+
+  tourId    String
+  dayNumber Int
+
+  title       String
+  description String?
+
+  location String?
+  duration String?
+
+  icon String?
+
+  tour Tour @relation(fields: [tourId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([tourId, dayNumber])
+}
+
+enum TourDifficulty {
   EASY
   MODERATE
   HARD

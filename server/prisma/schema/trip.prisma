@@ -1,0 +1,55 @@
+model TripInclude {
+  id String @id @default(uuid())
+
+  title       String
+  description String?
+  category    String
+  icon        String?
+
+  trips TripIncludeItem[]
+
+  createdAt DateTime @default(now())
+}
+
+model TripIncludeItem {
+  id String @id @default(uuid())
+
+  tripId        String
+  tripIncludeId String
+
+  trip        Trip        @relation(fields: [tripId], references: [id])
+  tripInclude TripInclude @relation(fields: [tripIncludeId], references: [id])
+
+  @@unique([tripId, tripIncludeId])
+}
+
+model Trip {
+  id String @id @default(uuid())
+
+  tourId  String
+  guideId String?
+
+  startDate DateTime
+  endDate   DateTime
+
+  price       Float
+  maxGuests   Int
+  bookedSeats Int   @default(0)
+
+  status TripStatus @default(SCHEDULED)
+
+  tour  Tour  @relation(fields: [tourId], references: [id])
+  guide User? @relation(fields: [guideId], references: [id])
+
+  includes TripIncludeItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum TripStatus {
+  SCHEDULED
+  FULL
+  CANCELLED
+  COMPLETED
+}

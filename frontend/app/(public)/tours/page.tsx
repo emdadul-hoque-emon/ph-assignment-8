@@ -32,19 +32,22 @@ import ToursFilter, {
 } from "@/components/module/tour/ToursFilter";
 import ToursChip from "@/components/module/tour/ToursChip";
 import TourSorting from "@/components/module/tour/TourSorting";
+import { serverFetch } from "@/lib/server-fetch";
+import { ITour } from "@/interfaces/tour.interface";
+import { IResponse } from "@/interfaces";
 
 const ToursPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-  // const searchParamsObj = await searchParams;
-  // if (!searchParamsObj.sortBy && !searchParamsObj.sortOrder) {
-  //   searchParamsObj.sortBy = "averageRating";
-  //   searchParamsObj.sortOrder = "desc";
-  // }
+  const searchParamsObj = await searchParams;
   // const queryString = queryStringFormatter(searchParamsObj);
   // const tours = await getTours(queryString);
+  const res = await serverFetch.get(
+    `/v2/tours?limit=6&${new URLSearchParams(searchParamsObj as Record<string, string>).toString()}`,
+  );
+  const data: IResponse<ITour[]> = await res.json();
 
   const tours = [
     {
@@ -202,7 +205,7 @@ const ToursPage = async ({
           {/* <!-- Tours Grid --> */}
           <div className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {tours.map((tour) => (
+              {data.data.map((tour) => (
                 <div
                   key={tour.id}
                   className="group flex flex-col overflow-hidden rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-all hover:shadow-md"
@@ -213,7 +216,6 @@ const ToursPage = async ({
                       alt={tour.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                       data-alt={tour.title}
-                      data-location={tour.location}
                       src={tour.image}
                     />
                     <div className="absolute top-4 left-4 rounded-full bg-white/90 dark:bg-slate-900/90 px-3 py-1 text-xs font-bold text-primary shadow-sm">
@@ -237,13 +239,13 @@ const ToursPage = async ({
                           {tour.rating}
                         </span>
                         <span className="text-xs font-medium text-slate-500">
-                          ({tour.reviews})
+                          ({tour.reviewCount || 0})
                         </span>
                       </div>
                       <div className="flex items-center gap-1 text-slate-500 dark:text-slate-400">
                         <Clock className="size-4" />
                         <span className="text-xs font-medium">
-                          {tour.duration}
+                          {tour.durationDays} days
                         </span>
                       </div>
                     </div>

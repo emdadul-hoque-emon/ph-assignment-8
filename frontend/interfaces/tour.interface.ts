@@ -3,13 +3,21 @@ import { IUser } from "./user.interface";
 
 export interface ITour {
   _id: string;
+  id: string;
   title: string;
   description: string;
   category: string;
   city: string;
   country: string;
+  destination: {
+    city: string;
+    country: string;
+  };
+  image: string;
 
   price: number; // per tour
+  priceFrom: number;
+  durationDays: number;
   duration: string; // e.g. "3 hours", "1 day"
 
   itinerary: {
@@ -27,6 +35,8 @@ export interface ITour {
   guide: IUser<IGuide>; // reference to User (guide)
 
   averageRating?: number;
+  rating: number;
+  reviewCount: number;
   totalReviews?: number;
   totalTrips: number;
 

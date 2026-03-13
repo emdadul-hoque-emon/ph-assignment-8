@@ -12,19 +12,24 @@ export enum Gender {
 
 export interface IUser<T = null> {
   _id: string;
+  id: string;
   name: string;
   email: string;
   password: string;
   role: UserRole;
   address: string;
+  city: string;
+  country: string;
   phone: string;
   gender: Gender;
 
   // Common fields
   profileImage?: string;
+  avatar?: string;
   bio?: string;
   languages?: string[];
   profile: T;
+  guideProfile: T;
 
   createdAt: Date;
   updatedAt?: Date;

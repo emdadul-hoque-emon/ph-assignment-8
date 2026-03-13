@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
       "res.cloudinary.com",
       "lh3.googleusercontent.com",
       "picsum.photos",
+      "randomuser.me",
+      "images.unsplash.com",
+      "unsplash.com",
     ],
   },
 };

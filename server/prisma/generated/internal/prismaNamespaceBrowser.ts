@@ -54,6 +54,10 @@ export const ModelName = {
   Destination: 'Destination',
   TopAttraction: 'TopAttraction',
   Tour: 'Tour',
+  TourItinerary: 'TourItinerary',
+  TripInclude: 'TripInclude',
+  TripIncludeItem: 'TripIncludeItem',
+  Trip: 'Trip',
   User: 'User',
   GuideProfile: 'GuideProfile'
 } as const
@@ -113,25 +117,78 @@ export type TopAttractionScalarFieldEnum = (typeof TopAttractionScalarFieldEnum)
 export const TourScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  slug: 'slug',
   description: 'description',
+  image: 'image',
   destinationId: 'destinationId',
   createdById: 'createdById',
-  price: 'price',
   durationDays: 'durationDays',
   maxGroupSize: 'maxGroupSize',
+  priceFrom: 'priceFrom',
   difficulty: 'difficulty',
   category: 'category',
-  startDate: 'startDate',
-  endDate: 'endDate',
   rating: 'rating',
   totalReviews: 'totalReviews',
-  isAiGenerated: 'isAiGenerated',
-  visibility: 'visibility',
+  featured: 'featured',
+  isPublished: 'isPublished',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type TourScalarFieldEnum = (typeof TourScalarFieldEnum)[keyof typeof TourScalarFieldEnum]
+
+
+export const TourItineraryScalarFieldEnum = {
+  id: 'id',
+  tourId: 'tourId',
+  dayNumber: 'dayNumber',
+  title: 'title',
+  description: 'description',
+  location: 'location',
+  duration: 'duration',
+  icon: 'icon',
+  createdAt: 'createdAt'
+} as const
+
+export type TourItineraryScalarFieldEnum = (typeof TourItineraryScalarFieldEnum)[keyof typeof TourItineraryScalarFieldEnum]
+
+
+export const TripIncludeScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  category: 'category',
+  icon: 'icon',
+  createdAt: 'createdAt'
+} as const
+
+export type TripIncludeScalarFieldEnum = (typeof TripIncludeScalarFieldEnum)[keyof typeof TripIncludeScalarFieldEnum]
+
+
+export const TripIncludeItemScalarFieldEnum = {
+  id: 'id',
+  tripId: 'tripId',
+  tripIncludeId: 'tripIncludeId'
+} as const
+
+export type TripIncludeItemScalarFieldEnum = (typeof TripIncludeItemScalarFieldEnum)[keyof typeof TripIncludeItemScalarFieldEnum]
+
+
+export const TripScalarFieldEnum = {
+  id: 'id',
+  tourId: 'tourId',
+  guideId: 'guideId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  price: 'price',
+  maxGuests: 'maxGuests',
+  bookedSeats: 'bookedSeats',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TripScalarFieldEnum = (typeof TripScalarFieldEnum)[keyof typeof TripScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

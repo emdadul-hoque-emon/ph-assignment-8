@@ -53,6 +53,26 @@ export type TopAttraction = Prisma.TopAttractionModel
  */
 export type Tour = Prisma.TourModel
 /**
+ * Model TourItinerary
+ * 
+ */
+export type TourItinerary = Prisma.TourItineraryModel
+/**
+ * Model TripInclude
+ * 
+ */
+export type TripInclude = Prisma.TripIncludeModel
+/**
+ * Model TripIncludeItem
+ * 
+ */
+export type TripIncludeItem = Prisma.TripIncludeItemModel
+/**
+ * Model Trip
+ * 
+ */
+export type Trip = Prisma.TripModel
+/**
  * Model User
  * 
  */

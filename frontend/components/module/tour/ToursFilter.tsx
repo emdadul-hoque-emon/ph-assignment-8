@@ -27,6 +27,83 @@ import { Slider } from "@/components/ui/slider";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 
+const countries = [
+  { label: "Turkey", value: "turkey" },
+  { label: "Indonesia", value: "indonesia" },
+  { label: "New Zealand", value: "new zealand" },
+  { label: "Italy", value: "italy" },
+  { label: "UAE", value: "uae" },
+  { label: "China", value: "china" },
+  { label: "Czech Republic", value: "czech republic" },
+  { label: "USA", value: "usa" },
+  { label: "Netherlands", value: "netherlands" },
+  { label: "Brazil", value: "brazil" },
+  { label: "Austria", value: "austria" },
+  { label: "UK", value: "uk" },
+  { label: "Australia", value: "australia" },
+  { label: "Singapore", value: "singapore" },
+  { label: "Canada", value: "canada" },
+  { label: "South Korea", value: "south korea" },
+  { label: "Argentina", value: "argentina" },
+  { label: "Spain", value: "spain" },
+  { label: "Egypt", value: "egypt" },
+  { label: "Greece", value: "greece" },
+  { label: "Morocco", value: "morocco" },
+  { label: "French Polynesia", value: "french polynesia" },
+  { label: "France", value: "france" },
+  { label: "Vietnam", value: "vietnam" },
+  { label: "Maldives", value: "maldives" },
+  { label: "South Africa", value: "south africa" },
+  { label: "Peru", value: "peru" },
+  { label: "Taiwan", value: "taiwan" },
+  { label: "Iceland", value: "iceland" },
+  { label: "Japan", value: "japan" },
+  { label: "Thailand", value: "thailand" },
+];
+
+const cities = [
+  { label: "Marrakech", value: "marrakech" },
+  { label: "Vaitape", value: "vaitape" },
+  { label: "Miami", value: "miami" },
+  { label: "Rio de Janeiro", value: "rio de janeiro" },
+  { label: "Dubai", value: "dubai" },
+  { label: "Taipei", value: "taipei" },
+  { label: "Queenstown", value: "queenstown" },
+  { label: "Las Vegas", value: "las vegas" },
+  { label: "Banff", value: "banff" },
+  { label: "London", value: "london" },
+  { label: "Paris", value: "paris" },
+  { label: "Shanghai", value: "shanghai" },
+  { label: "Sydney", value: "sydney" },
+  { label: "New York", value: "new york" },
+  { label: "Prague", value: "prague" },
+  { label: "Tokyo", value: "tokyo" },
+  { label: "San Francisco", value: "san francisco" },
+  { label: "Vienna", value: "vienna" },
+  { label: "Cairo", value: "cairo" },
+  { label: "Santorini", value: "santorini" },
+  { label: "Rome", value: "rome" },
+  { label: "Reykjavik", value: "reykjavik" },
+  { label: "Singapore", value: "singapore" },
+  { label: "Bangkok", value: "bangkok" },
+  { label: "Hanoi", value: "hanoi" },
+  { label: "Amsterdam", value: "amsterdam" },
+  { label: "Cape Town", value: "cape town" },
+  { label: "Denpasar", value: "denpasar" },
+  { label: "Barcelona", value: "barcelona" },
+  { label: "Cusco", value: "cusco" },
+  { label: "Honolulu", value: "honolulu" },
+  { label: "Istanbul", value: "istanbul" },
+  { label: "Male", value: "male" },
+  { label: "Vancouver", value: "vancouver" },
+  { label: "Kyoto", value: "kyoto" },
+  { label: "Buenos Aires", value: "buenos aires" },
+  { label: "Seoul", value: "seoul" },
+  { label: "Phuket", value: "phuket" },
+  { label: "Hong Kong", value: "hong kong" },
+  { label: "Venice", value: "venice" },
+];
+
 export default function ToursFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -161,12 +238,7 @@ export default function ToursFilter() {
             </SelectTrigger>
 
             <SelectContent>
-              {[
-                { value: "italy", label: "Italy" },
-                { value: "japan", label: "Japan" },
-                { value: "france", label: "France" },
-                { value: "greece", label: "Greece" },
-              ].map((country) => (
+              {countries.map((country) => (
                 <SelectItem
                   key={country.value}
                   value={country.value}
@@ -198,11 +270,7 @@ export default function ToursFilter() {
             </SelectTrigger>
 
             <SelectContent>
-              {[
-                { value: "rome", label: "Rome" },
-                { value: "tokyo", label: "Tokyo" },
-                { value: "paris", label: "Paris" },
-              ].map((city) => (
+              {cities.map((city) => (
                 <SelectItem
                   key={city.value}
                   value={city.value}

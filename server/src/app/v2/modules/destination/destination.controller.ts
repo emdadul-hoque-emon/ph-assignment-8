@@ -6,7 +6,7 @@ import { DestinationService } from "./destination.service";
 
 const getAllDestinations = catchAsync(async (req, res, next) => {
   const options = pick(req.query, paginationHelper.paginationFields);
-  const filters = pick(req.query, ["searchTerm", "date"]);
+  const filters = pick(req.query, ["searchTerm", "date", "popular"]);
 
   const data = await DestinationService.getDestinationsFromDb(
     options as Record<string, string>,

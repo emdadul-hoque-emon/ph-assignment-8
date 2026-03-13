@@ -11,11 +11,11 @@ model User {
   city    String
   country String
 
-  createdTours Tour[] @relation("TourCreator")
-
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   guideProfile GuideProfile?
+  trips        Trip[]
+  tours        Tour[]
 }
 
 enum UserRole {

@@ -2,12 +2,16 @@ import { IUser } from "./user.interface";
 
 export interface IGuide<T = null> {
   _id: string;
-
+  id: string;
   // Professional profile
   expertise: string[]; // City tours, Food tours
+  specialties: string[];
+  aboutMe: string;
   experienceYears: number;
   certifications?: string[];
   languages: string[];
+  city: string;
+  country: string;
 
   // Availability
   availability?: {
@@ -32,6 +36,7 @@ export interface IGuide<T = null> {
   };
 
   averageRating: number;
+  rating: number;
   totalTrips: number;
   totalReviews: number;
   totalEarnings: number;
