@@ -40,11 +40,11 @@ const CustomLink = ({
     <Link
       href={href}
       className={cn(
+        className,
         isRouteMatches(pathname, href)
           ? matchStyle ||
               "text-primary font-semibold underline underline-offset-6"
           : "",
-        className,
       )}
     >
       {children}

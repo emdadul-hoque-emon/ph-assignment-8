@@ -96,7 +96,7 @@ const GuidePage = () => {
             </div>
           </div>
           <div className="flex flex-wrap gap-3">
-            <div className="flex flex-1 min-w-[100px] flex-col gap-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 items-center text-center">
+            <div className="flex flex-1 min-w-25 flex-col gap-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 items-center text-center">
               <p className="text-primary tracking-tight text-2xl font-bold">
                 4.9
               </p>
@@ -104,7 +104,7 @@ const GuidePage = () => {
                 Rating
               </p>
             </div>
-            <div className="flex flex-1 min-w-[100px] flex-col gap-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 items-center text-center">
+            <div className="flex flex-1 min-w-25 flex-col gap-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 items-center text-center">
               <p className="text-primary tracking-tight text-2xl font-bold">
                 120+
               </p>
@@ -112,7 +112,7 @@ const GuidePage = () => {
                 Reviews
               </p>
             </div>
-            <div className="flex flex-1 min-w-[100px] flex-col gap-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 items-center text-center">
+            <div className="flex flex-1 min-w-25 flex-col gap-1 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 items-center text-center">
               <p className="text-primary tracking-tight text-2xl font-bold">
                 8
               </p>

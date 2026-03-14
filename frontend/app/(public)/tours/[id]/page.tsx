@@ -1,18 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  MapPin,
-  Star,
-  Clock,
-  Users,
-  Calendar,
-  CheckCircle,
-  CalendarDays,
-  Languages,
-} from "lucide-react";
 import { mockTours, mockGuides, mockTrips } from "@/lib/mock-data";
 import { notFound } from "next/navigation";
 import { getSingleTour } from "@/action/tour";
@@ -22,31 +7,20 @@ export default async function TourDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // const paramsObj = await params;
-  // const tour = await getSingleTour(paramsObj.id);
-
-  // if (!tour) {
-  //   notFound();
-  // }
-
-  // if (!tour) {
-  //   notFound();
-  // }
-
   return (
     <main className="flex-1">
       {/* <!-- Hero Section --> */}
-      <div className="relative h-[450px] w-full overflow-hidden">
+      <div className="relative h-112.5 w-full overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           data-alt="High quality aerial view of Tokyo city skyline at sunset"
           style={{
             backgroundImage:
-              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBTYXZ7nazeGowWvUljEcAi2s-f0SFc-p7kGVq9JvEbnnS9hhsVj5MWumZI9BKI9u6uNxKTgTAF1yOS_OxUc_M_sHR5y-accGv_Eby57EFDGtI8fuffCVU4TWvNS8P2GwCorl6pT5xbi9Wa3Gj7R9xbGv5XGn8W4gjCVBXiC2-5g-fTUAVd3czXonByopFSFiBLz7f_lV4DvqVhk74cknmPBEfHtxAT_ZHsKSPSC1hHIyvuzYASI7h7HzJsjmEBCkRd_jSqYCJwux8');",
+              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBTYXZ7nazeGowWvUljEcAi2s-f0SFc-p7kGVq9JvEbnnS9hhsVj5MWumZI9BKI9u6uNxKTgTAF1yOS_OxUc_M_sHR5y-accGv_Eby57EFDGtI8fuffCVU4TWvNS8P2GwCorl6pT5xbi9Wa3Gj7R9xbGv5XGn8W4gjCVBXiC2-5g-fTUAVd3czXonByopFSFiBLz7f_lV4DvqVhk74cknmPBEfHtxAT_ZHsKSPSC1hHIyvuzYASI7h7HzJsjmEBCkRd_jSqYCJwux8')",
           }}
         ></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-        <div className="relative h-full max-w-[1200px] mx-auto px-6 flex flex-col justify-end pb-12">
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
+        <div className="relative h-full max-w-300 mx-auto px-6 flex flex-col justify-end pb-12">
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20 inline-block max-w-2xl">
             <div className="flex items-center gap-2 mb-3">
               <span className="bg-primary px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider text-white">
@@ -74,11 +48,11 @@ export default async function TourDetailPage({
         </div>
       </div>
       {/* <!-- Content Grid --> */}
-      <div className="max-w-[1200px] mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
+      <div className="max-w-300 mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* <!-- Left Column: Details --> */}
         <div className="lg:col-span-2 space-y-12">
           {/* <!-- Quick Info Tabs --> */}
-          <div className="border-b border-slate-200 dark:border-slate-800 sticky top-[64px] bg-background-light dark:bg-background-dark z-40 py-2">
+          <div className="border-b border-slate-200 dark:border-slate-800 sticky top-16 bg-background-light dark:bg-background-dark z-40 py-2">
             <div className="flex gap-8 overflow-x-auto no-scrollbar">
               <a
                 className="text-primary font-bold border-b-2 border-primary pb-2 whitespace-nowrap"
@@ -314,7 +288,7 @@ export default async function TourDetailPage({
         </div>
         {/* <!-- Right Column: Booking Widget --> */}
         <div className="lg:col-span-1">
-          <div className="sticky top-[100px] bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 p-6">
+          <div className="sticky top-25 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 p-6">
             <div className="flex items-end gap-1 mb-6">
               <span className="text-3xl font-bold text-primary">$45</span>
               <span className="text-slate-500 mb-1">/ person</span>

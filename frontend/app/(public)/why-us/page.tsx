@@ -16,61 +16,6 @@ export default function WhyUs() {
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
       <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-        {/* Navigation */}
-        <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-background-dark px-6 md:px-20 py-4 sticky top-0 z-50">
-          <div className="flex items-center gap-2 text-primary">
-            <span className="material-symbols-outlined text-3xl font-bold">
-              tour
-            </span>
-            <h2 className="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-tight">
-              TourBuddy
-            </h2>
-          </div>
-          <div className="hidden md:flex flex-1 justify-end gap-8 items-center">
-            <nav className="flex items-center gap-8">
-              <Link
-                href="/"
-                className="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/tours"
-                className="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
-              >
-                Tours
-              </Link>
-              <Link
-                href="/guides"
-                className="text-slate-700 dark:text-slate-300 text-sm font-medium hover:text-primary transition-colors"
-              >
-                Guides
-              </Link>
-              <Link
-                href="/why-us"
-                className="text-primary text-sm font-bold border-b-2 border-primary leading-normal"
-              >
-                Why Us
-              </Link>
-            </nav>
-            <div className="flex items-center gap-4 ml-4">
-              <Button className="flex min-w-21 cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold transition-opacity hover:opacity-90">
-                Sign Up
-              </Button>
-              <div
-                className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200"
-                style={{
-                  backgroundImage:
-                    'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4mt0_5z2iEykl4Yej98M8PAxv7I0E-xwhcFN7TkNQH8Ty4hN0a5wlxpj2MtK6ePnrcJrNdA-rUpQu_wI9y2DWDio2J9mgfSCX_jrgWlnjv6b1nwwMxhwNpWmsxwCoctxC0rqt0ejdUCV9mn6sGcsyLIVGxA0zlX27AN2TCxSN0J6L6HKiZyaUfSzJ-KQblp6h6cdF4f3iS9Sdksat0yISU2KlpD67AxcQSjYoTsCZ1l5sEXMksqGmMlwcmf3EsNgZIKggFEAKWLc");',
-                }}
-              ></div>
-            </div>
-          </div>
-          {/* Mobile Menu Icon */}
-          <button className="md:hidden text-slate-900 dark:text-white">
-            <span className="material-symbols-outlined">menu</span>
-          </button>
-        </header>
         <main className="flex-1">
           {/* Hero Section */}
           <section className="max-w-7xl mx-auto px-6 md:px-20 py-12 md:py-20">
@@ -82,7 +27,7 @@ export default function WhyUs() {
                 <h1 className="text-slate-900 dark:text-white text-4xl md:text-6xl font-black leading-tight tracking-tight">
                   Why Choose TourBuddy?
                 </h1>
-                <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl leading-relaxed max-w-[540px]">
+                <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl leading-relaxed max-w-135">
                   We're more than just a booking platform. We're a community of
                   storytellers and explorers redefining what it means to truly
                   see the world.

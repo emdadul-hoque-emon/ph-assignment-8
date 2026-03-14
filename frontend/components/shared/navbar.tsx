@@ -1,21 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { MapPin, Search } from "lucide-react";
-import { auth } from "@/lib/session";
-import { logout } from "@/action";
-import { UserRole } from "@/interfaces/user.interface";
-import MobileNav from "./MobileNav";
 import Image from "next/image";
-import { Input } from "../ui/input";
 import CustomLink from "./CustomLink";
 import HeaderSearch from "./HeaderSearch";
 
@@ -44,30 +29,33 @@ export async function Navbar({
           </Link>
         </div>
         <nav className="hidden lg:flex items-center gap-8">
-          <CustomLink
-            className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors"
-            href="/destinations"
-          >
-            Destinations
-          </CustomLink>
-          <CustomLink
-            className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors"
-            href="/tours"
-          >
-            Tours
-          </CustomLink>
-          <CustomLink
-            className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors"
-            href="/guides"
-          >
-            Guides
-          </CustomLink>
-          <CustomLink
-            className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors"
-            href="/why-us"
-          >
-            Why Us
-          </CustomLink>
+          {[
+            {
+              name: "Destinations",
+              href: "/destinations",
+            },
+            {
+              name: "Tours",
+              href: "/tours",
+            },
+            {
+              name: "Guides",
+              href: "/guides",
+            },
+            {
+              name: "Why Us",
+              href: "/why-us",
+            },
+          ].map((link) => (
+            <CustomLink
+              key={link.name}
+              className="text-slate-600 dark:text-slate-300 text-sm font-semibold hover:text-primary transition-colors"
+              href={link.href}
+              matchStyle="bg-primary text-primary-foreground px-2 py-1 rounded-md hover:opacity-90 hover:text-primary-foreground transition-all"
+            >
+              {link.name}
+            </CustomLink>
+          ))}
         </nav>
       </div>
       <div className="flex flex-1 justify-end gap-4 items-center">

@@ -15,9 +15,16 @@ import {
 interface TablePaginationProps {
   currentPage: number;
   totalPages: number;
+  limit?: number;
+  target?: string;
 }
 
-const TablePagination = ({ currentPage, totalPages }: TablePaginationProps) => {
+const TablePagination = ({
+  currentPage,
+  totalPages,
+  limit = 10,
+  target = "",
+}: TablePaginationProps) => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
@@ -27,7 +34,7 @@ const TablePagination = ({ currentPage, totalPages }: TablePaginationProps) => {
     params.set("page", newPage.toString());
 
     startTransition(() => {
-      router.push(`?${params.toString()}`);
+      router.push(`?${params.toString()}${target}`, { scroll: false });
     });
   };
 
@@ -37,15 +44,11 @@ const TablePagination = ({ currentPage, totalPages }: TablePaginationProps) => {
     params.set("page", "1"); // Reset to first page when changing limit
 
     startTransition(() => {
-      router.push(`?${params.toString()}`);
+      router.push(`?${params.toString()}${target}`, { scroll: false });
     });
   };
 
-  const currentLimit = searchParams.get("limit") || "10";
-
-  // if (totalPages <= 1) {
-  //   return null;
-  // }
+  const currentLimit = searchParams.get("limit") || limit || "10";
 
   return (
     <div className="flex lg:flex-row flex-col items-center justify-center gap-2">
@@ -109,7 +112,7 @@ const TablePagination = ({ currentPage, totalPages }: TablePaginationProps) => {
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">Items per page:</span>
           <Select
-            value={currentLimit}
+            value={currentLimit.toString()}
             onValueChange={changeLimit}
             disabled={isPending}
           >
@@ -119,6 +122,14 @@ const TablePagination = ({ currentPage, totalPages }: TablePaginationProps) => {
             <SelectContent>
               <SelectItem value="1">1</SelectItem>
               <SelectItem value="5">5</SelectItem>
+              {limit !== 1 &&
+                limit !== 5 &&
+                limit !== 10 &&
+                limit !== 20 &&
+                limit !== 50 &&
+                limit !== 100 && (
+                  <SelectItem value={limit.toString()}>{limit}</SelectItem>
+                )}
               <SelectItem value="10">10</SelectItem>
               <SelectItem value="20">20</SelectItem>
               <SelectItem value="50">50</SelectItem>

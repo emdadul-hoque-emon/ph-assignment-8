@@ -1,0 +1,33 @@
+services:
+  tour_buddy_backend_container:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+
+    env_file:
+      - ./server/.env
+
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+
+    ports:
+      - "4000:4000"
+
+  tour_buddy_frontend_container:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    env_file:
+      - ./frontend/.env
+
+    depends_on:
+      - tour_buddy_backend_container
