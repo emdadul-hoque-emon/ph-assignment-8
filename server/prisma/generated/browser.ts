@@ -28,6 +28,11 @@ export type Destination = Prisma.DestinationModel
  */
 export type TopAttraction = Prisma.TopAttractionModel
 /**
+ * Model Review
+ * 
+ */
+export type Review = Prisma.ReviewModel
+/**
  * Model Tour
  * 
  */

@@ -16,6 +16,8 @@ model User {
   guideProfile GuideProfile?
   trips        Trip[]
   tours        Tour[]
+  reviews      Review[]      @relation("ReviewsByUser")
+  guides       Review[]      @relation("Guide")
 }
 
 enum UserRole {

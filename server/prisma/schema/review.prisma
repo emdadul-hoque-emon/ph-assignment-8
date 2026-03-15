@@ -1,0 +1,17 @@
+model Review {
+  id String @id @default(uuid())
+
+  tourId     String?
+  guideId    String?
+  reviewerId String
+  rating     Int     @default(5)
+  comment    String?
+  tour       Tour?   @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  guide      User?   @relation("Guide", fields: [guideId], references: [id], onDelete: Cascade)
+  reviewer   User    @relation("ReviewsByUser", fields: [reviewerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tourId, reviewerId])
+}

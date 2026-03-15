@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Destination: 'Destination',
   TopAttraction: 'TopAttraction',
+  Review: 'Review',
   Tour: 'Tour',
   TourItinerary: 'TourItinerary',
   TripInclude: 'TripInclude',
@@ -112,6 +113,20 @@ export const TopAttractionScalarFieldEnum = {
 } as const
 
 export type TopAttractionScalarFieldEnum = (typeof TopAttractionScalarFieldEnum)[keyof typeof TopAttractionScalarFieldEnum]
+
+
+export const ReviewScalarFieldEnum = {
+  id: 'id',
+  tourId: 'tourId',
+  guideId: 'guideId',
+  reviewerId: 'reviewerId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReviewScalarFieldEnum = (typeof ReviewScalarFieldEnum)[keyof typeof ReviewScalarFieldEnum]
 
 
 export const TourScalarFieldEnum = {

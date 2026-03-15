@@ -5,7 +5,7 @@ export default function Loading() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Banner Skeleton */}
-      <Skeleton className="h-[400px] w-full rounded-xl mb-8" />
+      <Skeleton className="h-100 w-full rounded-xl mb-8" />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content Skeleton */}

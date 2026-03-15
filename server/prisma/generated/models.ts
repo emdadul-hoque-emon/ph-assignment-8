@@ -10,6 +10,7 @@
  */
 export type * from './models/Destination'
 export type * from './models/TopAttraction'
+export type * from './models/Review'
 export type * from './models/Tour'
 export type * from './models/TourItinerary'
 export type * from './models/TripInclude'

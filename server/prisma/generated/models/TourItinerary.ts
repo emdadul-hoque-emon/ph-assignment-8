@@ -497,10 +497,6 @@ export type TourItineraryUncheckedUpdateManyWithoutTourNestedInput = {
   deleteMany?: Prisma.TourItineraryScalarWhereInput | Prisma.TourItineraryScalarWhereInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type TourItineraryCreateWithoutTourInput = {
   id?: string
   dayNumber: number
