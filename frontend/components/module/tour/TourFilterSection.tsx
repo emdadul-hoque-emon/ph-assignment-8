@@ -119,7 +119,7 @@ const TourFilterSection = () => {
         </Label>
         <Slider
           value={priceRange}
-          onValueChange={setPriceRange}
+          onValueChange={(v) => setPriceRange(v as number[])}
           max={200}
           step={10}
           className="w-full"
