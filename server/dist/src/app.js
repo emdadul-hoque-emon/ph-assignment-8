@@ -12,6 +12,7 @@ const notFound_1 = require("./app/middlewares/notFound");
 const routes_1 = __importDefault(require("./app/v1/routes"));
 const env_1 = require("./app/config/env");
 const payment_service_1 = require("./app/v1/modules/payment/payment.service");
+const routes_2 = __importDefault(require("./app/v2/routes"));
 const app = (0, express_1.default)();
 // stripe webhook
 app.post("/api/v1/payments/webhook", express_1.default.raw({ type: "application/json" }), payment_service_1.PaymentService.handleStripeWebhook);
@@ -32,6 +33,7 @@ app.use((0, cookie_parser_1.default)());
 app.use((0, morgan_1.default)("dev"));
 // routes
 app.use("/api/v1", routes_1.default);
+app.use("/api/v2", routes_2.default);
 // health check
 app.get("/", (req, res) => {
     res.json({

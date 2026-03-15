@@ -9,3 +9,33 @@
 * 🟢 You can import this file directly.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRole = exports.TripStatus = exports.TourCategory = exports.Visibility = exports.TourDifficulty = void 0;
+exports.TourDifficulty = {
+    EASY: 'EASY',
+    MODERATE: 'MODERATE',
+    HARD: 'HARD'
+};
+exports.Visibility = {
+    PUBLIC: 'PUBLIC',
+    PRIVATE: 'PRIVATE'
+};
+exports.TourCategory = {
+    BEACH: 'BEACH',
+    ADVENTURE: 'ADVENTURE',
+    CULTURE: 'CULTURE',
+    CITY: 'CITY',
+    NATURE: 'NATURE',
+    FOOD: 'FOOD',
+    NIGHTLIFE: 'NIGHTLIFE'
+};
+exports.TripStatus = {
+    SCHEDULED: 'SCHEDULED',
+    FULL: 'FULL',
+    CANCELLED: 'CANCELLED',
+    COMPLETED: 'COMPLETED'
+};
+exports.UserRole = {
+    TRAVELER: 'TRAVELER',
+    GUIDE: 'GUIDE',
+    ADMIN: 'ADMIN'
+};

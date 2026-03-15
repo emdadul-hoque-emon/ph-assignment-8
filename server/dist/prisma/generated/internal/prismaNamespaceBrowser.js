@@ -48,7 +48,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.DestinationScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
+exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.GuideProfileScalarFieldEnum = exports.UserScalarFieldEnum = exports.TripScalarFieldEnum = exports.TripIncludeItemScalarFieldEnum = exports.TripIncludeScalarFieldEnum = exports.TourItineraryScalarFieldEnum = exports.TourScalarFieldEnum = exports.ReviewScalarFieldEnum = exports.TopAttractionScalarFieldEnum = exports.DestinationScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.Decimal = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/index-browser"));
 exports.Decimal = runtime.Decimal;
 exports.NullTypes = {
@@ -75,7 +75,16 @@ exports.JsonNull = runtime.JsonNull;
  */
 exports.AnyNull = runtime.AnyNull;
 exports.ModelName = {
-    Destination: 'Destination'
+    Destination: 'Destination',
+    TopAttraction: 'TopAttraction',
+    Review: 'Review',
+    Tour: 'Tour',
+    TourItinerary: 'TourItinerary',
+    TripInclude: 'TripInclude',
+    TripIncludeItem: 'TripIncludeItem',
+    Trip: 'Trip',
+    User: 'User',
+    GuideProfile: 'GuideProfile'
 };
 /*
  * Enums
@@ -89,17 +98,127 @@ exports.TransactionIsolationLevel = runtime.makeStrictEnum({
 exports.DestinationScalarFieldEnum = {
     id: 'id',
     name: 'name',
-    image: 'image',
-    country: 'country',
     city: 'city',
+    country: 'country',
+    continent: 'continent',
+    image: 'image',
     description: 'description',
-    latitude: 'latitude',
-    longitude: 'longitude',
+    overview: 'overview',
+    lat: 'lat',
+    lng: 'lng',
+    rating: 'rating',
     averageCost: 'averageCost',
     bestSeason: 'bestSeason',
-    rating: 'rating',
-    continent: 'continent',
+    currency: 'currency',
+    languages: 'languages',
+    transportation: 'transportation',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.TopAttractionScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    image: 'image',
+    description: 'description',
+    destinationId: 'destinationId',
     createdAt: 'createdAt'
+};
+exports.ReviewScalarFieldEnum = {
+    id: 'id',
+    tourId: 'tourId',
+    guideId: 'guideId',
+    reviewerId: 'reviewerId',
+    rating: 'rating',
+    comment: 'comment',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.TourScalarFieldEnum = {
+    id: 'id',
+    title: 'title',
+    slug: 'slug',
+    description: 'description',
+    image: 'image',
+    destinationId: 'destinationId',
+    createdById: 'createdById',
+    durationDays: 'durationDays',
+    maxGroupSize: 'maxGroupSize',
+    priceFrom: 'priceFrom',
+    difficulty: 'difficulty',
+    category: 'category',
+    rating: 'rating',
+    totalReviews: 'totalReviews',
+    featured: 'featured',
+    isPublished: 'isPublished',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.TourItineraryScalarFieldEnum = {
+    id: 'id',
+    tourId: 'tourId',
+    dayNumber: 'dayNumber',
+    title: 'title',
+    description: 'description',
+    location: 'location',
+    duration: 'duration',
+    icon: 'icon',
+    createdAt: 'createdAt'
+};
+exports.TripIncludeScalarFieldEnum = {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    category: 'category',
+    icon: 'icon',
+    createdAt: 'createdAt'
+};
+exports.TripIncludeItemScalarFieldEnum = {
+    id: 'id',
+    tripId: 'tripId',
+    tripIncludeId: 'tripIncludeId'
+};
+exports.TripScalarFieldEnum = {
+    id: 'id',
+    tourId: 'tourId',
+    guideId: 'guideId',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    price: 'price',
+    maxGuests: 'maxGuests',
+    bookedSeats: 'bookedSeats',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.UserScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    email: 'email',
+    password: 'password',
+    role: 'role',
+    avatar: 'avatar',
+    bio: 'bio',
+    phone: 'phone',
+    city: 'city',
+    country: 'country',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.GuideProfileScalarFieldEnum = {
+    id: 'id',
+    userId: 'userId',
+    experience: 'experience',
+    languages: 'languages',
+    specialties: 'specialties',
+    aboutMe: 'aboutMe',
+    hourlyRate: 'hourlyRate',
+    rating: 'rating',
+    totalTours: 'totalTours',
+    bio: 'bio',
+    verified: 'verified',
+    isTopRated: 'isTopRated',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
 };
 exports.SortOrder = {
     asc: 'asc',
