@@ -10,13 +10,15 @@ import {
   DollarSign,
 } from "lucide-react";
 import Link from "next/link";
+import CustomLink from "@/components/shared/CustomLink";
 
 type Props = {
   user: IUser;
+  pathname: string;
   children: React.ReactNode;
 };
 
-const GuideLayout = ({ user, children }: Props) => {
+const GuideLayout = ({ user, pathname, children }: Props) => {
   return (
     <div className="relative flex min-h-screen w-full flex-col flex-1 max-w-7xl mx-auto px-4 md:px-10 py-8">
       <div className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 mb-8">
@@ -62,36 +64,41 @@ const GuideLayout = ({ user, children }: Props) => {
           </div>
         </div>
       </div>
-      <div className="border-b border-slate-200 dark:border-slate-800 mb-8 overflow-x-auto no-scrollbar">
+      <div className="border-slate-200 dark:border-slate-800 overflow-x-auto no-scrollbar">
         <nav className="flex gap-8 min-w-max">
-          <Link
-            className="border-b-2 border-primary text-primary pb-4 font-bold flex items-center gap-2"
-            href="#"
+          <CustomLink
+            className=" flex items-center gap-2  pb-1"
+            href={`${pathname}`}
+            matchStyle="border-b-2 border-primary text-primary pb-1 font-bold"
           >
             <LayoutDashboard className="h-5 w-5" />
             Dashboard
-          </Link>
-          <Link
-            className="border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-4 font-medium transition-colors flex items-center gap-2"
-            href="/"
+          </CustomLink>
+          <CustomLink
+            className="border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-1 font-medium transition-colors flex items-center gap-2"
+            href={`${pathname}/tours`}
+            matchStyle="border-b-2 border-primary text-primary font-bold"
           >
             <Map className="h-5 w-5" /> My Tours
-          </Link>
-          <Link
-            className="border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-4 font-medium transition-colors flex items-center gap-2"
-            href="#"
+          </CustomLink>
+          <CustomLink
+            className="border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-1 font-medium transition-colors flex items-center gap-2"
+            href={`${pathname}/reviews`}
+            matchStyle="border-b-2 border-primary text-primary font-bold"
           >
             <Star className="h-5 w-5" />
             Reviews
-          </Link>
-          <Link
-            className="border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-4 font-medium transition-colors flex items-center gap-2"
-            href="#"
+          </CustomLink>
+          <CustomLink
+            className="border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 pb-1 font-medium transition-colors flex items-center gap-2"
+            href={`${pathname}/earnings`}
+            matchStyle="border-b-2 border-primary text-primary font-bold"
           >
             <DollarSign className="h-5 w-5" />
             Earnings
-          </Link>
+          </CustomLink>
         </nav>
+        <div className="mt-4">{children}</div>
       </div>
     </div>
   );

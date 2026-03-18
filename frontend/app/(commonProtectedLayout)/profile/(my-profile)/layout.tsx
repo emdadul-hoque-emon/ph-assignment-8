@@ -13,12 +13,21 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
   }
 
   if (session.role === UserRole.TOURIST) {
-    return <TravelerLayout user={session}>{children}</TravelerLayout>;
+    return (
+      <TravelerLayout user={session} pathname={"/profile"}>
+        {children}
+      </TravelerLayout>
+    );
   }
   if (session.role === UserRole.GUIDE) {
-    return <GuideLayout user={session}>{children}</GuideLayout>;
+    return (
+      <GuideLayout user={session} pathname={"/profile"}>
+        {children}
+      </GuideLayout>
+    );
   }
-  return <div>layout</div>;
+
+  return <div>{children}</div>;
 };
 
 export default layout;

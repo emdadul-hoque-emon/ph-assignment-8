@@ -24,7 +24,7 @@ const ProfileDropdown = ({ session }: { session: IUser<null> }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem asChild>
-          <Link href="/my-profile" className="w-full">
+          <Link href="/profile" className="w-full">
             Profile
           </Link>
         </DropdownMenuItem>

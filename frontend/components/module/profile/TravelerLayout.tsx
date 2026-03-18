@@ -14,6 +14,7 @@ import React from "react";
 
 interface IProps {
   user: IUser;
+  pathname: string;
   children: React.ReactNode;
 }
 const TravelerLayout = ({ user, children }: IProps) => {
