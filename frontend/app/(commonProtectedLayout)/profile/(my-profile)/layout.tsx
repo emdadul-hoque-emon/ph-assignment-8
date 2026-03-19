@@ -11,6 +11,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
   if (!session) {
     redirect("/login?callback=/my-profile");
   }
+  console.log(session);
 
   if (session.role === UserRole.TOURIST) {
     return (

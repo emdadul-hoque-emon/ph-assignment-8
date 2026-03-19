@@ -21,7 +21,6 @@ const TravelerLayout = ({ user, children }: IProps) => {
   const stats = [
     { icon: "map", label: "Tours Taken", value: "24" },
     { icon: "rate_review", label: "Reviews", value: "18" },
-    { icon: "public", label: "Countries", value: "12" },
   ];
   return (
     <main className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-10 py-8">
@@ -45,7 +44,7 @@ const TravelerLayout = ({ user, children }: IProps) => {
               className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-32"
               data-alt="User profile picture close up"
               style={{
-                backgroundImage: `url("${user.profileImage}")`,
+                backgroundImage: `url("${user.avatar || "/images/default_avatar.png"}")`,
               }}
             ></div>
             <div className="absolute bottom-2 right-2 bg-green-500 border-4 border-white dark:border-slate-900 size-6 rounded-full"></div>

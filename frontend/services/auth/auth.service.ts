@@ -437,3 +437,13 @@ export const changePassword = async (
     };
   }
 };
+
+export const logout = async () => {
+  try {
+    await deleteCookie("accessToken");
+    await deleteCookie("refreshToken");
+    return true;
+  } catch (error: any) {
+    return false;
+  }
+};

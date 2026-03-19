@@ -1,3 +1,4 @@
+"use client";
 import { IUser } from "@/interfaces/user.interface";
 import React from "react";
 import {
@@ -9,8 +10,18 @@ import {
 import { Dropdown } from "react-day-picker";
 import Image from "next/image";
 import Link from "next/link";
+import { logout } from "@/services/auth/auth.service";
+import { toast } from "sonner";
 
 const ProfileDropdown = ({ session }: { session: IUser<null> }) => {
+  const handleLogout = async () => {
+    const res = await logout();
+    if (res) {
+      toast.success("Logged out successfully");
+    } else {
+      toast.error("Failed to log out");
+    }
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -38,7 +49,7 @@ const ProfileDropdown = ({ session }: { session: IUser<null> }) => {
             Settings
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
