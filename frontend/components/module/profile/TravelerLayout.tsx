@@ -11,6 +11,7 @@ import {
   Share2,
 } from "lucide-react";
 import React from "react";
+import TravelerProfileModal from "./TravelerProfileModal";
 
 interface IProps {
   user: IUser;
@@ -68,10 +69,7 @@ const TravelerLayout = ({ user, children }: IProps) => {
               </div>
             </div>
             <div className="flex gap-3 mt-4 md:mt-0">
-              <button className="bg-primary text-white px-6 py-2.5 rounded-lg font-bold hover:bg-primary/90 transition-colors flex items-center gap-2">
-                <Edit className="h-4 w-4" />
-                Edit Profile
-              </button>
+              <TravelerProfileModal user={user} />
               <button className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 px-3 py-2.5 rounded-lg font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
                 <Share2 className="h-4 w-4" />
               </button>

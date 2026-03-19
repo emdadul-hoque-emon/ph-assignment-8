@@ -393,7 +393,8 @@ export const ModelName = {
   TripIncludeItem: 'TripIncludeItem',
   Trip: 'Trip',
   User: 'User',
-  GuideProfile: 'GuideProfile'
+  GuideProfile: 'GuideProfile',
+  TravelerProfile: 'TravelerProfile'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "destination" | "topAttraction" | "review" | "tour" | "tourItinerary" | "tripInclude" | "tripIncludeItem" | "trip" | "user" | "guideProfile"
+    modelProps: "destination" | "topAttraction" | "review" | "tour" | "tourItinerary" | "tripInclude" | "tripIncludeItem" | "trip" | "user" | "guideProfile" | "travelerProfile"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1153,6 +1154,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TravelerProfile: {
+      payload: Prisma.$TravelerProfilePayload<ExtArgs>
+      fields: Prisma.TravelerProfileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TravelerProfileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TravelerProfileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>
+        }
+        findFirst: {
+          args: Prisma.TravelerProfileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TravelerProfileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>
+        }
+        findMany: {
+          args: Prisma.TravelerProfileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>[]
+        }
+        create: {
+          args: Prisma.TravelerProfileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>
+        }
+        createMany: {
+          args: Prisma.TravelerProfileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TravelerProfileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>[]
+        }
+        delete: {
+          args: Prisma.TravelerProfileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>
+        }
+        update: {
+          args: Prisma.TravelerProfileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>
+        }
+        deleteMany: {
+          args: Prisma.TravelerProfileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TravelerProfileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TravelerProfileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>[]
+        }
+        upsert: {
+          args: Prisma.TravelerProfileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TravelerProfilePayload>
+        }
+        aggregate: {
+          args: Prisma.TravelerProfileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTravelerProfile>
+        }
+        groupBy: {
+          args: Prisma.TravelerProfileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TravelerProfileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TravelerProfileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TravelerProfileCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1357,6 +1432,19 @@ export const GuideProfileScalarFieldEnum = {
 } as const
 
 export type GuideProfileScalarFieldEnum = (typeof GuideProfileScalarFieldEnum)[keyof typeof GuideProfileScalarFieldEnum]
+
+
+export const TravelerProfileScalarFieldEnum = {
+  id: 'id',
+  interests: 'interests',
+  languages: 'languages',
+  aboutMe: 'aboutMe',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TravelerProfileScalarFieldEnum = (typeof TravelerProfileScalarFieldEnum)[keyof typeof TravelerProfileScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1626,6 +1714,7 @@ export type GlobalOmitConfig = {
   trip?: Prisma.TripOmit
   user?: Prisma.UserOmit
   guideProfile?: Prisma.GuideProfileOmit
+  travelerProfile?: Prisma.TravelerProfileOmit
 }
 
 /* Types for Logging */

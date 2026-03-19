@@ -6,6 +6,8 @@ import { travelers } from "./traveler";
 import { tripIncludes } from "./trip";
 import { toursData } from "./tour";
 import { generateTripsData } from "./trips";
+import { UserRole } from "../generated/enums";
+import { get } from "node:http";
 
 function getContinent(country: string) {
   const map: Record<string, string> = {
@@ -230,6 +232,16 @@ const updates = [
   },
 ];
 
+const interests = [
+  "adventure",
+  "culture",
+  "beach",
+  "nature",
+  "city",
+  "food",
+  "nightlife",
+];
+
 async function main() {
   // ========== OLD SEEDING CODE (COMMENTED OUT) ==========
   // Uncomment the sections below to re-seed the database with initial data
@@ -324,6 +336,33 @@ async function main() {
   //     provider: "CREDENTIALS",
   //   },
   // });
+
+  // const users = await prisma.user.findMany({
+  //   where: {
+  //     role: UserRole.TRAVELER,
+  //   },
+  //   select: {
+  //     id: true,
+  //     country: true,
+  //     bio: true,
+  //   },
+  // });
+
+  // for (const user of users) {
+  //   // 1. Shuffle the interests and pick a random subset (e.g., between 1 and 4 interests)
+  //   const randomInterests = interests
+  //     .sort(() => 0.5 - Math.random()) // Simple shuffle
+  //     .slice(0, Math.floor(Math.random() * 4) + 1); // Select 1 to 4 items
+
+  //   await prisma.travelerProfile.create({
+  //     data: {
+  //       interests: randomInterests,
+  //       userId: user.id,
+  //       aboutMe: user.bio as string,
+  //       languages: getLanguages(user.country as string),
+  //     },
+  //   });
+  // }
 
   console.log("Seed completed successfully!");
 }

@@ -60,7 +60,8 @@ export const ModelName = {
   TripIncludeItem: 'TripIncludeItem',
   Trip: 'Trip',
   User: 'User',
-  GuideProfile: 'GuideProfile'
+  GuideProfile: 'GuideProfile',
+  TravelerProfile: 'TravelerProfile'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -244,6 +245,19 @@ export const GuideProfileScalarFieldEnum = {
 } as const
 
 export type GuideProfileScalarFieldEnum = (typeof GuideProfileScalarFieldEnum)[keyof typeof GuideProfileScalarFieldEnum]
+
+
+export const TravelerProfileScalarFieldEnum = {
+  id: 'id',
+  interests: 'interests',
+  languages: 'languages',
+  aboutMe: 'aboutMe',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TravelerProfileScalarFieldEnum = (typeof TravelerProfileScalarFieldEnum)[keyof typeof TravelerProfileScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -29,7 +29,7 @@ const touristSchema = z.object({
 
 export const createTouristAction = async (
   initialState: unknown,
-  formData: FormData
+  formData: FormData,
 ) => {
   try {
     const payload = {
@@ -75,7 +75,7 @@ export const createTouristAction = async (
     }
     modifiedFormData.append(
       "preferredLanguage",
-      payload?.preferredLanguage as string
+      payload?.preferredLanguage as string,
     );
     modifiedFormData.append("interests", payload?.interests as string);
     modifiedFormData.append("bio", payload?.bio as string);
@@ -116,7 +116,7 @@ export const getTourists = async (queryString?: string) => {
 };
 
 export const deleteTourist = async (
-  id: string
+  id: string,
 ): Promise<IResponse<IUser<ITourist> | null>> => {
   try {
     const res = await serverFetch.delete(`/tourists/${id}`);
@@ -134,36 +134,42 @@ export const deleteTourist = async (
 export const editTourist = async (
   id: string,
   currentState: unknown,
-  formData: FormData
-) => {
+  formData: FormData,
+): Promise<{
+  success: boolean;
+  message: string;
+  data: IUser<ITourist> | null;
+  formData: FormData;
+  errors?: {
+    field: string;
+    message: string;
+  }[];
+}> => {
   const schema = z.object({
     name: z.string("name is required").min(2, "name is required"),
-    phone: z.string("phone is required").min(10, "phone is required"),
+    // phone: z.string("phone is required").min(10, "phone is required"),
     // bio: z.string().optional() || "",
-    interests: z
-      .string()
-      .optional()
-      .transform((z) => {
-        return z?.split(",")?.map((i) => i.trim());
-      })
-      .default([]),
-    preferredLanguage: z.string().optional() || "",
+    interests: z.array(z.string("interests is required")),
+    language: z.string().optional() || "",
     gender: z
       .enum(Object.values(Gender), "Invalide gender")
       .default(Gender.MALE),
-    address: z.string().optional() || "",
+    city: z.string("city is required").min(2, "city is required"),
+    country: z.string("country is required").min(2, "country is required"),
+    avatar: z.file("avatar is required").optional(),
     bio: z.string().optional() || "",
   });
 
   const payload = {
     name: formData.get("name"),
-    phone: formData.get("phone"),
     bio: formData.get("bio"),
     interests: formData.get("interests"),
-    preferredLanguage: formData.get("preferredLanguage"),
+    language: formData.get("language"),
     gender: formData.get("gender"),
-    address: formData.get("address"),
-  };
+    city: formData.get("city"),
+    country: formData.get("country"),
+    avatar: formData.get("avatar"),
+  } as unknown as FormData;
 
   try {
     const validatedPayload = zodValidator(payload, schema);
@@ -172,15 +178,15 @@ export const editTourist = async (
       return {
         success: false,
         message: "validation failed",
-        formData: payload,
+        formData: payload as unknown as FormData,
         data: null,
         errors: validatedPayload.errors,
       };
     }
-    const res = await serverFetch.put(`/tourists/${id}`, {
+    const res = await serverFetch.put(`/v2/users/${id}`, {
       body: JSON.stringify(validatedPayload.data),
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
     });
 

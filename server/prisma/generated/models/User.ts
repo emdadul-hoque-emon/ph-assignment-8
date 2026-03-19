@@ -259,6 +259,7 @@ export type UserWhereInput = {
   tours?: Prisma.TourListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   guides?: Prisma.ReviewListRelationFilter
+  travelerProfile?: Prisma.XOR<Prisma.TravelerProfileNullableScalarRelationFilter, Prisma.TravelerProfileWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -281,6 +282,7 @@ export type UserOrderByWithRelationInput = {
   tours?: Prisma.TourOrderByRelationAggregateInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
   guides?: Prisma.ReviewOrderByRelationAggregateInput
+  travelerProfile?: Prisma.TravelerProfileOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -306,6 +308,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   tours?: Prisma.TourListRelationFilter
   reviews?: Prisma.ReviewListRelationFilter
   guides?: Prisma.ReviewListRelationFilter
+  travelerProfile?: Prisma.XOR<Prisma.TravelerProfileNullableScalarRelationFilter, Prisma.TravelerProfileWhereInput> | null
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -368,6 +371,7 @@ export type UserCreateInput = {
   tours?: Prisma.TourCreateNestedManyWithoutCreatorInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
   guides?: Prisma.ReviewCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -390,6 +394,7 @@ export type UserUncheckedCreateInput = {
   tours?: Prisma.TourUncheckedCreateNestedManyWithoutCreatorInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
   guides?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -412,6 +417,7 @@ export type UserUpdateInput = {
   tours?: Prisma.TourUpdateManyWithoutCreatorNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
   guides?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -434,6 +440,7 @@ export type UserUncheckedUpdateInput = {
   tours?: Prisma.TourUncheckedUpdateManyWithoutCreatorNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
   guides?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -630,6 +637,20 @@ export type UserUpdateOneRequiredWithoutGuideProfileNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutGuideProfileInput, Prisma.UserUpdateWithoutGuideProfileInput>, Prisma.UserUncheckedUpdateWithoutGuideProfileInput>
 }
 
+export type UserCreateNestedOneWithoutTravelerProfileInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTravelerProfileInput, Prisma.UserUncheckedCreateWithoutTravelerProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTravelerProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTravelerProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTravelerProfileInput, Prisma.UserUncheckedCreateWithoutTravelerProfileInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTravelerProfileInput
+  upsert?: Prisma.UserUpsertWithoutTravelerProfileInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTravelerProfileInput, Prisma.UserUpdateWithoutTravelerProfileInput>, Prisma.UserUncheckedUpdateWithoutTravelerProfileInput>
+}
+
 export type UserCreateWithoutGuidesInput = {
   id?: string
   name: string
@@ -649,6 +670,7 @@ export type UserCreateWithoutGuidesInput = {
   trips?: Prisma.TripCreateNestedManyWithoutGuideInput
   tours?: Prisma.TourCreateNestedManyWithoutCreatorInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
+  travelerProfile?: Prisma.TravelerProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGuidesInput = {
@@ -670,6 +692,7 @@ export type UserUncheckedCreateWithoutGuidesInput = {
   trips?: Prisma.TripUncheckedCreateNestedManyWithoutGuideInput
   tours?: Prisma.TourUncheckedCreateNestedManyWithoutCreatorInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGuidesInput = {
@@ -696,6 +719,7 @@ export type UserCreateWithoutReviewsInput = {
   trips?: Prisma.TripCreateNestedManyWithoutGuideInput
   tours?: Prisma.TourCreateNestedManyWithoutCreatorInput
   guides?: Prisma.ReviewCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutReviewsInput = {
@@ -717,6 +741,7 @@ export type UserUncheckedCreateWithoutReviewsInput = {
   trips?: Prisma.TripUncheckedCreateNestedManyWithoutGuideInput
   tours?: Prisma.TourUncheckedCreateNestedManyWithoutCreatorInput
   guides?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutReviewsInput = {
@@ -754,6 +779,7 @@ export type UserUpdateWithoutGuidesInput = {
   trips?: Prisma.TripUpdateManyWithoutGuideNestedInput
   tours?: Prisma.TourUpdateManyWithoutCreatorNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
+  travelerProfile?: Prisma.TravelerProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuidesInput = {
@@ -775,6 +801,7 @@ export type UserUncheckedUpdateWithoutGuidesInput = {
   trips?: Prisma.TripUncheckedUpdateManyWithoutGuideNestedInput
   tours?: Prisma.TourUncheckedUpdateManyWithoutCreatorNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutReviewsInput = {
@@ -807,6 +834,7 @@ export type UserUpdateWithoutReviewsInput = {
   trips?: Prisma.TripUpdateManyWithoutGuideNestedInput
   tours?: Prisma.TourUpdateManyWithoutCreatorNestedInput
   guides?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutReviewsInput = {
@@ -828,6 +856,7 @@ export type UserUncheckedUpdateWithoutReviewsInput = {
   trips?: Prisma.TripUncheckedUpdateManyWithoutGuideNestedInput
   tours?: Prisma.TourUncheckedUpdateManyWithoutCreatorNestedInput
   guides?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutToursInput = {
@@ -849,6 +878,7 @@ export type UserCreateWithoutToursInput = {
   trips?: Prisma.TripCreateNestedManyWithoutGuideInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
   guides?: Prisma.ReviewCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutToursInput = {
@@ -870,6 +900,7 @@ export type UserUncheckedCreateWithoutToursInput = {
   trips?: Prisma.TripUncheckedCreateNestedManyWithoutGuideInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
   guides?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutToursInput = {
@@ -907,6 +938,7 @@ export type UserUpdateWithoutToursInput = {
   trips?: Prisma.TripUpdateManyWithoutGuideNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
   guides?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutToursInput = {
@@ -928,6 +960,7 @@ export type UserUncheckedUpdateWithoutToursInput = {
   trips?: Prisma.TripUncheckedUpdateManyWithoutGuideNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
   guides?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutTripsInput = {
@@ -949,6 +982,7 @@ export type UserCreateWithoutTripsInput = {
   tours?: Prisma.TourCreateNestedManyWithoutCreatorInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
   guides?: Prisma.ReviewCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTripsInput = {
@@ -970,6 +1004,7 @@ export type UserUncheckedCreateWithoutTripsInput = {
   tours?: Prisma.TourUncheckedCreateNestedManyWithoutCreatorInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
   guides?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTripsInput = {
@@ -1007,6 +1042,7 @@ export type UserUpdateWithoutTripsInput = {
   tours?: Prisma.TourUpdateManyWithoutCreatorNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
   guides?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTripsInput = {
@@ -1028,6 +1064,7 @@ export type UserUncheckedUpdateWithoutTripsInput = {
   tours?: Prisma.TourUncheckedUpdateManyWithoutCreatorNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
   guides?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutGuideProfileInput = {
@@ -1049,6 +1086,7 @@ export type UserCreateWithoutGuideProfileInput = {
   tours?: Prisma.TourCreateNestedManyWithoutCreatorInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
   guides?: Prisma.ReviewCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutGuideProfileInput = {
@@ -1070,6 +1108,7 @@ export type UserUncheckedCreateWithoutGuideProfileInput = {
   tours?: Prisma.TourUncheckedCreateNestedManyWithoutCreatorInput
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
   guides?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutGuideProfileInput = {
@@ -1107,6 +1146,7 @@ export type UserUpdateWithoutGuideProfileInput = {
   tours?: Prisma.TourUpdateManyWithoutCreatorNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
   guides?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutGuideProfileInput = {
@@ -1124,6 +1164,111 @@ export type UserUncheckedUpdateWithoutGuideProfileInput = {
   providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  trips?: Prisma.TripUncheckedUpdateManyWithoutGuideNestedInput
+  tours?: Prisma.TourUncheckedUpdateManyWithoutCreatorNestedInput
+  reviews?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
+  guides?: Prisma.ReviewUncheckedUpdateManyWithoutGuideNestedInput
+  travelerProfile?: Prisma.TravelerProfileUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTravelerProfileInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  avatar?: string | null
+  bio?: string | null
+  phone?: string | null
+  city: string
+  country: string
+  provider?: $Enums.AuthProvider | null
+  providerId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  guideProfile?: Prisma.GuideProfileCreateNestedOneWithoutUserInput
+  trips?: Prisma.TripCreateNestedManyWithoutGuideInput
+  tours?: Prisma.TourCreateNestedManyWithoutCreatorInput
+  reviews?: Prisma.ReviewCreateNestedManyWithoutReviewerInput
+  guides?: Prisma.ReviewCreateNestedManyWithoutGuideInput
+}
+
+export type UserUncheckedCreateWithoutTravelerProfileInput = {
+  id?: string
+  name: string
+  email: string
+  password?: string | null
+  role?: $Enums.UserRole
+  avatar?: string | null
+  bio?: string | null
+  phone?: string | null
+  city: string
+  country: string
+  provider?: $Enums.AuthProvider | null
+  providerId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  guideProfile?: Prisma.GuideProfileUncheckedCreateNestedOneWithoutUserInput
+  trips?: Prisma.TripUncheckedCreateNestedManyWithoutGuideInput
+  tours?: Prisma.TourUncheckedCreateNestedManyWithoutCreatorInput
+  reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutReviewerInput
+  guides?: Prisma.ReviewUncheckedCreateNestedManyWithoutGuideInput
+}
+
+export type UserCreateOrConnectWithoutTravelerProfileInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTravelerProfileInput, Prisma.UserUncheckedCreateWithoutTravelerProfileInput>
+}
+
+export type UserUpsertWithoutTravelerProfileInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTravelerProfileInput, Prisma.UserUncheckedUpdateWithoutTravelerProfileInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTravelerProfileInput, Prisma.UserUncheckedCreateWithoutTravelerProfileInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTravelerProfileInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTravelerProfileInput, Prisma.UserUncheckedUpdateWithoutTravelerProfileInput>
+}
+
+export type UserUpdateWithoutTravelerProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.NullableEnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider | null
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guideProfile?: Prisma.GuideProfileUpdateOneWithoutUserNestedInput
+  trips?: Prisma.TripUpdateManyWithoutGuideNestedInput
+  tours?: Prisma.TourUpdateManyWithoutCreatorNestedInput
+  reviews?: Prisma.ReviewUpdateManyWithoutReviewerNestedInput
+  guides?: Prisma.ReviewUpdateManyWithoutGuideNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTravelerProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  city?: Prisma.StringFieldUpdateOperationsInput | string
+  country?: Prisma.StringFieldUpdateOperationsInput | string
+  provider?: Prisma.NullableEnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider | null
+  providerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  guideProfile?: Prisma.GuideProfileUncheckedUpdateOneWithoutUserNestedInput
   trips?: Prisma.TripUncheckedUpdateManyWithoutGuideNestedInput
   tours?: Prisma.TourUncheckedUpdateManyWithoutCreatorNestedInput
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutReviewerNestedInput
@@ -1208,6 +1353,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   tours?: boolean | Prisma.User$toursArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   guides?: boolean | Prisma.User$guidesArgs<ExtArgs>
+  travelerProfile?: boolean | Prisma.User$travelerProfileArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1269,6 +1415,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   tours?: boolean | Prisma.User$toursArgs<ExtArgs>
   reviews?: boolean | Prisma.User$reviewsArgs<ExtArgs>
   guides?: boolean | Prisma.User$guidesArgs<ExtArgs>
+  travelerProfile?: boolean | Prisma.User$travelerProfileArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1282,6 +1429,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     tours: Prisma.$TourPayload<ExtArgs>[]
     reviews: Prisma.$ReviewPayload<ExtArgs>[]
     guides: Prisma.$ReviewPayload<ExtArgs>[]
+    travelerProfile: Prisma.$TravelerProfilePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1697,6 +1845,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   tours<T extends Prisma.User$toursArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$toursArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TourPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviews<T extends Prisma.User$reviewsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   guides<T extends Prisma.User$guidesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$guidesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  travelerProfile<T extends Prisma.User$travelerProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$travelerProfileArgs<ExtArgs>>): Prisma.Prisma__TravelerProfileClient<runtime.Types.Result.GetResult<Prisma.$TravelerProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2240,6 +2389,25 @@ export type User$guidesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.ReviewScalarFieldEnum | Prisma.ReviewScalarFieldEnum[]
+}
+
+/**
+ * User.travelerProfile
+ */
+export type User$travelerProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TravelerProfile
+   */
+  select?: Prisma.TravelerProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TravelerProfile
+   */
+  omit?: Prisma.TravelerProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TravelerProfileInclude<ExtArgs> | null
+  where?: Prisma.TravelerProfileWhereInput
 }
 
 /**

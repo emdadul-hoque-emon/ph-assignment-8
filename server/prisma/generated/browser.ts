@@ -67,3 +67,8 @@ export type User = Prisma.UserModel
  * 
  */
 export type GuideProfile = Prisma.GuideProfileModel
+/**
+ * Model TravelerProfile
+ * 
+ */
+export type TravelerProfile = Prisma.TravelerProfileModel
