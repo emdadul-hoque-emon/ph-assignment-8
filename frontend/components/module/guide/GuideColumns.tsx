@@ -14,7 +14,7 @@ export const guidesColumns: IColumn<IUser<IGuide>>[] = [
       <UserInfoCell
         name={guide.name}
         email={guide.email}
-        photo={guide.profileImage}
+        photo={guide.avatar}
       />
     ),
   },
@@ -23,9 +23,11 @@ export const guidesColumns: IColumn<IUser<IGuide>>[] = [
     accessor: (guide) => (
       <div className="flex flex-col">
         <span className="text-sm">{guide?.phone}</span>
-        {guide.address && (
-          <span className="text-sm text-gray-500">{guide.address}</span>
-        )}
+        {/* {guide.address && ( */}
+        <span className="text-sm text-gray-500">
+          {guide.city}, {guide.country}
+        </span>
+        {/* )} */}
       </div>
     ),
   },
@@ -52,7 +54,7 @@ export const guidesColumns: IColumn<IUser<IGuide>>[] = [
     header: "Gender",
     accessor: (guide) => (
       <span className="text-sm capitalize">
-        {(guide?.gender || "").toLowerCase()}
+        {(guide?.profile?.gender || "").toLowerCase()}
       </span>
     ),
   },

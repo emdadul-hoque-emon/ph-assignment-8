@@ -74,7 +74,7 @@ const TopGuidesPage = async () => {
           <div className="flex items-center mt-2 text-amber-500">
             <Star className="w-4 h-4 fill-current" />
             <span className="text-sm font-bold text-slate-700 ml-1">
-              {g.guideProfile.rating}
+              {g.profile.rating}
             </span>
           </div>
         </Link>

@@ -1,8 +1,8 @@
 "use server";
 import { Gender, UserRole } from "@/interfaces/user.interface";
 import { zodValidator } from "@/lib/zod-validator";
+import { login } from "@/services/auth/auth.service";
 import z, { email } from "zod";
-import { login } from "../login/action";
 
 const serverUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/v1`;
 
@@ -28,7 +28,7 @@ const createTouristSchema = z.object({
 
 export const signUpAction = async (
   initialState: unknown,
-  formData: FormData
+  formData: FormData,
 ) => {
   try {
     const payload = {
@@ -74,7 +74,7 @@ export const signUpAction = async (
     }
     modifiedFormData.append(
       "preferredLanguage",
-      payload?.preferredLanguage as string
+      payload?.preferredLanguage as string,
     );
     modifiedFormData.append("interests", payload?.interests as string);
     modifiedFormData.append("bio", payload?.bio as string);

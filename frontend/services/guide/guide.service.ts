@@ -97,7 +97,7 @@ export const createGuide = async (prevState: unknown, formData: FormData) => {
     modifiedFormData.append("hourlyRate", payload?.hourlyRate as string);
     modifiedFormData.append(
       "experienceYears",
-      payload?.experienceYears as string
+      payload?.experienceYears as string,
     );
     modifiedFormData.append("currency", payload?.currency as string);
 
@@ -133,7 +133,7 @@ export const createGuide = async (prevState: unknown, formData: FormData) => {
 export const editGuide = async (
   guideId: string,
   prevState: unknown,
-  formData: FormData
+  formData: FormData,
 ) => {
   try {
     const schema = z.object({
@@ -210,7 +210,7 @@ export const editGuide = async (
     modifiedFormData.append("hourlyRate", payload?.hourlyRate as string);
     modifiedFormData.append(
       "experienceYears",
-      payload?.experienceYears as string
+      payload?.experienceYears as string,
     );
     modifiedFormData.append("currency", payload?.currency as string);
 
@@ -241,7 +241,7 @@ export const editGuide = async (
 };
 
 export const deleteGuide = async (
-  guideId: string
+  guideId: string,
 ): Promise<IResponse<IUser<IGuide> | null>> => {
   try {
     const res = await serverFetch.delete(`/guides/${guideId}`);
@@ -262,6 +262,6 @@ export const getSingleGuide = async (guideId: string) => {
 };
 export const getFilteredGuide = async (queryString?: string) => {
   const res = await serverFetch.get(`/guides?${queryString}`);
-  const data: IResponse<IGuide<IUser>[]> = await res.json();
+  const data: IResponse<IUser<IGuide>[]> = await res.json();
   return data;
 };

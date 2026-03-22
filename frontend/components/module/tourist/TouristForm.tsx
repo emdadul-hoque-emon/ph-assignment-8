@@ -46,16 +46,18 @@ const TouristForm = ({
   const [password, setPassword] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [preferedLanguage, setPreferedLanguage] = useState<string>(
-    tourist?.profile?.preferredLanguage || ""
+    tourist?.profile?.languages.join(",") || "",
   );
   const [interests, setInterests] = useState<
     { label: string; value: string }[]
   >(tourist?.profile?.interests.map((i) => ({ label: i, value: i })) || []);
-  const [gender, setGender] = useState<Gender>(tourist?.gender || Gender.MALE);
+  const [gender, setGender] = useState<Gender>(
+    tourist?.profile?.gender || Gender.MALE,
+  );
 
   const [state, createTourist, isLoading] = useActionState(
-    isEdit ? editTourist.bind(null, tourist.profile._id) : createTouristAction,
-    null
+    isEdit ? editTourist.bind(null, tourist.profile.id) : createTouristAction,
+    null,
   );
 
   useEffect(() => {
@@ -196,13 +198,13 @@ const TouristForm = ({
                 setInterests(
                   e.map((i) => {
                     const interest = TOURIST_PREFERENCES.find(
-                      (p) => p.value === i
+                      (p) => p.value === i,
                     );
                     return {
                       label: interest?.label || "",
                       value: interest?.value || "",
                     };
-                  })
+                  }),
                 )
               }
               value={interests.map((i) => i.value)}
@@ -267,8 +269,7 @@ const TouristForm = ({
               placeholder="City, State, Country"
               // defaultValue={isEdit ? tourist.user.address : undefined}
               defaultValue={
-                state?.formData?.address ||
-                (isEdit ? tourist.address : undefined)
+                state?.formData?.address || (isEdit ? tourist.city : undefined)
               }
             />
           </FieldContent>

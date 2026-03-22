@@ -28,19 +28,17 @@ interface TripFormProps {
 const TripForm = ({ onClose, onSuccess, trip }: TripFormProps) => {
   const isEdit = !!trip;
   const [selectedTourId, setSelectedTourId] = useState(trip?.tour?._id || "");
-  const [selectedGuideId, setSelectedGuideId] = useState(
-    trip?.guide?._id || ""
-  );
+  const [selectedGuideId, setSelectedGuideId] = useState(trip?.guide?.id || "");
   const [duration, setDuration] = useState<number>();
   const [status, setStatus] = useState<TripStatus>(
-    trip?.status || TripStatus.OPEN
+    trip?.status || TripStatus.OPEN,
   );
 
   const formRef = useRef<HTMLFormElement>(null);
 
   const [state, formAction, isPending] = useActionState(
     isEdit ? updateTrip : createTrip,
-    null
+    null,
   );
 
   useEffect(() => {
@@ -85,7 +83,7 @@ const TripForm = ({ onClose, onSuccess, trip }: TripFormProps) => {
         <FieldLabel htmlFor="guideId">Assign Guide</FieldLabel>
         <FieldContent>
           <GuideSearchSelect
-            value={trip?.guide?._id || selectedGuideId}
+            value={trip?.guide?.id || selectedGuideId}
             onValueChange={setSelectedGuideId}
             id="guideId"
           />
@@ -184,8 +182,8 @@ const TripForm = ({ onClose, onSuccess, trip }: TripFormProps) => {
               state?.formData?.maxCapacity
                 ? (state?.formData?.maxCapacity?.toString() as string)
                 : isEdit
-                ? trip.maxCapacity.toString()
-                : ""
+                  ? trip.maxCapacity.toString()
+                  : ""
             }
           />
           <InputFieldError
@@ -202,8 +200,8 @@ const TripForm = ({ onClose, onSuccess, trip }: TripFormProps) => {
               ? "Updating..."
               : "Creating..."
             : isEdit
-            ? "Update Trip"
-            : "Create Trip"}
+              ? "Update Trip"
+              : "Create Trip"}
         </Button>
       </div>
     </form>

@@ -47,21 +47,17 @@ const profile = {
   certifications: ["Licensed Tour Guide", "First Aid Certified"],
 };
 
-export default function GuideProfile({
-  profile,
-}: {
-  profile: ITourist<IUser>;
-}) {
+export default function GuideProfile({ profile }: { profile: IUser<IGuide> }) {
   return (
     <Card className="p-6 mb-6 border-primary/20 bg-card/95 backdrop-blur-sm">
       <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
         <Avatar className="h-32 w-32 border-4 border-primary/30 shadow-xl">
           <AvatarImage
-            src={profile?.profile?.profileImage}
+            src={profile?.avatar || "/images/default-avatar.png"}
             alt="Alex Thompson"
           />
           <AvatarFallback>
-            {profile?.profile?.name?.charAt(0).toUpperCase()}
+            {profile?.name?.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
 
@@ -69,14 +65,16 @@ export default function GuideProfile({
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-foreground mb-2">
-                {profile?.profile?.name}
+                {profile?.name}
               </h1>
               <div className="flex items-center gap-2 text-muted-foreground mb-3">
                 <MapPin className="h-4 w-4" />
-                <span>{profile?.profile?.address}</span>
+                <span>
+                  {profile?.city}, {profile?.country}
+                </span>
               </div>
               <p className="text-foreground/80 max-w-2xl">
-                {profile?.profile?.bio}
+                {profile?.profile?.aboutMe}
               </p>
             </div>
             <ProfileEditModal
@@ -85,7 +83,7 @@ export default function GuideProfile({
           </div>
 
           <div className="flex flex-wrap gap-2 mt-4">
-            {profile?.interests.map((interest) => (
+            {profile?.profile?.specialties?.map((interest) => (
               <Badge
                 key={interest}
                 variant="secondary"
@@ -102,7 +100,7 @@ export default function GuideProfile({
       <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-border">
         <div className="text-center">
           <div className="text-2xl font-bold text-primary">
-            {profile?.totalTrips || 0}
+            {profile?.profile?.totalTrips || 0}
           </div>
           <div className="text-sm text-muted-foreground">Tours Completed</div>
         </div>
@@ -114,7 +112,7 @@ export default function GuideProfile({
         </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-chart-3">
-            {profile.reviewsGiven.length}
+            {profile?.profile?.totalReviews || 0}
           </div>
           <div className="text-sm text-muted-foreground">Reviews Written</div>
         </div>

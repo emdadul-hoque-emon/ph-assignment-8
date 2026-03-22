@@ -19,10 +19,10 @@ const TouristsTable = ({ tourists }: GuidesTableProps) => {
   const [deletingTourist, setDeletingTourist] =
     useState<IUser<ITourist> | null>(null);
   const [viewingTourist, setViewingTourist] = useState<IUser<ITourist> | null>(
-    null
+    null,
   );
   const [editingTourist, setEditingTourist] = useState<IUser<ITourist> | null>(
-    null
+    null,
   );
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -48,7 +48,7 @@ const TouristsTable = ({ tourists }: GuidesTableProps) => {
     if (!deletingTourist) return;
 
     setIsDeleting(true);
-    const result = await deleteTourist(deletingTourist._id!);
+    const result = await deleteTourist(deletingTourist.id!);
     setIsDeleting(false);
 
     if (result.success) {
@@ -68,7 +68,7 @@ const TouristsTable = ({ tourists }: GuidesTableProps) => {
         onView={handleView}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        getRowKey={(guide) => guide._id!}
+        getRowKey={(tourist) => tourist.id!}
         emptyMessage="No tourists found"
       />
 

@@ -19,7 +19,7 @@ const GuidesTable = ({ guides }: GuidesTableProps) => {
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [deletingGuide, setDeletingGuide] = useState<IUser<IGuide> | null>(
-    null
+    null,
   );
   const [viewingGuide, setViewingGuide] = useState<IUser<IGuide> | null>(null);
   const [editingGuide, setEditingGuide] = useState<IUser<IGuide> | null>(null);
@@ -47,7 +47,7 @@ const GuidesTable = ({ guides }: GuidesTableProps) => {
     if (!deletingGuide) return;
 
     setIsDeleting(true);
-    const result = await deleteGuide(deletingGuide._id!);
+    const result = await deleteGuide(deletingGuide.id!);
     setIsDeleting(false);
 
     if (result.success) {
@@ -67,7 +67,7 @@ const GuidesTable = ({ guides }: GuidesTableProps) => {
         onView={handleView}
         onEdit={handleEdit}
         onDelete={handleDelete}
-        getRowKey={(guide) => guide._id!}
+        getRowKey={(guide) => guide.id!}
         emptyMessage="No guides found"
       />
       {/* Edit Doctor Form Dialog */}

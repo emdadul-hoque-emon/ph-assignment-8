@@ -33,13 +33,13 @@ export const getUsers = async (queryString?: string) => {
 };
 export const getUserById = async (id: string) => {
   const res = await serverFetch.get(`/users/${id}`);
-  const data: IResponse<IGuide<IUser> | ITourist<IUser>> = await res.json();
+  const data: IResponse<IUser<IGuide>> = await res.json();
   return data;
 };
 
 export const createTouristAction = async (
   currentState: unknown,
-  formData: FormData
+  formData: FormData,
 ) => {
   try {
     const payload = {
@@ -85,7 +85,7 @@ export const createTouristAction = async (
     }
     modifiedFormData.append(
       "preferedLanguage",
-      payload?.preferedLanguage as string
+      payload?.preferedLanguage as string,
     );
     modifiedFormData.append("interests", payload?.interests as string);
     modifiedFormData.append("bio", payload?.bio as string);

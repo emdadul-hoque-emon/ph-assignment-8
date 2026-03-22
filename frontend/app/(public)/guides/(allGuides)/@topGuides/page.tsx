@@ -25,7 +25,7 @@ export default async function TopGuidesPage() {
             />
             <div className="absolute top-3 right-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur px-2 py-1 rounded text-xs font-bold flex items-center gap-1">
               <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-              {guide.guideProfile.rating}
+              {guide.profile.rating}
             </div>
           </div>
           <Link href={`/guides/${guide.id}`}>
@@ -34,7 +34,7 @@ export default async function TopGuidesPage() {
             </h3>
           </Link>
           <p className="text-slate-500 dark:text-slate-400 text-sm">
-            {guide.city}, {guide.country} • {guide.guideProfile.specialties[0]}
+            {guide.city}, {guide.country} • {guide.profile.specialties[0]}
           </p>
         </div>
       ))}

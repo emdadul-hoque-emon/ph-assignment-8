@@ -8,34 +8,38 @@ import { IGuide } from "@/interfaces/guide.interface";
 import { ITourist, IUser } from "@/interfaces/user.interface";
 import languages from "@/data/iso/languages.json";
 
-const GuideProfile = ({ profile }: { profile: IGuide<IUser> }) => {
+const GuideProfile = ({ profile }: { profile: IUser<IGuide> }) => {
   return (
     <>
       <Card className="p-6 mb-6 border-primary/20 bg-card/95 backdrop-blur-sm">
         <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
           <Avatar className="h-32 w-32 border-4 border-primary/30 shadow-xl">
             <AvatarImage
-              src={profile?.profile?.profileImage}
+              src={profile?.avatar || "/images/default-avatar.png"}
               alt="Sofia Martinez"
             />
-            <AvatarFallback>{profile?.profile?.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback>
+              {profile?.name?.charAt(0).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
 
           <div className="flex-1">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <h1 className="text-3xl font-bold text-foreground mb-1">
-                  {profile?.profile?.name}
+                  {profile?.name}
                 </h1>
                 <p className="text-lg text-muted-foreground mb-2">
                   Professional Tour Guide
                 </p>
                 <div className="flex items-center gap-2 text-muted-foreground mb-3">
                   <MapPin className="h-4 w-4" />
-                  <span>{profile?.profile?.address}</span>
+                  <span>
+                    {profile?.city}, {profile?.country}
+                  </span>
                 </div>
                 <p className="text-foreground/80 max-w-2xl">
-                  {profile?.profile?.bio}
+                  {profile?.profile?.aboutMe}
                 </p>
               </div>
               <ProfileEditModal
@@ -44,7 +48,7 @@ const GuideProfile = ({ profile }: { profile: IGuide<IUser> }) => {
             </div>
 
             <div className="flex flex-wrap gap-2 mt-4">
-              {profile?.expertise.map((specialty) => (
+              {profile?.profile?.specialties?.map((specialty) => (
                 <Badge
                   key={specialty}
                   variant="secondary"
@@ -63,27 +67,27 @@ const GuideProfile = ({ profile }: { profile: IGuide<IUser> }) => {
             <div className="flex items-center justify-center gap-1 mb-1">
               <Star className="h-5 w-5 fill-yellow-500 text-yellow-500" />
               <span className="text-2xl font-bold text-foreground">
-                {profile?.averageRating || 0}
+                {profile?.profile?.averageRating || 0}
               </span>
             </div>
             <div className="text-sm text-muted-foreground">Average Rating</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-primary">
-              {profile?.totalTrips || 0}
-              {profile.totalTrips > 0 && "+"}
+              {profile?.profile?.totalTrips || 0}
+              {profile?.profile?.totalTrips > 0 && "+"}
             </div>
             <div className="text-sm text-muted-foreground">Tours Completed</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-chart-2">
-              {profile?.experienceYears}
+              {profile?.profile?.experienceYears}
             </div>
             <div className="text-sm text-muted-foreground">Experience</div>
           </div>
           <div className="text-center">
             <div className="text-2xl font-bold text-chart-3">
-              {profile.totalReviews || 0}
+              {profile?.profile?.totalReviews || 0}
             </div>
             <div className="text-sm text-muted-foreground">Reviews</div>
           </div>
@@ -101,7 +105,9 @@ const GuideProfile = ({ profile }: { profile: IGuide<IUser> }) => {
               <div className="text-sm text-muted-foreground">Languages</div>
               <div className="font-semibold">
                 {languages
-                  .filter((lang) => profile?.languages.includes(lang.code))
+                  .filter((lang) =>
+                    profile?.profile?.languages.includes(lang.code),
+                  )
                   .map((lang) => lang.name)
                   .join(", ")}
               </div>
@@ -126,7 +132,9 @@ const GuideProfile = ({ profile }: { profile: IGuide<IUser> }) => {
             </div>
             <div>
               <div className="text-sm text-muted-foreground">Rate</div>
-              <div className="font-semibold">{profile?.hourlyRate}/hour</div>
+              <div className="font-semibold">
+                {profile?.profile?.hourlyRate}/hour
+              </div>
             </div>
           </div>
         </Card>

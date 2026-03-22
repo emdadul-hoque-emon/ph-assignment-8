@@ -65,7 +65,7 @@ export function GuideSearchSelect({
       }
       setGuides([data.data?.userId]); // Adjust based on your API response structure
     };
-    if (value && !guides.some((guide) => guide._id === value)) {
+    if (value && !guides.some((guide) => guide.id === value)) {
       fetchGuide();
     }
   }, []);
@@ -103,7 +103,7 @@ export function GuideSearchSelect({
     }
   }, [open]);
 
-  const selectedGuide = guides.find((tour) => tour._id === value);
+  const selectedGuide = guides.find((tour) => tour.id === value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -153,11 +153,11 @@ export function GuideSearchSelect({
               <CommandGroup>
                 {guides.map((guide) => (
                   <CommandItem
-                    key={guide._id}
-                    value={guide._id}
+                    key={guide.id}
+                    value={guide.id}
                     onSelect={(currentValue) => {
                       onValueChange?.(
-                        currentValue === value ? "" : currentValue
+                        currentValue === value ? "" : currentValue,
                       );
                       setOpen(false);
                     }}
@@ -166,12 +166,12 @@ export function GuideSearchSelect({
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === guide._id ? "opacity-100" : "opacity-0"
+                        value === guide.id ? "opacity-100" : "opacity-0",
                       )}
                     />
                     <Avatar>
                       <AvatarImage
-                        src={guide.profileImage}
+                        src={guide.avatar || "/images/default-avatar.png"}
                         alt={guide.name}
                         width={32}
                         height={32}

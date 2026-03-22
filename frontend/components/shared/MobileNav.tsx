@@ -143,7 +143,7 @@ const MobileNav = ({
             ) : (
               <div className="flex flex-col gap-3 mt-4">
                 <Button variant="outline" asChild>
-                  <Link href={`/profile/${session?._id}`}>Profile</Link>
+                  <Link href={`/profile/${session?.id}`}>Profile</Link>
                 </Button>
                 <Button variant="destructive">Logout</Button>
               </div>

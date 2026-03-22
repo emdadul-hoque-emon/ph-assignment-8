@@ -41,7 +41,7 @@ const BookingForm = ({ trip }: { trip: ITrip }) => {
               <span className="text-sm text-muted-foreground">Your Guide</span>
               <div className="flex items-center gap-2">
                 <Avatar className="size-6 border">
-                  <AvatarImage src={guide.profileImage} />
+                  <AvatarImage src={guide.avatar} />
                   <AvatarFallback>{guide.name.charAt(0)}</AvatarFallback>
                 </Avatar>
 

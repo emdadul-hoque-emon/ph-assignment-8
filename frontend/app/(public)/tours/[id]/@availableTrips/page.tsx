@@ -56,7 +56,7 @@ const page = async ({
                     <div className="flex items-start gap-4 mb-4 pb-4 border-b">
                       <Avatar className="size-12">
                         <AvatarImage
-                          src={guide.profileImage || "/placeholder.svg"}
+                          src={guide.avatar || "/placeholder.svg"}
                           alt={guide.name}
                         />
                         <AvatarFallback className="flex h-full w-full items-center justify-center bg-primary/10 text-primary font-semibold">
@@ -68,7 +68,9 @@ const page = async ({
                         <h3 className="font-semibold truncate">{guide.name}</h3>
                         <div className="flex items-center gap-1 mt-1">
                           <Star className="h-4 w-4 fill-secondary text-secondary" />
-                          <span className="text-sm font-semibold">{0}</span>
+                          <span className="text-sm font-semibold">
+                            {guide.profile.rating || 0}
+                          </span>
                         </div>
                       </div>
                     </div>

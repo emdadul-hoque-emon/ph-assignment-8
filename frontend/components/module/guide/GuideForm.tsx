@@ -39,16 +39,18 @@ const GuideForm = ({ guide, isSignUp, onClose, onSuccess }: IGuideForm) => {
   const [password, setPassword] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [languages, setlanguages] = useState<string[]>(
-    guide?.profile?.languages || []
+    guide?.profile?.languages || [],
   );
   const [expertise, setExpertise] = useState<string[]>(
-    guide?.profile?.expertise || []
+    guide?.profile?.specialties || [],
   );
-  const [gender, setGender] = useState<Gender>(guide?.gender || Gender.MALE);
+  const [gender, setGender] = useState<Gender>(
+    guide?.profile?.gender || Gender.MALE,
+  );
 
   const [state, createguide, isLoading] = useActionState(
-    isEdit ? editGuide.bind(null, guide._id) : createGuide,
-    null
+    isEdit ? editGuide.bind(null, guide.id) : createGuide,
+    null,
   );
 
   useEffect(() => {
@@ -243,7 +245,8 @@ const GuideForm = ({ guide, isSignUp, onClose, onSuccess }: IGuideForm) => {
               placeholder="City, State, Country"
               // defaultValue={isEdit ? guide.user.address : undefined}
               defaultValue={
-                state?.formData?.address || (isEdit ? guide.address : undefined)
+                state?.formData?.address ||
+                (isEdit ? guide.profile?.city : undefined)
               }
             />
           </FieldContent>

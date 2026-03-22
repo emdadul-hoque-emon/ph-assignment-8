@@ -31,7 +31,7 @@ const GuideViewDetailsDialog = ({
                 className="absolute top-0 left-0 w-full h-full bg-no-repeat bg-cover bg-center bg-linear-to-r from-primary/20 via-chart-2/20 to-chart-3/20 backdrop-blur-3xl filter-blur-3xl -z-10"
               ></div>
               <Avatar className="h-32 w-32 border-4 border-primary/30 shadow-xl">
-                <AvatarImage src={guide?.profileImage} alt="Sofia Martinez" />
+                <AvatarImage src={guide?.avatar} alt="Sofia Martinez" />
                 <AvatarFallback>{guide?.name.charAt(0)}</AvatarFallback>
               </Avatar>
             </div>
@@ -47,14 +47,16 @@ const GuideViewDetailsDialog = ({
                   </p>
                   <div className="flex items-center gap-2 text-muted-foreground mb-3">
                     <MapPin className="h-4 w-4" />
-                    <span>{guide.address}</span>
+                    <span>
+                      {guide.city}, {guide.country}
+                    </span>
                   </div>
                   <p className="text-foreground/80 max-w-2xl">{guide.bio}</p>
                 </div>
               </div>
 
               <div className="flex flex-wrap gap-2 mt-4">
-                {guide.profile.expertise.map((specialty) => (
+                {guide.profile.specialties.map((specialty) => (
                   <Badge
                     key={specialty}
                     variant="secondary"
@@ -118,7 +120,7 @@ const GuideViewDetailsDialog = ({
                 <div className="font-semibold">
                   {languages
                     .filter((lang) =>
-                      guide.profile?.languages.includes(lang.code)
+                      guide.profile?.languages.includes(lang.code),
                     )
                     .map((lang) => lang.name)
                     .join(", ")}

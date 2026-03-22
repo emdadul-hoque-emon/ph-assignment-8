@@ -32,15 +32,15 @@ const ProfileLayout = async ({
 
       {/* Profile Header */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-24 relative z-10">
-        {user.data.profile.role === UserRole.GUIDE ? (
-          <GuideProfile profile={user.data as IGuide<IUser>} />
-        ) : user.data.profile.role === UserRole.TOURIST ? (
-          <TouristProfile profile={user.data as ITourist<IUser>} />
+        {user.data.role === UserRole.GUIDE ? (
+          <GuideProfile profile={user.data} />
+        ) : user.data.role === UserRole.TOURIST ? (
+          <TouristProfile profile={user.data} />
         ) : (
           <AdminProfile />
         )}
 
-        <NavigationTabs role={user.data.profile.role} />
+        <NavigationTabs role={user.data.role} />
 
         {children}
       </div>

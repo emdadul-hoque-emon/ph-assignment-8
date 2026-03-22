@@ -127,14 +127,14 @@ export default async function Guides({
                   </h3>
                   <div className="flex items-center gap-1 text-sm font-bold">
                     <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    {guide.guideProfile.rating}
+                    {guide.profile.rating}
                   </div>
                 </div>
                 <p className="text-slate-500 dark:text-slate-400 text-xs mb-3">
                   {guide.city}, {guide.country}
                 </p>
                 <div className="flex flex-wrap gap-1">
-                  {guide.guideProfile.specialties.map((tag) => (
+                  {guide.profile.specialties.map((tag) => (
                     <span
                       key={tag}
                       className="bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded-full font-semibold"
@@ -147,7 +147,7 @@ export default async function Guides({
             </div>
             <div className="px-5 pb-5">
               <p className="text-slate-600 dark:text-slate-400 text-sm line-clamp-2 italic mb-4">
-                "{guide.guideProfile.aboutMe}"
+                "{guide.profile.aboutMe}"
               </p>
               <Link
                 href={`/guides/${guide.id}`}

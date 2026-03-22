@@ -10,11 +10,7 @@ export const touristsColumns: IColumn<IUser<ITourist>>[] = [
   {
     header: "Tourists",
     accessor: (user) => (
-      <UserInfoCell
-        name={user.name}
-        email={user.email}
-        photo={user.profileImage}
-      />
+      <UserInfoCell name={user.name} email={user.email} photo={user.avatar} />
     ),
     sortKey: "name",
   },
@@ -49,7 +45,7 @@ export const touristsColumns: IColumn<IUser<ITourist>>[] = [
     header: "Gender",
     accessor: (tourist) => (
       <span className="text-sm capitalize">
-        {(tourist?.gender || "").toLowerCase()}
+        {(tourist?.profile?.gender || "").toLowerCase()}
       </span>
     ),
   },

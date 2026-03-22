@@ -60,7 +60,7 @@ export default function TourDetailsClient({ tour }: TourDetailsClientProps) {
     }
 
     toast.success(
-      "Booking request sent! The guide will review your request and respond soon."
+      "Booking request sent! The guide will review your request and respond soon.",
     );
     setBookingOpen(false);
     setSelectedDate(undefined);
@@ -73,7 +73,7 @@ export default function TourDetailsClient({ tour }: TourDetailsClientProps) {
 
   const prevImage = () => {
     setSelectedImage(
-      (prev) => (prev - 1 + tour.images.length) % tour.images.length
+      (prev) => (prev - 1 + tour.images.length) % tour.images.length,
     );
   };
 
@@ -164,22 +164,20 @@ export default function TourDetailsClient({ tour }: TourDetailsClientProps) {
               {/* Guide Info */}
               <div className="flex items-center gap-4 mb-6">
                 <Avatar className="h-16 w-16">
-                  <AvatarImage
-                    src={tour.guide?.profileImage || "/placeholder.svg"}
-                  />
+                  <AvatarImage src={tour.guide?.avatar || "/placeholder.svg"} />
                   <AvatarFallback>{tour.guide?.name?.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   <p className="text-sm text-muted-foreground">Guided by</p>
                   <Link
-                    href={`/profile/${tour.guide?._id}`}
+                    href={`/profile/${tour.guide?.id}`}
                     className="text-lg font-semibold hover:text-primary"
                   >
                     {tour.guide?.name}
                   </Link>
                 </div>
                 <Button variant="outline" asChild>
-                  <Link href={`/profile/${tour.guide?._id}`}>View Profile</Link>
+                  <Link href={`/profile/${tour.guide?.id}`}>View Profile</Link>
                 </Button>
               </div>
 
