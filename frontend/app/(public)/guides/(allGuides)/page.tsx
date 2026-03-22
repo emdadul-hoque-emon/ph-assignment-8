@@ -127,7 +127,7 @@ export default async function Guides({
                   </h3>
                   <div className="flex items-center gap-1 text-sm font-bold">
                     <Star className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    {guide.profile.rating}
+                    {/* {guide.profile.rating} */}0
                   </div>
                 </div>
                 <p className="text-slate-500 dark:text-slate-400 text-xs mb-3">
