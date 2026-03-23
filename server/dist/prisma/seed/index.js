@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const db_1 = __importDefault(require("../../src/app/config/db"));
+const enums_1 = require("../generated/enums");
 function getContinent(country) {
     const map = {
         Indonesia: "Asia",
@@ -222,6 +223,15 @@ const updates = [
         url: "https://images.unsplash.com/photo-1516483638261-f40af5aa11ce?auto=format&fit=crop&q=80&w=1000",
     },
 ];
+const interests = [
+    "adventure",
+    "culture",
+    "beach",
+    "nature",
+    "city",
+    "food",
+    "nightlife",
+];
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         // ========== OLD SEEDING CODE (COMMENTED OUT) ==========
@@ -310,6 +320,48 @@ function main() {
         //     provider: "CREDENTIALS",
         //   },
         // });
+        const users = yield db_1.default.user.findMany({
+            where: {
+                role: enums_1.UserRole.TRAVELER,
+            },
+            select: {
+                id: true,
+                country: true,
+                bio: true,
+            },
+        });
+        for (const user of users) {
+            yield db_1.default.travelerProfile.update({
+                where: {
+                    userId: user.id,
+                },
+                data: {
+                    gender: enums_1.Gender.MALE,
+                },
+            });
+            yield db_1.default.guideProfile.update({
+                where: {
+                    userId: user.id,
+                },
+                data: {
+                    gender: enums_1.Gender.MALE,
+                },
+            });
+        }
+        // for (const user of users) {
+        //   // 1. Shuffle the interests and pick a random subset (e.g., between 1 and 4 interests)
+        //   const randomInterests = interests
+        //     .sort(() => 0.5 - Math.random()) // Simple shuffle
+        //     .slice(0, Math.floor(Math.random() * 4) + 1); // Select 1 to 4 items
+        //   await prisma.travelerProfile.create({
+        //     data: {
+        //       interests: randomInterests,
+        //       userId: user.id,
+        //       aboutMe: user.bio as string,
+        //       languages: getLanguages(user.country as string),
+        //     },
+        //   });
+        // }
         console.log("Seed completed successfully!");
     });
 }

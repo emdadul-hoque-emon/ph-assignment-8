@@ -1,8 +1,9 @@
 import express from "express";
 import { UserController } from "./user.controller";
 import { validateRequest } from "../../../middlewares/validateRequest";
-import { createUserSchema } from "./user.validation";
+import { createUserSchema, updateUserSchema } from "./user.validation";
 import { checkAuth } from "../../../middlewares/checkAuth";
+import { uploadImage } from "../../../middlewares/uploadFile";
 
 const userRoutes = express.Router();
 
@@ -11,8 +12,27 @@ userRoutes
   .get(UserController.getAllUsers)
   .post(validateRequest(createUserSchema), UserController.createUser);
 
-userRoutes.route("/:id").get(UserController.getSingleUser);
-// .put(checkAuth("ADMIN", "TRAVELER", "GUIDE"), validateRequest(createUserSchema), UserController.updateUser)
-// .delete(checkAuth("ADMIN"), UserController.deleteUser);
+userRoutes
+  .route("/:id")
+  .get(UserController.getSingleUser)
+  .put(
+    uploadImage.fields([
+      {
+        name: "avatar",
+        maxCount: 1,
+      },
+      {
+        name: "banner",
+        maxCount: 1,
+      },
+    ]),
+    checkAuth("ADMIN", "TRAVELER", "GUIDE"),
+    validateRequest(updateUserSchema),
+    UserController.updateUser,
+  )
+  .delete(
+    checkAuth("ADMIN", "TRAVELER", "GUIDE"),
+    UserController.hardDeleteUser,
+  );
 
 export default userRoutes;

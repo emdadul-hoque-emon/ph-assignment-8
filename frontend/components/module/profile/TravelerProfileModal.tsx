@@ -135,6 +135,7 @@ const TravelerProfileModal = ({
                 <Field>
                   <FieldLabel htmlFor="avatar">
                     <Button
+                      type="button"
                       size="icon"
                       onClick={() => {
                         fileRef.current?.click();

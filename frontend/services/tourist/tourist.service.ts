@@ -138,7 +138,6 @@ const travelerSchema = z.object({
   gender: z.enum(Object.values(Gender), "Invalide gender").default(Gender.MALE),
   city: z.string("city is required").min(2, "city is required"),
   country: z.string("country is required").min(2, "country is required"),
-  avatar: z.any().optional(),
   bio: z.string().optional(),
   bloodGroup: z.string().optional(),
   emergencyContactRelation: z.string().optional(),
@@ -169,12 +168,12 @@ export const editTourist = async (
     gender: formData.get("gender"),
     city: formData.get("city"),
     country: formData.get("country"),
-    avatar: formData.get("avatar"),
     bloodGroup: formData.get("bloodGroup"),
     emergencyContactRelation: formData.get("emergencyContactRelation"),
     emergencyContactNumber: formData.get("emergencyContactNumber"),
     dateOfBirth: formData.get("dateOfBirth"),
   };
+  const avatar = formData.get("avatar") as File;
 
   try {
     const validatedPayload = zodValidator(payload, travelerSchema);
@@ -188,11 +187,19 @@ export const editTourist = async (
         errors: validatedPayload.errors,
       };
     }
-    const res = await serverFetch.put(`/v2/users/${id}`, {
-      body: JSON.stringify(validatedPayload.data),
-      headers: {
-        "Content-Type": "multipart/form-data",
+
+    const formData = new FormData();
+    Object.entries(validatedPayload.data as Record<string, any>).forEach(
+      ([key, value]) => {
+        formData.append(key, String(value));
       },
+    );
+    if (avatar.size) {
+      formData.append("avatar", avatar as File);
+    }
+    const res = await serverFetch.put(`/v2/users/${id}`, {
+      body: formData,
+      credentials: "include",
     });
 
     revalidateTag("me", "max");

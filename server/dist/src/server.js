@@ -16,6 +16,7 @@ const db_1 = require("./app/config/db");
 const app_1 = __importDefault(require("./app"));
 const env_1 = require("./app/config/env");
 const seed_admin_1 = require("./app/config/seed-admin");
+const enums_1 = require("../prisma/generated/enums");
 // import { connectRedis } from "./app/config/redis.config";
 let server;
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -32,6 +33,8 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
     // await connectRedis();
+    console.log("UserRole:", enums_1.UserRole);
+    console.log("Gender:", enums_1.Gender);
     yield startServer();
     yield (0, seed_admin_1.seedAdmin)();
 }))();

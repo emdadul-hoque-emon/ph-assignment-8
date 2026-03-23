@@ -1,4 +1,5 @@
 import { Prisma, UserRole } from "../../../../../prisma/generated/client";
+import { UserUpdateArgs } from "../../../../generated/models";
 import prisma from "../../../config/db";
 import AppError from "../../../helpers/appError";
 import { paginationHelper } from "../../../helpers/paginationHelper";
@@ -159,8 +160,23 @@ const createUserInDB = async (payload: any) => {
   return result;
 };
 
+const updateUserInDB = async (id: string, payload: UserUpdateArgs) => {
+  console.log(payload);
+  const data = await prisma.user.findFirst({
+    where: {
+      id,
+    },
+    // data: payload,
+  });
+  return data;
+};
+
+const hardDeleteUser = async (id: string) => {};
+
 export const UserService = {
   getAllUserFromDB,
   getSingleUserFromDB,
   createUserInDB,
+  updateUserInDB,
+  hardDeleteUser,
 };

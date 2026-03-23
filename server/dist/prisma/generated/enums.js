@@ -9,7 +9,7 @@
 * 🟢 You can import this file directly.
 */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserRole = exports.AuthProvider = exports.TripStatus = exports.TourCategory = exports.Visibility = exports.TourDifficulty = void 0;
+exports.Gender = exports.UserRole = exports.AuthProvider = exports.TripStatus = exports.TourCategory = exports.Visibility = exports.TourDifficulty = void 0;
 exports.TourDifficulty = {
     EASY: 'EASY',
     MODERATE: 'MODERATE',
@@ -43,4 +43,9 @@ exports.UserRole = {
     TRAVELER: 'TRAVELER',
     GUIDE: 'GUIDE',
     ADMIN: 'ADMIN'
+};
+exports.Gender = {
+    MALE: 'MALE',
+    FEMALE: 'FEMALE',
+    OTHER: 'OTHER'
 };

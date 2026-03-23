@@ -127,14 +127,15 @@ const me = (accessToken) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const user = yield db_1.default.user.findUnique({
         where: { id: verifiedToken.userId },
-        include: { guideProfile: true },
+        include: { guideProfile: true, travelerProfile: true },
+        omit: { password: true },
     });
     if (!user) {
         throw new appError_1.default(404, "User not found");
     }
     // Remove password from response
-    const { password: _ } = user, userWithoutPassword = __rest(user, ["password"]);
-    return userWithoutPassword;
+    const { guideProfile, travelerProfile } = user, userWithoutPassword = __rest(user, ["guideProfile", "travelerProfile"]);
+    return Object.assign({ profile: guideProfile || travelerProfile || null }, userWithoutPassword);
 });
 const refreshTokenService = (token, res) => __awaiter(void 0, void 0, void 0, function* () {
     const verifiedToken = (0, jwt_1.verifyJwt)(token, env_1.envVars.JWT_REFRESH_TOKEN_SECRET);

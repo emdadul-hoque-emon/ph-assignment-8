@@ -4,13 +4,14 @@ import { connectDB } from "./app/config/db";
 import app from "./app";
 import { envVars } from "./app/config/env";
 import { seedAdmin } from "./app/config/seed-admin";
+import { Gender, UserRole } from "../prisma/generated/enums";
 // import { connectRedis } from "./app/config/redis.config";
 
 let server: Server;
 
 const startServer = async () => {
   try {
-    await connectDB();
+    // await connectDB();
 
     server = app.listen(envVars.PORT, () => {
       console.log(`Server is running on port ${envVars.PORT}`);
@@ -24,7 +25,7 @@ const startServer = async () => {
 (async () => {
   // await connectRedis();
   await startServer();
-  await seedAdmin();
+  // await seedAdmin();
 })();
 
 process.on("unhandledRejection", (error) => {

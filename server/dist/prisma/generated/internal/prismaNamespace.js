@@ -48,7 +48,7 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.defineExtension = exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.GuideProfileScalarFieldEnum = exports.UserScalarFieldEnum = exports.TripScalarFieldEnum = exports.TripIncludeItemScalarFieldEnum = exports.TripIncludeScalarFieldEnum = exports.TourItineraryScalarFieldEnum = exports.TourScalarFieldEnum = exports.ReviewScalarFieldEnum = exports.TopAttractionScalarFieldEnum = exports.DestinationScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
+exports.defineExtension = exports.NullsOrder = exports.QueryMode = exports.SortOrder = exports.TravelerProfileScalarFieldEnum = exports.GuideProfileScalarFieldEnum = exports.UserScalarFieldEnum = exports.TripScalarFieldEnum = exports.TripIncludeItemScalarFieldEnum = exports.TripIncludeScalarFieldEnum = exports.TourItineraryScalarFieldEnum = exports.TourScalarFieldEnum = exports.ReviewScalarFieldEnum = exports.TopAttractionScalarFieldEnum = exports.DestinationScalarFieldEnum = exports.TransactionIsolationLevel = exports.ModelName = exports.AnyNull = exports.JsonNull = exports.DbNull = exports.NullTypes = exports.prismaVersion = exports.getExtensionContext = exports.Decimal = exports.Sql = exports.raw = exports.join = exports.empty = exports.sql = exports.PrismaClientValidationError = exports.PrismaClientInitializationError = exports.PrismaClientRustPanicError = exports.PrismaClientUnknownRequestError = exports.PrismaClientKnownRequestError = void 0;
 const runtime = __importStar(require("@prisma/client/runtime/client"));
 /**
  * Prisma Errors
@@ -112,7 +112,8 @@ exports.ModelName = {
     TripIncludeItem: 'TripIncludeItem',
     Trip: 'Trip',
     User: 'User',
-    GuideProfile: 'GuideProfile'
+    GuideProfile: 'GuideProfile',
+    TravelerProfile: 'TravelerProfile'
 };
 /**
  * Enums
@@ -236,6 +237,10 @@ exports.UserScalarFieldEnum = {
 };
 exports.GuideProfileScalarFieldEnum = {
     id: 'id',
+    gender: 'gender',
+    bloodGroup: 'bloodGroup',
+    emergencyContactPhone: 'emergencyContactPhone',
+    emergencyContactRelation: 'emergencyContactRelation',
     userId: 'userId',
     experience: 'experience',
     languages: 'languages',
@@ -245,8 +250,21 @@ exports.GuideProfileScalarFieldEnum = {
     rating: 'rating',
     totalTours: 'totalTours',
     bio: 'bio',
-    verified: 'verified',
+    isVerified: 'isVerified',
     isTopRated: 'isTopRated',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+};
+exports.TravelerProfileScalarFieldEnum = {
+    id: 'id',
+    interests: 'interests',
+    languages: 'languages',
+    aboutMe: 'aboutMe',
+    gender: 'gender',
+    bloodGroup: 'bloodGroup',
+    emergencyContactPhone: 'emergencyContactPhone',
+    emergencyContactRelation: 'emergencyContactRelation',
+    userId: 'userId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 };

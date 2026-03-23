@@ -24,6 +24,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
+const client_1 = require("../../../../../prisma/generated/client");
 const db_1 = __importDefault(require("../../../config/db"));
 const appError_1 = __importDefault(require("../../../helpers/appError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
@@ -109,12 +110,24 @@ const getSingleUserFromDB = (id) => __awaiter(void 0, void 0, void 0, function* 
         },
         include: {
             guideProfile: true,
+            travelerProfile: true,
+        },
+        omit: {
+            password: true,
         },
     });
     if (!result) {
         throw new appError_1.default(404, "User not found");
     }
-    return result;
+    const { guideProfile, travelerProfile } = result, userData = __rest(result, ["guideProfile", "travelerProfile"]);
+    let profileInfo = null;
+    if (userData.role === client_1.UserRole.GUIDE) {
+        profileInfo = guideProfile;
+    }
+    if (userData.role === client_1.UserRole.TRAVELER) {
+        profileInfo = travelerProfile;
+    }
+    return Object.assign({ profile: profileInfo }, userData);
 });
 const createUserInDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, password, role, country, city, avatar, bio, phone } = payload;
@@ -151,8 +164,20 @@ const createUserInDB = (payload) => __awaiter(void 0, void 0, void 0, function* 
     });
     return result;
 });
+const updateUserInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield db_1.default.user.findFirst({
+        where: {
+            id,
+        },
+        // data: payload,
+    });
+    return data;
+});
+const hardDeleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.UserService = {
     getAllUserFromDB,
     getSingleUserFromDB,
     createUserInDB,
+    updateUserInDB,
+    hardDeleteUser,
 };

@@ -50,4 +50,28 @@ const createUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(vo
         data,
     });
 }));
-exports.UserController = { getAllUsers, getSingleUser, createUser };
+const updateUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield user_service_1.UserService.updateUserInDB(req.params.id, req.body);
+    (0, sendResponse_1.sendResponse)(res, {
+        message: "User updated successfully",
+        statusCode: 200,
+        success: true,
+        data,
+    });
+}));
+const hardDeleteUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield user_service_1.UserService.hardDeleteUser(req.params.id);
+    (0, sendResponse_1.sendResponse)(res, {
+        message: "User deleted successfully",
+        statusCode: 200,
+        success: true,
+        data,
+    });
+}));
+exports.UserController = {
+    getAllUsers,
+    getSingleUser,
+    createUser,
+    updateUser,
+    hardDeleteUser,
+};

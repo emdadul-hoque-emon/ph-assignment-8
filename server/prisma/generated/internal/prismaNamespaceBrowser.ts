@@ -242,7 +242,7 @@ export const GuideProfileScalarFieldEnum = {
   rating: 'rating',
   totalTours: 'totalTours',
   bio: 'bio',
-  verified: 'verified',
+  isVerified: 'isVerified',
   isTopRated: 'isTopRated',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
