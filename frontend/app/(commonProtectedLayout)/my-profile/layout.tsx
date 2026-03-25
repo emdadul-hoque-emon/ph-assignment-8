@@ -1,5 +1,6 @@
 import GuideLayout from "@/components/module/profile/GuideLayout";
 import TravelerLayout from "@/components/module/profile/TravelerLayout";
+import { Footer } from "@/components/shared/footer";
 import { IGuide } from "@/interfaces/guide.interface";
 import { ITourist, IUser, UserRole } from "@/interfaces/user.interface";
 import { auth } from "@/lib/session";
@@ -20,6 +21,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
         pathname="/profile"
       >
         {children}
+        <Footer />
       </TravelerLayout>
     );
   }
@@ -30,6 +32,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
         pathname="/profile"
       >
         {children}
+        <Footer />
       </GuideLayout>
     );
   }

@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export function Footer() {
   return (
-    <footer className="bg-white dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 pt-16 pb-8 px-6 md:px-20">
+    <footer className="border-t border-slate-200 dark:border-slate-800 pt-16 pb-8 px-6 md:px-20">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
         <div className="col-span-2 lg:col-span-2">
           <div className="flex items-center gap-2 text-primary mb-6 w-full">
@@ -25,8 +25,9 @@ export function Footer() {
               <Image
                 src={"/images/tourbuddy_cover.png"}
                 alt="logo"
-                fill
-                // className="w-[80%]"
+                width={500}
+                height={200}
+                className="w-[80%]"
               />
             </Link>
           </div>
