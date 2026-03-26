@@ -1,3 +1,5 @@
+import { IGuide } from "./guide.interface";
+
 export enum UserRole {
   TOURIST = "TRAVELER",
   GUIDE = "GUIDE",
@@ -10,7 +12,7 @@ export enum Gender {
   OTHER = "OTHER",
 }
 
-export interface IUser<T = null> {
+export interface IUser<T = ITourist | IGuide> {
   id: string;
   name: string;
   email: string;

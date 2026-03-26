@@ -29,6 +29,7 @@ export type TravelerProfileMinAggregateOutputType = {
   aboutMe: string | null
   gender: $Enums.Gender | null
   bloodGroup: string | null
+  dateOfBirth: Date | null
   emergencyContactPhone: string | null
   emergencyContactRelation: string | null
   userId: string | null
@@ -41,6 +42,7 @@ export type TravelerProfileMaxAggregateOutputType = {
   aboutMe: string | null
   gender: $Enums.Gender | null
   bloodGroup: string | null
+  dateOfBirth: Date | null
   emergencyContactPhone: string | null
   emergencyContactRelation: string | null
   userId: string | null
@@ -55,6 +57,7 @@ export type TravelerProfileCountAggregateOutputType = {
   aboutMe: number
   gender: number
   bloodGroup: number
+  dateOfBirth: number
   emergencyContactPhone: number
   emergencyContactRelation: number
   userId: number
@@ -69,6 +72,7 @@ export type TravelerProfileMinAggregateInputType = {
   aboutMe?: true
   gender?: true
   bloodGroup?: true
+  dateOfBirth?: true
   emergencyContactPhone?: true
   emergencyContactRelation?: true
   userId?: true
@@ -81,6 +85,7 @@ export type TravelerProfileMaxAggregateInputType = {
   aboutMe?: true
   gender?: true
   bloodGroup?: true
+  dateOfBirth?: true
   emergencyContactPhone?: true
   emergencyContactRelation?: true
   userId?: true
@@ -95,6 +100,7 @@ export type TravelerProfileCountAggregateInputType = {
   aboutMe?: true
   gender?: true
   bloodGroup?: true
+  dateOfBirth?: true
   emergencyContactPhone?: true
   emergencyContactRelation?: true
   userId?: true
@@ -182,6 +188,7 @@ export type TravelerProfileGroupByOutputType = {
   aboutMe: string
   gender: $Enums.Gender
   bloodGroup: string | null
+  dateOfBirth: Date | null
   emergencyContactPhone: string | null
   emergencyContactRelation: string | null
   userId: string
@@ -217,6 +224,7 @@ export type TravelerProfileWhereInput = {
   aboutMe?: Prisma.StringFilter<"TravelerProfile"> | string
   gender?: Prisma.EnumGenderFilter<"TravelerProfile"> | $Enums.Gender
   bloodGroup?: Prisma.StringNullableFilter<"TravelerProfile"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"TravelerProfile"> | Date | string | null
   emergencyContactPhone?: Prisma.StringNullableFilter<"TravelerProfile"> | string | null
   emergencyContactRelation?: Prisma.StringNullableFilter<"TravelerProfile"> | string | null
   userId?: Prisma.StringFilter<"TravelerProfile"> | string
@@ -232,6 +240,7 @@ export type TravelerProfileOrderByWithRelationInput = {
   aboutMe?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   bloodGroup?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   emergencyContactPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   emergencyContactRelation?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -251,6 +260,7 @@ export type TravelerProfileWhereUniqueInput = Prisma.AtLeast<{
   aboutMe?: Prisma.StringFilter<"TravelerProfile"> | string
   gender?: Prisma.EnumGenderFilter<"TravelerProfile"> | $Enums.Gender
   bloodGroup?: Prisma.StringNullableFilter<"TravelerProfile"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"TravelerProfile"> | Date | string | null
   emergencyContactPhone?: Prisma.StringNullableFilter<"TravelerProfile"> | string | null
   emergencyContactRelation?: Prisma.StringNullableFilter<"TravelerProfile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"TravelerProfile"> | Date | string
@@ -265,6 +275,7 @@ export type TravelerProfileOrderByWithAggregationInput = {
   aboutMe?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   bloodGroup?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   emergencyContactPhone?: Prisma.SortOrderInput | Prisma.SortOrder
   emergencyContactRelation?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -285,6 +296,7 @@ export type TravelerProfileScalarWhereWithAggregatesInput = {
   aboutMe?: Prisma.StringWithAggregatesFilter<"TravelerProfile"> | string
   gender?: Prisma.EnumGenderWithAggregatesFilter<"TravelerProfile"> | $Enums.Gender
   bloodGroup?: Prisma.StringNullableWithAggregatesFilter<"TravelerProfile"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"TravelerProfile"> | Date | string | null
   emergencyContactPhone?: Prisma.StringNullableWithAggregatesFilter<"TravelerProfile"> | string | null
   emergencyContactRelation?: Prisma.StringNullableWithAggregatesFilter<"TravelerProfile"> | string | null
   userId?: Prisma.StringWithAggregatesFilter<"TravelerProfile"> | string
@@ -299,6 +311,7 @@ export type TravelerProfileCreateInput = {
   aboutMe: string
   gender?: $Enums.Gender
   bloodGroup?: string | null
+  dateOfBirth?: Date | string | null
   emergencyContactPhone?: string | null
   emergencyContactRelation?: string | null
   createdAt?: Date | string
@@ -313,6 +326,7 @@ export type TravelerProfileUncheckedCreateInput = {
   aboutMe: string
   gender?: $Enums.Gender
   bloodGroup?: string | null
+  dateOfBirth?: Date | string | null
   emergencyContactPhone?: string | null
   emergencyContactRelation?: string | null
   userId: string
@@ -327,6 +341,7 @@ export type TravelerProfileUpdateInput = {
   aboutMe?: Prisma.StringFieldUpdateOperationsInput | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
   bloodGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emergencyContactRelation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -341,6 +356,7 @@ export type TravelerProfileUncheckedUpdateInput = {
   aboutMe?: Prisma.StringFieldUpdateOperationsInput | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
   bloodGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emergencyContactRelation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -355,6 +371,7 @@ export type TravelerProfileCreateManyInput = {
   aboutMe: string
   gender?: $Enums.Gender
   bloodGroup?: string | null
+  dateOfBirth?: Date | string | null
   emergencyContactPhone?: string | null
   emergencyContactRelation?: string | null
   userId: string
@@ -369,6 +386,7 @@ export type TravelerProfileUpdateManyMutationInput = {
   aboutMe?: Prisma.StringFieldUpdateOperationsInput | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
   bloodGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emergencyContactRelation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -382,6 +400,7 @@ export type TravelerProfileUncheckedUpdateManyInput = {
   aboutMe?: Prisma.StringFieldUpdateOperationsInput | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
   bloodGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emergencyContactRelation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -401,6 +420,7 @@ export type TravelerProfileCountOrderByAggregateInput = {
   aboutMe?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   bloodGroup?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
   emergencyContactPhone?: Prisma.SortOrder
   emergencyContactRelation?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -413,6 +433,7 @@ export type TravelerProfileMaxOrderByAggregateInput = {
   aboutMe?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   bloodGroup?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
   emergencyContactPhone?: Prisma.SortOrder
   emergencyContactRelation?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -425,6 +446,7 @@ export type TravelerProfileMinOrderByAggregateInput = {
   aboutMe?: Prisma.SortOrder
   gender?: Prisma.SortOrder
   bloodGroup?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
   emergencyContactPhone?: Prisma.SortOrder
   emergencyContactRelation?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -489,6 +511,7 @@ export type TravelerProfileCreateWithoutUserInput = {
   aboutMe: string
   gender?: $Enums.Gender
   bloodGroup?: string | null
+  dateOfBirth?: Date | string | null
   emergencyContactPhone?: string | null
   emergencyContactRelation?: string | null
   createdAt?: Date | string
@@ -502,6 +525,7 @@ export type TravelerProfileUncheckedCreateWithoutUserInput = {
   aboutMe: string
   gender?: $Enums.Gender
   bloodGroup?: string | null
+  dateOfBirth?: Date | string | null
   emergencyContactPhone?: string | null
   emergencyContactRelation?: string | null
   createdAt?: Date | string
@@ -531,6 +555,7 @@ export type TravelerProfileUpdateWithoutUserInput = {
   aboutMe?: Prisma.StringFieldUpdateOperationsInput | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
   bloodGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emergencyContactRelation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -544,6 +569,7 @@ export type TravelerProfileUncheckedUpdateWithoutUserInput = {
   aboutMe?: Prisma.StringFieldUpdateOperationsInput | string
   gender?: Prisma.EnumGenderFieldUpdateOperationsInput | $Enums.Gender
   bloodGroup?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   emergencyContactPhone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   emergencyContactRelation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -559,6 +585,7 @@ export type TravelerProfileSelect<ExtArgs extends runtime.Types.Extensions.Inter
   aboutMe?: boolean
   gender?: boolean
   bloodGroup?: boolean
+  dateOfBirth?: boolean
   emergencyContactPhone?: boolean
   emergencyContactRelation?: boolean
   userId?: boolean
@@ -574,6 +601,7 @@ export type TravelerProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   aboutMe?: boolean
   gender?: boolean
   bloodGroup?: boolean
+  dateOfBirth?: boolean
   emergencyContactPhone?: boolean
   emergencyContactRelation?: boolean
   userId?: boolean
@@ -589,6 +617,7 @@ export type TravelerProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   aboutMe?: boolean
   gender?: boolean
   bloodGroup?: boolean
+  dateOfBirth?: boolean
   emergencyContactPhone?: boolean
   emergencyContactRelation?: boolean
   userId?: boolean
@@ -604,6 +633,7 @@ export type TravelerProfileSelectScalar = {
   aboutMe?: boolean
   gender?: boolean
   bloodGroup?: boolean
+  dateOfBirth?: boolean
   emergencyContactPhone?: boolean
   emergencyContactRelation?: boolean
   userId?: boolean
@@ -611,7 +641,7 @@ export type TravelerProfileSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TravelerProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "interests" | "languages" | "aboutMe" | "gender" | "bloodGroup" | "emergencyContactPhone" | "emergencyContactRelation" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["travelerProfile"]>
+export type TravelerProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "interests" | "languages" | "aboutMe" | "gender" | "bloodGroup" | "dateOfBirth" | "emergencyContactPhone" | "emergencyContactRelation" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["travelerProfile"]>
 export type TravelerProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -634,6 +664,7 @@ export type $TravelerProfilePayload<ExtArgs extends runtime.Types.Extensions.Int
     aboutMe: string
     gender: $Enums.Gender
     bloodGroup: string | null
+    dateOfBirth: Date | null
     emergencyContactPhone: string | null
     emergencyContactRelation: string | null
     userId: string
@@ -1069,6 +1100,7 @@ export interface TravelerProfileFieldRefs {
   readonly aboutMe: Prisma.FieldRef<"TravelerProfile", 'String'>
   readonly gender: Prisma.FieldRef<"TravelerProfile", 'Gender'>
   readonly bloodGroup: Prisma.FieldRef<"TravelerProfile", 'String'>
+  readonly dateOfBirth: Prisma.FieldRef<"TravelerProfile", 'DateTime'>
   readonly emergencyContactPhone: Prisma.FieldRef<"TravelerProfile", 'String'>
   readonly emergencyContactRelation: Prisma.FieldRef<"TravelerProfile", 'String'>
   readonly userId: Prisma.FieldRef<"TravelerProfile", 'String'>

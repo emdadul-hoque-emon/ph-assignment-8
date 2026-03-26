@@ -1,12 +1,11 @@
 "use server";
 import { Gender, ITourist, IUser } from "@/interfaces/user.interface";
 import { zodValidator } from "@/lib/zod-validator";
-import z, { date } from "zod";
+import z from "zod";
 import { login } from "../auth/auth.service";
 import { serverFetch } from "@/lib/server-fetch";
 import { IResponse } from "@/interfaces";
 import { revalidateTag } from "next/cache";
-import { error } from "console";
 
 const touristSchema = z.object({
   name: z.string("name is required").min(2, "name is required"),
@@ -140,8 +139,6 @@ const travelerSchema = z.object({
   country: z.string("country is required").min(2, "country is required"),
   bio: z.string().optional(),
   bloodGroup: z.string().optional(),
-  emergencyContactRelation: z.string().optional(),
-  emergencyContactNumber: z.string().optional(),
   dateOfBirth: z.string().optional(),
 });
 
@@ -159,6 +156,7 @@ export const editTourist = async (
     message: string;
   }[];
 }> => {
+  const dateOfBirth = formData.get("dateOfBirth") as string;
   const payload = {
     name: formData.get("name"),
     bio: formData.get("bio"),
@@ -169,9 +167,7 @@ export const editTourist = async (
     city: formData.get("city"),
     country: formData.get("country"),
     bloodGroup: formData.get("bloodGroup"),
-    emergencyContactRelation: formData.get("emergencyContactRelation"),
-    emergencyContactNumber: formData.get("emergencyContactNumber"),
-    dateOfBirth: formData.get("dateOfBirth"),
+    dateOfBirth: dateOfBirth ? new Date(dateOfBirth).toISOString() : null,
   };
   const avatar = formData.get("avatar") as File;
 

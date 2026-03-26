@@ -8,7 +8,6 @@ import {
   Globe,
   FileText,
   Trash2,
-  Phone,
   Calendar,
   Droplet,
 } from "lucide-react";
@@ -45,9 +44,11 @@ import { useRouter } from "next/navigation";
 const TravelerProfileModal = ({
   user,
   isEdit = true,
+  children,
 }: {
   user: IUser<ITourist>;
   isEdit?: boolean;
+  children?: React.ReactNode;
 }) => {
   const [interests, setInterests] = React.useState<
     { label: string; value: string }[]
@@ -87,13 +88,17 @@ const TravelerProfileModal = ({
     }
   }, [state, router]);
 
+  console.log(state);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button className="flex items-center gap-2">
-          <Edit className="h-4 w-4" />
-          Edit Profile
-        </Button>
+      <DialogTrigger asChild={!!children}>
+        {children || (
+          <Button className="flex items-center gap-2">
+            <Edit className="h-4 w-4" />
+            Edit Profile
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className=" max-h-[80vh] overflow-auto">
         <DialogHeader>
@@ -308,53 +313,6 @@ const TravelerProfileModal = ({
               </Field>
             </div>
 
-            <div className="mb-3">
-              <FieldLabel className="mb-3">Emergency Contact</FieldLabel>
-              <div className="md:col-span-2 space-y-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Field className="space-y-1 gap-px w-full">
-                  <FieldLabel
-                    htmlFor="emergencyContactRelation"
-                    className="flex items-center gap-2"
-                  >
-                    <User className="h-5 w-5 opacity-70" />
-                    Relation
-                  </FieldLabel>
-                  <Input
-                    placeholder="e.g., Family member, Friend"
-                    type="text"
-                    id="emergencyContactRelation"
-                    name="emergencyContactRelation"
-                    defaultValue={
-                      state?.formData?.emergencyContactRelation ||
-                      user.profile.emergencyContactRelation ||
-                      undefined
-                    }
-                  />
-                </Field>
-
-                <Field className="space-y-1 gap-px w-full">
-                  <FieldLabel
-                    htmlFor="emergencyContactNumber"
-                    className="flex items-center gap-2"
-                  >
-                    <Phone className="h-5 w-5 opacity-70" />
-                    Number
-                  </FieldLabel>
-                  <Input
-                    placeholder="Phone number"
-                    type="tel"
-                    id="emergencyContactNumber"
-                    name="emergencyContactNumber"
-                    defaultValue={
-                      state?.formData?.emergencyContactNumber ||
-                      user.profile.emergencyContactNumber ||
-                      undefined
-                    }
-                  />
-                </Field>
-              </div>
-            </div>
-
             <div className="space-y-3">
               <FieldLabel>Health Information</FieldLabel>
               <div className="md:col-span-2 space-y-3 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -372,9 +330,15 @@ const TravelerProfileModal = ({
                     id="dateOfBirth"
                     name="dateOfBirth"
                     defaultValue={
-                      state?.formData?.dateOfBirth ||
-                      user.profile.dateOfBirth ||
-                      undefined
+                      state?.formData?.dateOfBirth
+                        ? new Date(state.formData.dateOfBirth)
+                            .toISOString()
+                            .split("T")[0]
+                        : user.profile.dateOfBirth
+                          ? new Date(user.profile.dateOfBirth)
+                              .toISOString()
+                              .split("T")[0]
+                          : undefined
                     }
                   />
                 </Field>

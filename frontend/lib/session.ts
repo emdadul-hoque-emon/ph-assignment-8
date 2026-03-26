@@ -9,7 +9,7 @@ export const auth = async <T = null>() => {
     const res = await serverFetch.get("/v2/auth/me", {
       next: { tags: ["me"] },
     });
-    const data: IResponse<IUser<T | null>> = await res.json();
+    const data: IResponse<IUser<T>> = await res.json();
     return data.data;
   } catch (error) {
     console.log(error);

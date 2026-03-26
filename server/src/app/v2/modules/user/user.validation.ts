@@ -29,8 +29,6 @@ export const updateUserSchema = z.object({
 
   avatar: z.any().optional(),
 
-  emergencyContactRelation: z.string().optional(),
-  emergencyContactNumber: z.string().optional(),
   bloodGroup: z.string().optional(),
   bio: z.string().optional(),
   dateOfBirth: z.string().optional(),

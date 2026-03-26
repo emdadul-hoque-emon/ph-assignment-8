@@ -56,30 +56,32 @@ model GuideProfile {
   emergencyContactPhone    String?
   emergencyContactRelation String?
 
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   experience  Int?
   languages   String[]
   specialties String[]
   aboutMe     String
   hourlyRate  Float?
   rating      Float?
-  totalTours  Int      @default(0)
+  totalTours  Int       @default(0)
   bio         String?
-  isVerified  Boolean  @default(false)
-  isTopRated  Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  dateOfBirth DateTime?
+  isVerified  Boolean   @default(false)
+  isTopRated  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model TravelerProfile {
   id String @id @default(uuid())
 
-  interests  String[]
-  languages  String[]
-  aboutMe    String
-  gender     Gender   @default(MALE)
-  bloodGroup String?
+  interests   String[]
+  languages   String[]
+  aboutMe     String
+  gender      Gender    @default(MALE)
+  bloodGroup  String?
+  dateOfBirth DateTime?
 
   emergencyContactPhone    String?
   emergencyContactRelation String?

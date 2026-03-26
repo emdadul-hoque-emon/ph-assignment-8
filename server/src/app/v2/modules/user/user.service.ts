@@ -1,5 +1,4 @@
 import { Prisma, UserRole } from "../../../../../prisma/generated/client";
-import { UserUpdateArgs } from "../../../../generated/models";
 import prisma from "../../../config/db";
 import AppError from "../../../helpers/appError";
 import { paginationHelper } from "../../../helpers/paginationHelper";
@@ -204,18 +203,16 @@ const updateUserInDB = async (
   const guideData = cleanObject({
     gender: payload.gender,
     bloodGroup: payload.bloodGroup,
-    emergencyContactRelation: payload.emergencyContactRelation,
-    emergencyContactPhone: payload.emergencyContactNumber,
     languages: payload.languages,
     specialties: payload.specialties,
+    dateOfBirth: payload.dateOfBirth,
   });
 
   const travelerData = cleanObject({
     gender: payload.gender,
     bloodGroup: payload.bloodGroup,
-    emergencyContactRelation: payload.emergencyContactRelation,
-    emergencyContactPhone: payload.emergencyContactNumber,
     interests: payload.interests,
+    dateOfBirth: payload.dateOfBirth,
     // languages: payload.languages,
   });
 

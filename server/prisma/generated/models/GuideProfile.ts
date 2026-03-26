@@ -53,6 +53,7 @@ export type GuideProfileMinAggregateOutputType = {
   rating: number | null
   totalTours: number | null
   bio: string | null
+  dateOfBirth: Date | null
   isVerified: boolean | null
   isTopRated: boolean | null
   createdAt: Date | null
@@ -72,6 +73,7 @@ export type GuideProfileMaxAggregateOutputType = {
   rating: number | null
   totalTours: number | null
   bio: string | null
+  dateOfBirth: Date | null
   isVerified: boolean | null
   isTopRated: boolean | null
   createdAt: Date | null
@@ -93,6 +95,7 @@ export type GuideProfileCountAggregateOutputType = {
   rating: number
   totalTours: number
   bio: number
+  dateOfBirth: number
   isVerified: number
   isTopRated: number
   createdAt: number
@@ -128,6 +131,7 @@ export type GuideProfileMinAggregateInputType = {
   rating?: true
   totalTours?: true
   bio?: true
+  dateOfBirth?: true
   isVerified?: true
   isTopRated?: true
   createdAt?: true
@@ -147,6 +151,7 @@ export type GuideProfileMaxAggregateInputType = {
   rating?: true
   totalTours?: true
   bio?: true
+  dateOfBirth?: true
   isVerified?: true
   isTopRated?: true
   createdAt?: true
@@ -168,6 +173,7 @@ export type GuideProfileCountAggregateInputType = {
   rating?: true
   totalTours?: true
   bio?: true
+  dateOfBirth?: true
   isVerified?: true
   isTopRated?: true
   createdAt?: true
@@ -276,6 +282,7 @@ export type GuideProfileGroupByOutputType = {
   rating: number | null
   totalTours: number
   bio: string | null
+  dateOfBirth: Date | null
   isVerified: boolean
   isTopRated: boolean
   createdAt: Date
@@ -320,6 +327,7 @@ export type GuideProfileWhereInput = {
   rating?: Prisma.FloatNullableFilter<"GuideProfile"> | number | null
   totalTours?: Prisma.IntFilter<"GuideProfile"> | number
   bio?: Prisma.StringNullableFilter<"GuideProfile"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"GuideProfile"> | Date | string | null
   isVerified?: Prisma.BoolFilter<"GuideProfile"> | boolean
   isTopRated?: Prisma.BoolFilter<"GuideProfile"> | boolean
   createdAt?: Prisma.DateTimeFilter<"GuideProfile"> | Date | string
@@ -342,6 +350,7 @@ export type GuideProfileOrderByWithRelationInput = {
   rating?: Prisma.SortOrderInput | Prisma.SortOrder
   totalTours?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   isTopRated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -367,6 +376,7 @@ export type GuideProfileWhereUniqueInput = Prisma.AtLeast<{
   rating?: Prisma.FloatNullableFilter<"GuideProfile"> | number | null
   totalTours?: Prisma.IntFilter<"GuideProfile"> | number
   bio?: Prisma.StringNullableFilter<"GuideProfile"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableFilter<"GuideProfile"> | Date | string | null
   isVerified?: Prisma.BoolFilter<"GuideProfile"> | boolean
   isTopRated?: Prisma.BoolFilter<"GuideProfile"> | boolean
   createdAt?: Prisma.DateTimeFilter<"GuideProfile"> | Date | string
@@ -389,6 +399,7 @@ export type GuideProfileOrderByWithAggregationInput = {
   rating?: Prisma.SortOrderInput | Prisma.SortOrder
   totalTours?: Prisma.SortOrder
   bio?: Prisma.SortOrderInput | Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrderInput | Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   isTopRated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -418,6 +429,7 @@ export type GuideProfileScalarWhereWithAggregatesInput = {
   rating?: Prisma.FloatNullableWithAggregatesFilter<"GuideProfile"> | number | null
   totalTours?: Prisma.IntWithAggregatesFilter<"GuideProfile"> | number
   bio?: Prisma.StringNullableWithAggregatesFilter<"GuideProfile"> | string | null
+  dateOfBirth?: Prisma.DateTimeNullableWithAggregatesFilter<"GuideProfile"> | Date | string | null
   isVerified?: Prisma.BoolWithAggregatesFilter<"GuideProfile"> | boolean
   isTopRated?: Prisma.BoolWithAggregatesFilter<"GuideProfile"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"GuideProfile"> | Date | string
@@ -438,6 +450,7 @@ export type GuideProfileCreateInput = {
   rating?: number | null
   totalTours?: number
   bio?: string | null
+  dateOfBirth?: Date | string | null
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: Date | string
@@ -460,6 +473,7 @@ export type GuideProfileUncheckedCreateInput = {
   rating?: number | null
   totalTours?: number
   bio?: string | null
+  dateOfBirth?: Date | string | null
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: Date | string
@@ -480,6 +494,7 @@ export type GuideProfileUpdateInput = {
   rating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTopRated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -502,6 +517,7 @@ export type GuideProfileUncheckedUpdateInput = {
   rating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTopRated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -523,6 +539,7 @@ export type GuideProfileCreateManyInput = {
   rating?: number | null
   totalTours?: number
   bio?: string | null
+  dateOfBirth?: Date | string | null
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: Date | string
@@ -543,6 +560,7 @@ export type GuideProfileUpdateManyMutationInput = {
   rating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTopRated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -564,6 +582,7 @@ export type GuideProfileUncheckedUpdateManyInput = {
   rating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTopRated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -590,6 +609,7 @@ export type GuideProfileCountOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   totalTours?: Prisma.SortOrder
   bio?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   isTopRated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -616,6 +636,7 @@ export type GuideProfileMaxOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   totalTours?: Prisma.SortOrder
   bio?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   isTopRated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -635,6 +656,7 @@ export type GuideProfileMinOrderByAggregateInput = {
   rating?: Prisma.SortOrder
   totalTours?: Prisma.SortOrder
   bio?: Prisma.SortOrder
+  dateOfBirth?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
   isTopRated?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -718,6 +740,10 @@ export type NullableFloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type GuideProfileCreateWithoutUserInput = {
   id?: string
   gender?: $Enums.Gender
@@ -732,6 +758,7 @@ export type GuideProfileCreateWithoutUserInput = {
   rating?: number | null
   totalTours?: number
   bio?: string | null
+  dateOfBirth?: Date | string | null
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: Date | string
@@ -752,6 +779,7 @@ export type GuideProfileUncheckedCreateWithoutUserInput = {
   rating?: number | null
   totalTours?: number
   bio?: string | null
+  dateOfBirth?: Date | string | null
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: Date | string
@@ -788,6 +816,7 @@ export type GuideProfileUpdateWithoutUserInput = {
   rating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTopRated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -808,6 +837,7 @@ export type GuideProfileUncheckedUpdateWithoutUserInput = {
   rating?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   totalTours?: Prisma.IntFieldUpdateOperationsInput | number
   bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dateOfBirth?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isTopRated?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -831,6 +861,7 @@ export type GuideProfileSelect<ExtArgs extends runtime.Types.Extensions.Internal
   rating?: boolean
   totalTours?: boolean
   bio?: boolean
+  dateOfBirth?: boolean
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: boolean
@@ -853,6 +884,7 @@ export type GuideProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   rating?: boolean
   totalTours?: boolean
   bio?: boolean
+  dateOfBirth?: boolean
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: boolean
@@ -875,6 +907,7 @@ export type GuideProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   rating?: boolean
   totalTours?: boolean
   bio?: boolean
+  dateOfBirth?: boolean
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: boolean
@@ -897,13 +930,14 @@ export type GuideProfileSelectScalar = {
   rating?: boolean
   totalTours?: boolean
   bio?: boolean
+  dateOfBirth?: boolean
   isVerified?: boolean
   isTopRated?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type GuideProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "gender" | "bloodGroup" | "emergencyContactPhone" | "emergencyContactRelation" | "userId" | "experience" | "languages" | "specialties" | "aboutMe" | "hourlyRate" | "rating" | "totalTours" | "bio" | "isVerified" | "isTopRated" | "createdAt" | "updatedAt", ExtArgs["result"]["guideProfile"]>
+export type GuideProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "gender" | "bloodGroup" | "emergencyContactPhone" | "emergencyContactRelation" | "userId" | "experience" | "languages" | "specialties" | "aboutMe" | "hourlyRate" | "rating" | "totalTours" | "bio" | "dateOfBirth" | "isVerified" | "isTopRated" | "createdAt" | "updatedAt", ExtArgs["result"]["guideProfile"]>
 export type GuideProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -934,6 +968,7 @@ export type $GuideProfilePayload<ExtArgs extends runtime.Types.Extensions.Intern
     rating: number | null
     totalTours: number
     bio: string | null
+    dateOfBirth: Date | null
     isVerified: boolean
     isTopRated: boolean
     createdAt: Date
@@ -1376,6 +1411,7 @@ export interface GuideProfileFieldRefs {
   readonly rating: Prisma.FieldRef<"GuideProfile", 'Float'>
   readonly totalTours: Prisma.FieldRef<"GuideProfile", 'Int'>
   readonly bio: Prisma.FieldRef<"GuideProfile", 'String'>
+  readonly dateOfBirth: Prisma.FieldRef<"GuideProfile", 'DateTime'>
   readonly isVerified: Prisma.FieldRef<"GuideProfile", 'Boolean'>
   readonly isTopRated: Prisma.FieldRef<"GuideProfile", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"GuideProfile", 'DateTime'>
