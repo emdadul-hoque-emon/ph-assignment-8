@@ -57,12 +57,12 @@ export default function JournalsPage() {
           </div>
         </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 ">
           <Link
-            href="/profile/test/journals/kyoto-silent-sunrise"
+            href="/profile/journals/kyoto-silent-sunrise"
             className="md:col-span-8 group cursor-pointer overflow-hidden rounded-3xl bg-surface-container-low transition-all duration-300"
           >
-            <div className="aspect-video relative overflow-hidden">
+            <div className="aspect-video relative overflow-hidden text-primary-foreground">
               <Image
                 src={featured.image}
                 alt={featured.imageAlt}
@@ -73,7 +73,7 @@ export default function JournalsPage() {
               <div className="absolute inset-0 bg-linear-to-t from-surface-dim/90 via-transparent to-transparent"></div>
               <div className="absolute bottom-6 left-8">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="px-3 py-1 bg-primary/20 backdrop-blur-md text-primary text-[10px] font-bold rounded-full uppercase tracking-tighter">
+                  <span className="px-3 py-1 bg-primary/20 backdrop-blur-md text-primary-foreground text-[10px] font-bold rounded-full uppercase tracking-tighter">
                     {featured.tag}
                   </span>
                   <span className="text-on-surface-variant text-xs font-medium">
@@ -93,10 +93,10 @@ export default function JournalsPage() {
           </Link>
 
           <Link
-            href={`/profile/test/journals/${side.slug}`}
+            href={`/profile/journals/${side.slug}`}
             className="md:col-span-4 group cursor-pointer overflow-hidden rounded-3xl bg-surface-container-low transition-all duration-300"
           >
-            <div className="aspect-square relative overflow-hidden">
+            <div className="aspect-square relative overflow-hidden text-primary-foreground">
               <Image
                 src={side.image}
                 alt={side.imageAlt}
@@ -122,10 +122,10 @@ export default function JournalsPage() {
           </Link>
 
           <Link
-            href={`/profile/test/journals/${venice.slug}`}
+            href={`/profile/journals/${venice.slug}`}
             className="md:col-span-4 group cursor-pointer overflow-hidden rounded-3xl bg-surface-container-low transition-all duration-300"
           >
-            <div className="aspect-4/3 relative overflow-hidden">
+            <div className="aspect-4/3 relative overflow-hidden text-primary-foreground">
               <Image
                 src={venice.image}
                 alt={venice.imageAlt}
@@ -151,10 +151,10 @@ export default function JournalsPage() {
           </Link>
 
           <Link
-            href={`/profile/test/journals/${tokyo.slug}`}
+            href={`/profile/journals/${tokyo.slug}`}
             className="md:col-span-4 group cursor-pointer overflow-hidden rounded-3xl bg-surface-container-low transition-all duration-300"
           >
-            <div className="aspect-4/3 relative overflow-hidden">
+            <div className="aspect-4/3 relative overflow-hidden text-primary-foreground">
               <Image
                 src={tokyo.image}
                 alt={tokyo.imageAlt}
@@ -179,7 +179,7 @@ export default function JournalsPage() {
             </div>
           </Link>
 
-          <article className="md:col-span-4 bg-[#333638] rounded-3xl p-8 flex flex-col justify-center border border-outline-variant/10">
+          <article className="md:col-span-4 bg-primary text-primary-foreground rounded-3xl p-8 flex flex-col justify-center border border-outline-variant/10">
             <Quote className="text-primary mb-4 h-10 w-10" />
             <h3 className="text-xl font-medium text-on-surface italic leading-relaxed mb-6">
               "The goal is not to see everything, but to see one thing
@@ -196,7 +196,7 @@ export default function JournalsPage() {
           </article>
 
           <Link
-            href={`/profile/test/journals/${iceland.slug}`}
+            href={`/profile/journals/${iceland.slug}`}
             className="md:col-span-12 lg:col-span-5 group cursor-pointer overflow-hidden rounded-3xl bg-surface-container-low transition-all duration-300"
           >
             <div className="flex flex-col sm:flex-row h-full">
@@ -224,10 +224,10 @@ export default function JournalsPage() {
           </Link>
 
           <Link
-            href={`/profile/test/journals/${patagonia.slug}`}
+            href={`/profile/journals/${patagonia.slug}`}
             className="md:col-span-12 lg:col-span-7 group cursor-pointer overflow-hidden rounded-3xl bg-surface-container-low transition-all duration-300"
           >
-            <div className="aspect-21/9 relative overflow-hidden">
+            <div className="aspect-21/9 relative overflow-hidden text-primary-foreground">
               <Image
                 src={patagonia.image}
                 alt={patagonia.imageAlt}
@@ -253,7 +253,7 @@ export default function JournalsPage() {
 
         <div className="mt-20 flex flex-col items-center gap-6">
           <Link
-            href="/profile/test/journals/kyoto-silent-sunrise"
+            href="/profile/journals/kyoto-silent-sunrise"
             className="px-8 py-3 rounded-full border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container-highest transition-colors font-medium text-sm flex items-center gap-2"
           >
             <History className="h-4 w-4" />

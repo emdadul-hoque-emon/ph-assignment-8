@@ -22,20 +22,22 @@ const CustomLink = ({
   const pathname = usePathname();
 
   const isRouteMatches = (pathname: string, href: string): boolean => {
+    const cleanPath = pathname.split("?")[0];
+
     if (matchType === "exact") {
-      return pathname === href;
+      return cleanPath === href;
     }
     if (matchType === "last") {
-      return pathname.endsWith(href);
+      return cleanPath.endsWith(href);
     }
     if (matchType === "startsWith") {
-      return pathname.startsWith(href);
+      return cleanPath.startsWith(href);
     }
     if (matchType === "endsWith") {
-      return pathname.endsWith(href);
+      return cleanPath.endsWith(href);
     }
     if (matchType === "includes") {
-      return pathname.includes(href);
+      return cleanPath.includes(href);
     }
     return false;
   };

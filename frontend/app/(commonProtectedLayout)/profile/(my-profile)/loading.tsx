@@ -1,46 +1,62 @@
-import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function GuideProfileLoading() {
+export default function ProfileLayoutSkeleton({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
   return (
-    <div className="space-y-4 mb-6">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        header
-        <Skeleton className="h-6 w-32" />
-      </div>
+    <div className="flex flex-col md:flex-row min-h-screen bg-surface relative pt-6">
+      {/* Desktop Sidebar Skeleton */}
+      <aside className="hidden lg:flex flex-col h-screen w-64 fixed left-0 top-0 pt-24 p-6 z-40 border-r">
+        {/* User Info */}
+        <div className="flex gap-3 mb-4 items-center">
+          <Skeleton className="w-12 h-12 rounded-xl" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-5 w-28" />
+          </div>
+        </div>
 
-      {Array.from({ length: 3 }).map((_, i) => (
-        <Card key={i} className="p-6 border-primary/20 animate-pulse">
-          <div className="flex flex-col md:flex-row gap-6">
-            {/* Image */}
-            <Skeleton className="w-full md:w-48 h-32 rounded-lg" />
+        {/* Navigation Links */}
+        <nav className="flex flex-col gap-2 grow">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl"
+            >
+              <Skeleton className="w-5 h-5" />
+              <Skeleton className="h-4 w-24" />
+            </div>
+          ))}
+        </nav>
 
-            {/* Content */}
-            <div className="flex-1 space-y-4">
-              <div className="flex justify-between items-start">
-                <div className="space-y-2 w-full">
-                  <Skeleton className="h-5 w-3/5" />
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-4/5" />
-                </div>
+        {/* Bottom Navigation */}
+        <div className="mt-auto flex flex-col gap-2 border-t border-slate-200/50 pt-6">
+          {[1, 2].map((i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 px-4 py-2 rounded-xl"
+            >
+              <Skeleton className="w-4.5 h-4.5" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+          ))}
+        </div>
+      </aside>
 
-                {/* Status Badge */}
-                <Skeleton className="h-6 w-20 rounded-full" />
-              </div>
+      {/* Main Content Area */}
+      <div className="mb-14 lg:ml-64 w-full">{children}</div>
 
-              {/* Stats */}
-              <div className="flex gap-6">
-                <Skeleton className="h-4 w-32" />
-                <Skeleton className="h-4 w-40" />
-              </div>
-
-              {/* Button */}
-              <Skeleton className="h-8 w-32" />
+      {/* Mobile Bottom Navigation Skeleton */}
+      <nav className="fixed bottom-0 left-0 w-full shadow-2xl bg-background flex items-center justify-between md:hidden z-40 border-t px-4">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div className="py-2" key={i}>
+            <div className="flex items-center gap-3 px-4 py-3 rounded-xl">
+              <Skeleton className="w-5 h-5" />
             </div>
           </div>
-        </Card>
-      ))}
+        ))}
+      </nav>
     </div>
   );
 }

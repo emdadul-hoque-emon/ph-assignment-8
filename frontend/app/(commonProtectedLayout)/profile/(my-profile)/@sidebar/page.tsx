@@ -13,10 +13,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-const page = async () => {
+const Sidebar = async () => {
   const user = await auth();
   if (!user?.id) {
-    redirect("/login?redirect=/profile/test");
+    redirect("/login?redirect=/profile");
   }
 
   const bottomNavItems = [
@@ -24,15 +24,39 @@ const page = async () => {
     { name: "Logout", icon: LogOut, href: "#", isError: true },
   ];
   const navItems = [
-    { name: "Dashboard", icon: LayoutDashboard, href: "/profile/test" },
-    { name: "Expeditions", icon: Compass, href: "#" },
-    { name: "Journal", icon: BookOpen, href: "/profile/test/journals" },
-    { name: "Settings", icon: Settings, href: "/profile/test/settings" },
-    { name: "Community", icon: Users, href: "#" },
+    {
+      name: "Dashboard",
+      icon: LayoutDashboard,
+      href: "/profile",
+      matchType: "exact",
+    },
+    {
+      name: "Expeditions",
+      icon: Compass,
+      href: "#",
+      matchType: "exact",
+    },
+    {
+      name: "Journal",
+      icon: BookOpen,
+      href: "/profile/journals",
+      matchType: "startsWith",
+    },
+    {
+      name: "Settings",
+      icon: Settings,
+      href: "/profile/settings",
+      matchType: "startsWith",
+    },
+    {
+      name: "Community",
+      icon: Users,
+      href: "#",
+    },
   ];
 
   return (
-    <aside className="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 pt-24 p-6 z-40 border-r bg-background">
+    <aside className="hidden lg:flex flex-col h-screen w-64 fixed left-0 top-0 pt-24 p-6 z-40 border-r bg-background">
       <div className="flex gap-3 mb-4 items-center">
         <div className="w-12 h-12 rounded-xl mb-2 overflow-hidden border">
           <Image
@@ -62,6 +86,7 @@ const page = async () => {
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium text-sm "text-slate-500 hover:bg-slate-200/50
               `}
               matchStyle="bg-primary text-primary-foreground hover:bg-primary/90"
+              matchType={item.matchType as any}
             >
               <Icon size={20} />
               {item.name}
@@ -94,4 +119,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Sidebar;
