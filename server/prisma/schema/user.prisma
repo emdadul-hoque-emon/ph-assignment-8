@@ -27,6 +27,8 @@ model User {
   travelerProfile   TravelerProfile?
   emergencyContacts EmergencyContact[]
   loggedInDevices   LoggedInDevice[]
+  twoFactorOTPs     OTP[]
+  twoFactorAuth     TwoFactorAuth[]
 }
 
 enum AuthProvider {

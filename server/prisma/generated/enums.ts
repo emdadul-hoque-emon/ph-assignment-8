@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const OTPType = {
+  TWO_FACTOR: 'TWO_FACTOR',
+  PASSWORD_RESET: 'PASSWORD_RESET',
+  AUTH_VERIFICATION: 'AUTH_VERIFICATION'
+} as const
+
+export type OTPType = (typeof OTPType)[keyof typeof OTPType]
+
+
 export const TourDifficulty = {
   EASY: 'EASY',
   MODERATE: 'MODERATE',

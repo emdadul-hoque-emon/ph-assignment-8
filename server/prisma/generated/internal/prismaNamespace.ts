@@ -386,8 +386,10 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   EmergencyContact: 'EmergencyContact',
   LoggedInDevice: 'LoggedInDevice',
+  TwoFactorAuth: 'TwoFactorAuth',
   Destination: 'Destination',
   TopAttraction: 'TopAttraction',
+  OTP: 'OTP',
   Review: 'Review',
   Tour: 'Tour',
   TourItinerary: 'TourItinerary',
@@ -412,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "emergencyContact" | "loggedInDevice" | "destination" | "topAttraction" | "review" | "tour" | "tourItinerary" | "tripInclude" | "tripIncludeItem" | "trip" | "user" | "guideProfile" | "travelerProfile"
+    modelProps: "emergencyContact" | "loggedInDevice" | "twoFactorAuth" | "destination" | "topAttraction" | "oTP" | "review" | "tour" | "tourItinerary" | "tripInclude" | "tripIncludeItem" | "trip" | "user" | "guideProfile" | "travelerProfile"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -564,6 +566,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TwoFactorAuth: {
+      payload: Prisma.$TwoFactorAuthPayload<ExtArgs>
+      fields: Prisma.TwoFactorAuthFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TwoFactorAuthFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TwoFactorAuthFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>
+        }
+        findFirst: {
+          args: Prisma.TwoFactorAuthFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TwoFactorAuthFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>
+        }
+        findMany: {
+          args: Prisma.TwoFactorAuthFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>[]
+        }
+        create: {
+          args: Prisma.TwoFactorAuthCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>
+        }
+        createMany: {
+          args: Prisma.TwoFactorAuthCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TwoFactorAuthCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>[]
+        }
+        delete: {
+          args: Prisma.TwoFactorAuthDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>
+        }
+        update: {
+          args: Prisma.TwoFactorAuthUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>
+        }
+        deleteMany: {
+          args: Prisma.TwoFactorAuthDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TwoFactorAuthUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TwoFactorAuthUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>[]
+        }
+        upsert: {
+          args: Prisma.TwoFactorAuthUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TwoFactorAuthPayload>
+        }
+        aggregate: {
+          args: Prisma.TwoFactorAuthAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTwoFactorAuth>
+        }
+        groupBy: {
+          args: Prisma.TwoFactorAuthGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TwoFactorAuthGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TwoFactorAuthCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TwoFactorAuthCountAggregateOutputType> | number
+        }
+      }
+    }
     Destination: {
       payload: Prisma.$DestinationPayload<ExtArgs>
       fields: Prisma.DestinationFieldRefs
@@ -709,6 +785,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TopAttractionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TopAttractionCountAggregateOutputType> | number
+        }
+      }
+    }
+    OTP: {
+      payload: Prisma.$OTPPayload<ExtArgs>
+      fields: Prisma.OTPFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.OTPFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.OTPFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>
+        }
+        findFirst: {
+          args: Prisma.OTPFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.OTPFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>
+        }
+        findMany: {
+          args: Prisma.OTPFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>[]
+        }
+        create: {
+          args: Prisma.OTPCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>
+        }
+        createMany: {
+          args: Prisma.OTPCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.OTPCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>[]
+        }
+        delete: {
+          args: Prisma.OTPDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>
+        }
+        update: {
+          args: Prisma.OTPUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>
+        }
+        deleteMany: {
+          args: Prisma.OTPDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.OTPUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.OTPUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>[]
+        }
+        upsert: {
+          args: Prisma.OTPUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$OTPPayload>
+        }
+        aggregate: {
+          args: Prisma.OTPAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateOTP>
+        }
+        groupBy: {
+          args: Prisma.OTPGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OTPGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.OTPCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.OTPCountAggregateOutputType> | number
         }
       }
     }
@@ -1432,16 +1582,29 @@ export type EmergencyContactScalarFieldEnum = (typeof EmergencyContactScalarFiel
 
 export const LoggedInDeviceScalarFieldEnum = {
   id: 'id',
-  device: 'device',
+  deviceId: 'deviceId',
   ipAddress: 'ipAddress',
   country: 'country',
   city: 'city',
   userId: 'userId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isTrusted: 'isTrusted'
 } as const
 
 export type LoggedInDeviceScalarFieldEnum = (typeof LoggedInDeviceScalarFieldEnum)[keyof typeof LoggedInDeviceScalarFieldEnum]
+
+
+export const TwoFactorAuthScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  secret: 'secret',
+  isEnabled: 'isEnabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TwoFactorAuthScalarFieldEnum = (typeof TwoFactorAuthScalarFieldEnum)[keyof typeof TwoFactorAuthScalarFieldEnum]
 
 
 export const DestinationScalarFieldEnum = {
@@ -1478,6 +1641,18 @@ export const TopAttractionScalarFieldEnum = {
 } as const
 
 export type TopAttractionScalarFieldEnum = (typeof TopAttractionScalarFieldEnum)[keyof typeof TopAttractionScalarFieldEnum]
+
+
+export const OTPScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  userId: 'userId',
+  otp: 'otp',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type OTPScalarFieldEnum = (typeof OTPScalarFieldEnum)[keyof typeof OTPScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {
@@ -1695,6 +1870,13 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1723,6 +1905,20 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'OTPType'
+ */
+export type EnumOTPTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OTPType'>
+    
+
+
+/**
+ * Reference to a field of type 'OTPType[]'
+ */
+export type ListEnumOTPTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OTPType[]'>
+    
+
+
+/**
  * Reference to a field of type 'TourDifficulty'
  */
 export type EnumTourDifficultyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TourDifficulty'>
@@ -1747,13 +1943,6 @@ export type EnumTourCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
  * Reference to a field of type 'TourCategory[]'
  */
 export type ListEnumTourCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TourCategory[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1909,8 +2098,10 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   emergencyContact?: Prisma.EmergencyContactOmit
   loggedInDevice?: Prisma.LoggedInDeviceOmit
+  twoFactorAuth?: Prisma.TwoFactorAuthOmit
   destination?: Prisma.DestinationOmit
   topAttraction?: Prisma.TopAttractionOmit
+  oTP?: Prisma.OTPOmit
   review?: Prisma.ReviewOmit
   tour?: Prisma.TourOmit
   tourItinerary?: Prisma.TourItineraryOmit

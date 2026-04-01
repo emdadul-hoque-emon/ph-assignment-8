@@ -87,6 +87,11 @@ export type StringNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedStringNullableFilter<$PrismaModel> | string | null
 }
 
+export type BoolFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
+}
+
 export type SortOrderInput = {
   sort: Prisma.SortOrder
   nulls?: Prisma.NullsOrder
@@ -108,6 +113,14 @@ export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedStringNullableFilter<$PrismaModel>
   _max?: Prisma.NestedStringNullableFilter<$PrismaModel>
+}
+
+export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
 export type FloatFilter<$PrismaModel = never> = {
@@ -164,6 +177,23 @@ export type IntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
+export type EnumOTPTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OTPType | Prisma.EnumOTPTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OTPType[] | Prisma.ListEnumOTPTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OTPType[] | Prisma.ListEnumOTPTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOTPTypeFilter<$PrismaModel> | $Enums.OTPType
+}
+
+export type EnumOTPTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OTPType | Prisma.EnumOTPTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OTPType[] | Prisma.ListEnumOTPTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OTPType[] | Prisma.ListEnumOTPTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOTPTypeWithAggregatesFilter<$PrismaModel> | $Enums.OTPType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOTPTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOTPTypeFilter<$PrismaModel>
+}
+
 export type EnumTourDifficultyFilter<$PrismaModel = never> = {
   equals?: $Enums.TourDifficulty | Prisma.EnumTourDifficultyFieldRefInput<$PrismaModel>
   in?: $Enums.TourDifficulty[] | Prisma.ListEnumTourDifficultyFieldRefInput<$PrismaModel>
@@ -176,11 +206,6 @@ export type EnumTourCategoryFilter<$PrismaModel = never> = {
   in?: $Enums.TourCategory[] | Prisma.ListEnumTourCategoryFieldRefInput<$PrismaModel>
   notIn?: $Enums.TourCategory[] | Prisma.ListEnumTourCategoryFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumTourCategoryFilter<$PrismaModel> | $Enums.TourCategory
-}
-
-export type BoolFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
 export type EnumTourDifficultyWithAggregatesFilter<$PrismaModel = never> = {
@@ -201,14 +226,6 @@ export type EnumTourCategoryWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTourCategoryFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTourCategoryFilter<$PrismaModel>
-}
-
-export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedBoolFilter<$PrismaModel>
-  _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
 export type EnumTripStatusFilter<$PrismaModel = never> = {
@@ -439,6 +456,11 @@ export type NestedStringNullableFilter<$PrismaModel = never> = {
   not?: Prisma.NestedStringNullableFilter<$PrismaModel> | string | null
 }
 
+export type NestedBoolFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
+}
+
 export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
@@ -465,6 +487,14 @@ export type NestedIntNullableFilter<$PrismaModel = never> = {
   gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
   gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
   not?: Prisma.NestedIntNullableFilter<$PrismaModel> | number | null
+}
+
+export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBoolFilter<$PrismaModel>
+  _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
 export type NestedFloatFilter<$PrismaModel = never> = {
@@ -510,6 +540,23 @@ export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedIntFilter<$PrismaModel>
 }
 
+export type NestedEnumOTPTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OTPType | Prisma.EnumOTPTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OTPType[] | Prisma.ListEnumOTPTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OTPType[] | Prisma.ListEnumOTPTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOTPTypeFilter<$PrismaModel> | $Enums.OTPType
+}
+
+export type NestedEnumOTPTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OTPType | Prisma.EnumOTPTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OTPType[] | Prisma.ListEnumOTPTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OTPType[] | Prisma.ListEnumOTPTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOTPTypeWithAggregatesFilter<$PrismaModel> | $Enums.OTPType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOTPTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOTPTypeFilter<$PrismaModel>
+}
+
 export type NestedEnumTourDifficultyFilter<$PrismaModel = never> = {
   equals?: $Enums.TourDifficulty | Prisma.EnumTourDifficultyFieldRefInput<$PrismaModel>
   in?: $Enums.TourDifficulty[] | Prisma.ListEnumTourDifficultyFieldRefInput<$PrismaModel>
@@ -522,11 +569,6 @@ export type NestedEnumTourCategoryFilter<$PrismaModel = never> = {
   in?: $Enums.TourCategory[] | Prisma.ListEnumTourCategoryFieldRefInput<$PrismaModel>
   notIn?: $Enums.TourCategory[] | Prisma.ListEnumTourCategoryFieldRefInput<$PrismaModel>
   not?: Prisma.NestedEnumTourCategoryFilter<$PrismaModel> | $Enums.TourCategory
-}
-
-export type NestedBoolFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
 }
 
 export type NestedEnumTourDifficultyWithAggregatesFilter<$PrismaModel = never> = {
@@ -547,14 +589,6 @@ export type NestedEnumTourCategoryWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTourCategoryFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTourCategoryFilter<$PrismaModel>
-}
-
-export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-  _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedBoolFilter<$PrismaModel>
-  _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
 export type NestedEnumTripStatusFilter<$PrismaModel = never> = {

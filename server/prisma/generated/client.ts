@@ -48,6 +48,11 @@ export type EmergencyContact = Prisma.EmergencyContactModel
  */
 export type LoggedInDevice = Prisma.LoggedInDeviceModel
 /**
+ * Model TwoFactorAuth
+ * 
+ */
+export type TwoFactorAuth = Prisma.TwoFactorAuthModel
+/**
  * Model Destination
  * 
  */
@@ -57,6 +62,11 @@ export type Destination = Prisma.DestinationModel
  * 
  */
 export type TopAttraction = Prisma.TopAttractionModel
+/**
+ * Model OTP
+ * 
+ */
+export type OTP = Prisma.OTPModel
 /**
  * Model Review
  * 

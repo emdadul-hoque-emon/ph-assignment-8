@@ -770,10 +770,6 @@ export type EnumTourCategoryFieldUpdateOperationsInput = {
   set?: $Enums.TourCategory
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type TourCreateNestedOneWithoutItinerariesInput = {
   create?: Prisma.XOR<Prisma.TourCreateWithoutItinerariesInput, Prisma.TourUncheckedCreateWithoutItinerariesInput>
   connectOrCreate?: Prisma.TourCreateOrConnectWithoutItinerariesInput

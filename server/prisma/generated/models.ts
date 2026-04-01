@@ -10,8 +10,10 @@
  */
 export type * from './models/EmergencyContact'
 export type * from './models/LoggedInDevice'
+export type * from './models/TwoFactorAuth'
 export type * from './models/Destination'
 export type * from './models/TopAttraction'
+export type * from './models/OTP'
 export type * from './models/Review'
 export type * from './models/Tour'
 export type * from './models/TourItinerary'

@@ -1,0 +1,16 @@
+model OTP {
+  id        String   @id @default(uuid())
+  type      OTPType
+  userId    String
+  otp       String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum OTPType {
+  TWO_FACTOR
+  PASSWORD_RESET
+  AUTH_VERIFICATION
+}

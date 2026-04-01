@@ -26,70 +26,76 @@ export type AggregateLoggedInDevice = {
 
 export type LoggedInDeviceMinAggregateOutputType = {
   id: string | null
-  device: string | null
+  deviceId: string | null
   ipAddress: string | null
   country: string | null
   city: string | null
   userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  isTrusted: boolean | null
 }
 
 export type LoggedInDeviceMaxAggregateOutputType = {
   id: string | null
-  device: string | null
+  deviceId: string | null
   ipAddress: string | null
   country: string | null
   city: string | null
   userId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  isTrusted: boolean | null
 }
 
 export type LoggedInDeviceCountAggregateOutputType = {
   id: number
-  device: number
+  deviceId: number
   ipAddress: number
   country: number
   city: number
   userId: number
   createdAt: number
   updatedAt: number
+  isTrusted: number
   _all: number
 }
 
 
 export type LoggedInDeviceMinAggregateInputType = {
   id?: true
-  device?: true
+  deviceId?: true
   ipAddress?: true
   country?: true
   city?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
+  isTrusted?: true
 }
 
 export type LoggedInDeviceMaxAggregateInputType = {
   id?: true
-  device?: true
+  deviceId?: true
   ipAddress?: true
   country?: true
   city?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
+  isTrusted?: true
 }
 
 export type LoggedInDeviceCountAggregateInputType = {
   id?: true
-  device?: true
+  deviceId?: true
   ipAddress?: true
   country?: true
   city?: true
   userId?: true
   createdAt?: true
   updatedAt?: true
+  isTrusted?: true
   _all?: true
 }
 
@@ -167,13 +173,14 @@ export type LoggedInDeviceGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type LoggedInDeviceGroupByOutputType = {
   id: string
-  device: string
-  ipAddress: string
+  deviceId: string
+  ipAddress: string | null
   country: string | null
   city: string | null
   userId: string
   createdAt: Date
   updatedAt: Date
+  isTrusted: boolean
   _count: LoggedInDeviceCountAggregateOutputType | null
   _min: LoggedInDeviceMinAggregateOutputType | null
   _max: LoggedInDeviceMaxAggregateOutputType | null
@@ -199,25 +206,27 @@ export type LoggedInDeviceWhereInput = {
   OR?: Prisma.LoggedInDeviceWhereInput[]
   NOT?: Prisma.LoggedInDeviceWhereInput | Prisma.LoggedInDeviceWhereInput[]
   id?: Prisma.StringFilter<"LoggedInDevice"> | string
-  device?: Prisma.StringFilter<"LoggedInDevice"> | string
-  ipAddress?: Prisma.StringFilter<"LoggedInDevice"> | string
+  deviceId?: Prisma.StringFilter<"LoggedInDevice"> | string
+  ipAddress?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   country?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   city?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   userId?: Prisma.StringFilter<"LoggedInDevice"> | string
   createdAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
+  isTrusted?: Prisma.BoolFilter<"LoggedInDevice"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type LoggedInDeviceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  device?: Prisma.SortOrder
-  ipAddress?: Prisma.SortOrder
+  deviceId?: Prisma.SortOrder
+  ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isTrusted?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -226,25 +235,27 @@ export type LoggedInDeviceWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.LoggedInDeviceWhereInput | Prisma.LoggedInDeviceWhereInput[]
   OR?: Prisma.LoggedInDeviceWhereInput[]
   NOT?: Prisma.LoggedInDeviceWhereInput | Prisma.LoggedInDeviceWhereInput[]
-  device?: Prisma.StringFilter<"LoggedInDevice"> | string
-  ipAddress?: Prisma.StringFilter<"LoggedInDevice"> | string
+  deviceId?: Prisma.StringFilter<"LoggedInDevice"> | string
+  ipAddress?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   country?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   city?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   userId?: Prisma.StringFilter<"LoggedInDevice"> | string
   createdAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
+  isTrusted?: Prisma.BoolFilter<"LoggedInDevice"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type LoggedInDeviceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  device?: Prisma.SortOrder
-  ipAddress?: Prisma.SortOrder
+  deviceId?: Prisma.SortOrder
+  ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isTrusted?: Prisma.SortOrder
   _count?: Prisma.LoggedInDeviceCountOrderByAggregateInput
   _max?: Prisma.LoggedInDeviceMaxOrderByAggregateInput
   _min?: Prisma.LoggedInDeviceMinOrderByAggregateInput
@@ -255,122 +266,133 @@ export type LoggedInDeviceScalarWhereWithAggregatesInput = {
   OR?: Prisma.LoggedInDeviceScalarWhereWithAggregatesInput[]
   NOT?: Prisma.LoggedInDeviceScalarWhereWithAggregatesInput | Prisma.LoggedInDeviceScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"LoggedInDevice"> | string
-  device?: Prisma.StringWithAggregatesFilter<"LoggedInDevice"> | string
-  ipAddress?: Prisma.StringWithAggregatesFilter<"LoggedInDevice"> | string
+  deviceId?: Prisma.StringWithAggregatesFilter<"LoggedInDevice"> | string
+  ipAddress?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
   country?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
   city?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
   userId?: Prisma.StringWithAggregatesFilter<"LoggedInDevice"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LoggedInDevice"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"LoggedInDevice"> | Date | string
+  isTrusted?: Prisma.BoolWithAggregatesFilter<"LoggedInDevice"> | boolean
 }
 
 export type LoggedInDeviceCreateInput = {
   id?: string
-  device: string
-  ipAddress: string
+  deviceId: string
+  ipAddress?: string | null
   country?: string | null
   city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isTrusted?: boolean
   user: Prisma.UserCreateNestedOneWithoutLoggedInDevicesInput
 }
 
 export type LoggedInDeviceUncheckedCreateInput = {
   id?: string
-  device: string
-  ipAddress: string
+  deviceId: string
+  ipAddress?: string | null
   country?: string | null
   city?: string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isTrusted?: boolean
 }
 
 export type LoggedInDeviceUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  device?: Prisma.StringFieldUpdateOperationsInput | string
-  ipAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutLoggedInDevicesNestedInput
 }
 
 export type LoggedInDeviceUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  device?: Prisma.StringFieldUpdateOperationsInput | string
-  ipAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type LoggedInDeviceCreateManyInput = {
   id?: string
-  device: string
-  ipAddress: string
+  deviceId: string
+  ipAddress?: string | null
   country?: string | null
   city?: string | null
   userId: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  isTrusted?: boolean
 }
 
 export type LoggedInDeviceUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  device?: Prisma.StringFieldUpdateOperationsInput | string
-  ipAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type LoggedInDeviceUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  device?: Prisma.StringFieldUpdateOperationsInput | string
-  ipAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type LoggedInDeviceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  device?: Prisma.SortOrder
+  deviceId?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrder
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isTrusted?: Prisma.SortOrder
 }
 
 export type LoggedInDeviceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  device?: Prisma.SortOrder
+  deviceId?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrder
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isTrusted?: Prisma.SortOrder
 }
 
 export type LoggedInDeviceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  device?: Prisma.SortOrder
+  deviceId?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrder
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isTrusted?: Prisma.SortOrder
 }
 
 export type LoggedInDeviceListRelationFilter = {
@@ -385,6 +407,10 @@ export type LoggedInDeviceOrderByRelationAggregateInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type LoggedInDeviceCreateNestedManyWithoutUserInput = {
@@ -431,22 +457,24 @@ export type LoggedInDeviceUncheckedUpdateManyWithoutUserNestedInput = {
 
 export type LoggedInDeviceCreateWithoutUserInput = {
   id?: string
-  device: string
-  ipAddress: string
+  deviceId: string
+  ipAddress?: string | null
   country?: string | null
   city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isTrusted?: boolean
 }
 
 export type LoggedInDeviceUncheckedCreateWithoutUserInput = {
   id?: string
-  device: string
-  ipAddress: string
+  deviceId: string
+  ipAddress?: string | null
   country?: string | null
   city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isTrusted?: boolean
 }
 
 export type LoggedInDeviceCreateOrConnectWithoutUserInput = {
@@ -480,105 +508,114 @@ export type LoggedInDeviceScalarWhereInput = {
   OR?: Prisma.LoggedInDeviceScalarWhereInput[]
   NOT?: Prisma.LoggedInDeviceScalarWhereInput | Prisma.LoggedInDeviceScalarWhereInput[]
   id?: Prisma.StringFilter<"LoggedInDevice"> | string
-  device?: Prisma.StringFilter<"LoggedInDevice"> | string
-  ipAddress?: Prisma.StringFilter<"LoggedInDevice"> | string
+  deviceId?: Prisma.StringFilter<"LoggedInDevice"> | string
+  ipAddress?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   country?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   city?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   userId?: Prisma.StringFilter<"LoggedInDevice"> | string
   createdAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
+  isTrusted?: Prisma.BoolFilter<"LoggedInDevice"> | boolean
 }
 
 export type LoggedInDeviceCreateManyUserInput = {
   id?: string
-  device: string
-  ipAddress: string
+  deviceId: string
+  ipAddress?: string | null
   country?: string | null
   city?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  isTrusted?: boolean
 }
 
 export type LoggedInDeviceUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  device?: Prisma.StringFieldUpdateOperationsInput | string
-  ipAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type LoggedInDeviceUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  device?: Prisma.StringFieldUpdateOperationsInput | string
-  ipAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type LoggedInDeviceUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  device?: Prisma.StringFieldUpdateOperationsInput | string
-  ipAddress?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceId?: Prisma.StringFieldUpdateOperationsInput | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
 
 export type LoggedInDeviceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  device?: boolean
+  deviceId?: boolean
   ipAddress?: boolean
   country?: boolean
   city?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isTrusted?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["loggedInDevice"]>
 
 export type LoggedInDeviceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  device?: boolean
+  deviceId?: boolean
   ipAddress?: boolean
   country?: boolean
   city?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isTrusted?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["loggedInDevice"]>
 
 export type LoggedInDeviceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  device?: boolean
+  deviceId?: boolean
   ipAddress?: boolean
   country?: boolean
   city?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isTrusted?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["loggedInDevice"]>
 
 export type LoggedInDeviceSelectScalar = {
   id?: boolean
-  device?: boolean
+  deviceId?: boolean
   ipAddress?: boolean
   country?: boolean
   city?: boolean
   userId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isTrusted?: boolean
 }
 
-export type LoggedInDeviceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "device" | "ipAddress" | "country" | "city" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["loggedInDevice"]>
+export type LoggedInDeviceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deviceId" | "ipAddress" | "country" | "city" | "userId" | "createdAt" | "updatedAt" | "isTrusted", ExtArgs["result"]["loggedInDevice"]>
 export type LoggedInDeviceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -596,13 +633,14 @@ export type $LoggedInDevicePayload<ExtArgs extends runtime.Types.Extensions.Inte
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    device: string
-    ipAddress: string
+    deviceId: string
+    ipAddress: string | null
     country: string | null
     city: string | null
     userId: string
     createdAt: Date
     updatedAt: Date
+    isTrusted: boolean
   }, ExtArgs["result"]["loggedInDevice"]>
   composites: {}
 }
@@ -1028,13 +1066,14 @@ export interface Prisma__LoggedInDeviceClient<T, Null = never, ExtArgs extends r
  */
 export interface LoggedInDeviceFieldRefs {
   readonly id: Prisma.FieldRef<"LoggedInDevice", 'String'>
-  readonly device: Prisma.FieldRef<"LoggedInDevice", 'String'>
+  readonly deviceId: Prisma.FieldRef<"LoggedInDevice", 'String'>
   readonly ipAddress: Prisma.FieldRef<"LoggedInDevice", 'String'>
   readonly country: Prisma.FieldRef<"LoggedInDevice", 'String'>
   readonly city: Prisma.FieldRef<"LoggedInDevice", 'String'>
   readonly userId: Prisma.FieldRef<"LoggedInDevice", 'String'>
   readonly createdAt: Prisma.FieldRef<"LoggedInDevice", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"LoggedInDevice", 'DateTime'>
+  readonly isTrusted: Prisma.FieldRef<"LoggedInDevice", 'Boolean'>
 }
     
 

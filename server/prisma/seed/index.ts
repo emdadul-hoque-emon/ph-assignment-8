@@ -338,32 +338,31 @@ async function main() {
   // });
 
   const users = await prisma.user.findMany({
-    where: {
-      role: UserRole.TRAVELER,
-    },
     select: {
       id: true,
-      country: true,
-      bio: true,
     },
   });
 
   for (const user of users) {
-    await prisma.travelerProfile.update({
-      where: {
-        userId: user.id,
-      },
+    // await prisma.travelerProfile.update({
+    //   where: {
+    //     userId: user.id,
+    //   },
+    //   data: {
+    //     gender: Gender.MALE,
+    //   },
+    // });
+    // await prisma.guideProfile.update({
+    //   where: {
+    //     userId: user.id,
+    //   },
+    //   data: {
+    //     gender: Gender.MALE,
+    //   },
+    // });
+    await prisma.twoFactorAuth.create({
       data: {
-        gender: Gender.MALE,
-      },
-    });
-
-    await prisma.guideProfile.update({
-      where: {
         userId: user.id,
-      },
-      data: {
-        gender: Gender.MALE,
       },
     });
   }

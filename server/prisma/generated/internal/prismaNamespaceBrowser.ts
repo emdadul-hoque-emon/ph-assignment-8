@@ -53,8 +53,10 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   EmergencyContact: 'EmergencyContact',
   LoggedInDevice: 'LoggedInDevice',
+  TwoFactorAuth: 'TwoFactorAuth',
   Destination: 'Destination',
   TopAttraction: 'TopAttraction',
+  OTP: 'OTP',
   Review: 'Review',
   Tour: 'Tour',
   TourItinerary: 'TourItinerary',
@@ -97,16 +99,29 @@ export type EmergencyContactScalarFieldEnum = (typeof EmergencyContactScalarFiel
 
 export const LoggedInDeviceScalarFieldEnum = {
   id: 'id',
-  device: 'device',
+  deviceId: 'deviceId',
   ipAddress: 'ipAddress',
   country: 'country',
   city: 'city',
   userId: 'userId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  isTrusted: 'isTrusted'
 } as const
 
 export type LoggedInDeviceScalarFieldEnum = (typeof LoggedInDeviceScalarFieldEnum)[keyof typeof LoggedInDeviceScalarFieldEnum]
+
+
+export const TwoFactorAuthScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  secret: 'secret',
+  isEnabled: 'isEnabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TwoFactorAuthScalarFieldEnum = (typeof TwoFactorAuthScalarFieldEnum)[keyof typeof TwoFactorAuthScalarFieldEnum]
 
 
 export const DestinationScalarFieldEnum = {
@@ -143,6 +158,18 @@ export const TopAttractionScalarFieldEnum = {
 } as const
 
 export type TopAttractionScalarFieldEnum = (typeof TopAttractionScalarFieldEnum)[keyof typeof TopAttractionScalarFieldEnum]
+
+
+export const OTPScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  userId: 'userId',
+  otp: 'otp',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type OTPScalarFieldEnum = (typeof OTPScalarFieldEnum)[keyof typeof OTPScalarFieldEnum]
 
 
 export const ReviewScalarFieldEnum = {
