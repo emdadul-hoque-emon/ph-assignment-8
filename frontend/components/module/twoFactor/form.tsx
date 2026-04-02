@@ -5,7 +5,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { verify2FA } from "@/services/auth/auth.service";
+import { sendOtp, verify2FA } from "@/services/auth/auth.service";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { RefreshCcw } from "lucide-react";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
@@ -16,12 +16,16 @@ const OtpForm = () => {
   const router = useRouter();
   const params = useSearchParams();
   const [state, submitOtp, isPending] = useActionState(verify2FA, null);
+  const [otpState, resendOtp, isResending] = useActionState(sendOtp, null);
   const [resendCooldown, setResendCooldown] = useState(120);
+  const [deviceId, setDeviceId] = useState("");
 
   useEffect(() => {
-    const deviceId = localStorage.getItem("device_id");
-    if (!deviceId) {
+    const id = localStorage.getItem("device_id");
+    if (!id) {
       router.push("/login");
+    } else {
+      setDeviceId(id);
     }
   }, [router]);
 
@@ -61,13 +65,35 @@ const OtpForm = () => {
     }
   }, [resendCooldown]);
 
+  const handleResendOtp = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (resendCooldown > 0) return;
+    const formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("deviceId", deviceId);
+    formData.append("type", "TWO_FACTOR");
+    await resendOtp(formData);
+  };
+
+  useEffect(() => {
+    if (otpState && otpState.success) {
+      toast.success("OTP resent successfully");
+
+      const currentTime = Date.now();
+      localStorage.setItem("otp_sent_time", currentTime.toString());
+      setResendCooldown(120);
+
+      const s_params = new URLSearchParams(params.toString());
+      s_params.set("id", otpState.data.id);
+      s_params.set("type", otpState.data.type);
+
+      router.push(`/two-factor-authentication?${s_params.toString()}`);
+    }
+  }, [otpState]);
+
   return (
     <form action={submitOtp} className="relative z-10 space-y-8">
-      <input
-        type="hidden"
-        name="deviceId"
-        value={localStorage.getItem("device_id") as string}
-      />
+      <input type="hidden" name="deviceId" value={deviceId} />
       <input type="hidden" name="id" value={id} />
       <input type="hidden" name="userId" value={userId} />
       <input type="hidden" name="redirect" value={redirect} />
@@ -95,14 +121,18 @@ const OtpForm = () => {
           ))}
         </InputOTP>
       </div>
-      <Button className="w-full py-4 text-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg shadow-primary/20">
+      <Button
+        disabled={isPending || isResending}
+        className="w-full py-4 text-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg shadow-primary/20"
+      >
         Verify Identity
       </Button>
 
       <div className="pt-4 space-y-4 border-t border-outline-variant/10">
         <div className="flex items-center justify-between">
           <button
-            disabled={resendCooldown > 0}
+            disabled={resendCooldown > 0 || isResending}
+            onClick={handleResendOtp}
             type="button"
             className="text-label-md font-bold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 cursor-pointer"
           >

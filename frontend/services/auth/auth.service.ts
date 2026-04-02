@@ -451,16 +451,50 @@ export const verifyOtp = async (prevState: unknown, formData: FormData) => {
 
 export const resend2fa = async (prevState: unknown, formData: FormData) => {};
 
-export const sendOtp = async (email: string) => {
+export const sendOtp = async (prevState: unknown, formData: FormData) => {
+  const schema = z.object({
+    email: z.string().nullable().optional().default(""),
+    userId: z.string().nullable().optional().default(""),
+    type: z.enum(
+      ["PASSWORD_RESET", "TWO_FACTOR", "AUTH_VERIFICATION"],
+      "Invalid type",
+    ),
+  });
+
+  const payload = {
+    email: formData.get("email"),
+    userId: formData.get("userId"),
+    type: formData.get("type"),
+  };
+
   try {
-    const data = await serverFetch.get(`/otp/send-otp?email=${email}`);
+    const validatedPayload = zodValidator(payload, schema);
+    if (!validatedPayload.success) {
+      return {
+        success: false,
+        errors: validatedPayload.errors,
+        formData: payload,
+        message: "validation error",
+      };
+    }
+    const data = await serverFetch.post(`/v2/otp/send-otp`, {
+      body: JSON.stringify(validatedPayload?.data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const res = await data.json();
+    if (!res?.success) {
+      throw new Error(res?.message);
+    }
+
     return res;
   } catch (error: any) {
     return {
       success: false,
       message: error?.message,
       errors: [],
+      formData: payload,
     };
   }
 };
