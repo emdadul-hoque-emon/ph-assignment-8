@@ -242,7 +242,7 @@ const GuideForm = ({ guide, isSignUp, onClose, onSuccess }: IGuideForm) => {
               type="text"
               name="address"
               id="address"
-              placeholder="City, State, Country"
+              placeholder="City, Country"
               // defaultValue={isEdit ? guide.user.address : undefined}
               defaultValue={
                 state?.formData?.address ||

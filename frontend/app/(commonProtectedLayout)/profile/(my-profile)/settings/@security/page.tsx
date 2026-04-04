@@ -1,3 +1,6 @@
+import ChangePasswordModal from "@/components/module/settings/ChangePasswordModal";
+import TwoFactorModal from "@/components/module/settings/TwoFactorModal";
+import WhereAreYouLoggedInModal from "@/components/module/settings/WhereAreYouLoggedInModal";
 import { Card, CardContent } from "@/components/ui/card";
 import { ShieldCheck } from "lucide-react";
 import React from "react";
@@ -16,15 +19,21 @@ const SecurityPage = () => {
 
       <Card className="p-0">
         <CardContent className="p-0 font-semibold">
-          <div className="px-4 py-3 border hover:bg-background/50 rounded-t-2xl transition-all cursor-pointer">
-            Change password
-          </div>
-          <div className="px-4 py-3 border hover:bg-background/50 transition-all cursor-pointer">
-            Two-factor authentication
-          </div>
-          <div className="px-4 py-3 border hover:bg-background/50 rounded-b-2xl transition-all cursor-pointer">
-            Where you&apos;re logged in
-          </div>
+          <ChangePasswordModal>
+            <div className="px-4 py-3 border hover:bg-background/50 rounded-t-2xl transition-all cursor-pointer">
+              Change password
+            </div>
+          </ChangePasswordModal>
+          <TwoFactorModal>
+            <div className="px-4 py-3 border hover:bg-background/50 transition-all cursor-pointer">
+              Two-factor authentication
+            </div>
+          </TwoFactorModal>
+          <WhereAreYouLoggedInModal>
+            <div className="px-4 py-3 border hover:bg-background/50 rounded-b-2xl transition-all cursor-pointer">
+              Where you&apos;re logged in
+            </div>
+          </WhereAreYouLoggedInModal>
         </CardContent>
       </Card>
     </section>

@@ -16,7 +16,7 @@ export default function BecomeGuidePage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary to-primary/80 text-primary-foreground py-20 md:py-32">
+      <section className="relative bg-linear-to-br from-primary to-primary/80 text-primary-foreground py-20 md:py-32">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <Badge
@@ -39,7 +39,7 @@ export default function BecomeGuidePage() {
                 className="h-12 px-8"
                 asChild
               >
-                <Link href="/register?role=GUIDE">Get Started</Link>
+                <Link href="/signup?role=GUIDE">Get Started</Link>
               </Button>
               <Button
                 size="lg"
@@ -220,7 +220,7 @@ export default function BecomeGuidePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-br from-primary/5 via-background to-accent/5">
+      <section className="py-20 bg-linear-to-br from-primary/5 via-background to-accent/5">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h2 className="text-3xl md:text-5xl font-bold text-balance">
@@ -231,7 +231,7 @@ export default function BecomeGuidePage() {
               money on LocalGuide.
             </p>
             <Button size="lg" className="h-12 px-8" asChild>
-              <Link href="/register?role=GUIDE">Become a Guide Today</Link>
+              <Link href="/signup?role=GUIDE">Become a Guide Today</Link>
             </Button>
           </div>
         </div>

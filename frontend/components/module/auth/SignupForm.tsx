@@ -264,7 +264,7 @@ export default function SignupForm({ tourist }: { tourist?: IUser<ITourist> }) {
               type="text"
               name="address"
               id="address"
-              placeholder="City, State, Country"
+              placeholder="City, Country"
               // defaultValue={isEdit ? tourist.user.address : undefined}
               defaultValue={
                 state?.formData?.address || (false ? "tourist.city" : undefined)

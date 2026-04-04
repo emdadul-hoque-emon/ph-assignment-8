@@ -86,7 +86,7 @@ export default async function LoginPage({
           <p className="mt-10 text-center text-slate-600 dark:text-slate-400">
             Don't have an account?{" "}
             <Link
-              href="/register"
+              href="/signup"
               className="text-primary font-bold hover:underline"
             >
               Create an account

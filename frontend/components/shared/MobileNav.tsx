@@ -137,7 +137,7 @@ const MobileNav = ({
                   <Link href="/login">Login</Link>
                 </Button>
                 <Button asChild>
-                  <Link href="/register">Sign Up</Link>
+                  <Link href="/signup">Sign Up</Link>
                 </Button>
               </div>
             ) : (

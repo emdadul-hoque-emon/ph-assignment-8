@@ -46,9 +46,9 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-surface relative pt-6">
       {/* SideNavBar (Shared Component) - Desktop Only */}
-      <Suspense fallback={<ProfileSidebarSkeleton />}>
-        <Sidebar />
-      </Suspense>
+      {/* <Suspense fallback={<ProfileSidebarSkeleton />}> */}
+      <Sidebar />
+      {/* </Suspense> */}
       {/* {sidebar} */}
       <div className="mb-14 lg:mb-0">{children}</div>
       <nav className="fixed bottom-0 left-0 w-full shadow-2xl bg-background flex items-center justify-between lg:hidden z-40 border-t px-4">

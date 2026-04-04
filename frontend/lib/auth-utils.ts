@@ -7,7 +7,7 @@ export interface RouteConfig {
 
 export const authRoutes = [
   "/login",
-  "/register",
+  "/signup",
   "/forgot-password",
   "/forgot-password/verify",
   "/reset-password",

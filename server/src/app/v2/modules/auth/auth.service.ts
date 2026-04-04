@@ -42,7 +42,7 @@ const login = async (res: Response, body: ILogin) => {
   const session = await prisma.loggedInDevice.findFirst({
     where: { userId: user.id, deviceId },
   });
-  console.log(session);
+
   if (twoFactor?.isEnabled) {
     if (session && session.isTrusted) {
       const accessToken = generateJwt(
@@ -97,6 +97,7 @@ const login = async (res: Response, body: ILogin) => {
       return;
     }
     const otp = generateOtp(6);
+    console.log({ otp });
     const otpDoc = await prisma.oTP.create({
       data: {
         userId: user.id,
