@@ -104,6 +104,10 @@ export const LoggedInDeviceScalarFieldEnum = {
   country: 'country',
   city: 'city',
   userId: 'userId',
+  deviceName: 'deviceName',
+  browserName: 'browserName',
+  os: 'os',
+  deviceType: 'deviceType',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   isTrusted: 'isTrusted'

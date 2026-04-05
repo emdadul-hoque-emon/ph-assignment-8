@@ -7,6 +7,7 @@ import { sendEmail } from "../../../utils/sendEmail";
 import prisma from "../../../config/db";
 import { AuthProvider, OTPType } from "../../../../../prisma/generated/enums";
 import { generateOtp } from "../../../helpers/generate-otp";
+import { LoginSchema, VerifyOtpSchema } from "./auth.validation";
 
 interface ILogin {
   email: string;
@@ -16,7 +17,17 @@ interface ILogin {
 }
 
 const login = async (res: Response, body: ILogin) => {
-  const { email, password, deviceId, rememberMe } = body;
+  const {
+    email,
+    password,
+    deviceId,
+    rememberMe,
+    browserName,
+    deviceName,
+    deviceType,
+    os,
+  }: LoginSchema = body;
+  console.log(body, "Body");
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user) {
@@ -39,9 +50,13 @@ const login = async (res: Response, body: ILogin) => {
   const twoFactor = await prisma.twoFactorAuth.findUnique({
     where: { userId: user.id },
   });
-  const session = await prisma.loggedInDevice.findFirst({
-    where: { userId: user.id, deviceId },
+  const session = await prisma.loggedInDevice.findUnique({
+    where: {
+      userId_deviceId: { userId: user.id, deviceId: deviceId },
+    },
   });
+
+  console.log(session, user.id, body);
 
   if (twoFactor?.isEnabled) {
     if (session && session.isTrusted) {
@@ -81,17 +96,25 @@ const login = async (res: Response, body: ILogin) => {
 
       await prisma.loggedInDevice.upsert({
         where: {
-          deviceId,
+          userId_deviceId: { userId: user.id, deviceId: deviceId },
         },
         create: {
           userId: user.id,
           deviceId,
           isTrusted: rememberMe,
+          browserName,
+          deviceName,
+          deviceType,
+          os,
         },
         update: {
           userId: user.id,
           deviceId,
           isTrusted: rememberMe,
+          browserName,
+          deviceName,
+          deviceType,
+          os,
         },
       });
       return;
@@ -158,17 +181,25 @@ const login = async (res: Response, body: ILogin) => {
 
   await prisma.loggedInDevice.upsert({
     where: {
-      deviceId,
+      userId_deviceId: { userId: user.id, deviceId: deviceId },
     },
     create: {
       userId: user.id,
       deviceId,
       isTrusted: rememberMe,
+      deviceName,
+      browserName,
+      os,
+      deviceType,
     },
     update: {
       userId: user.id,
       deviceId,
       isTrusted: rememberMe,
+      deviceName,
+      browserName,
+      os,
+      deviceType,
     },
   });
 };
@@ -264,7 +295,6 @@ const me = async (accessToken: string) => {
     throw new AppError(404, "User not found");
   }
 
-  console.log(user);
   // Remove password from response
   const { guideProfile, travelerProfile, ...userWithoutPassword } = user;
   return {
@@ -421,16 +451,8 @@ const changePassword = async (
   return updatedUser;
 };
 
-const verify2FA = async (
-  payload: {
-    id: string;
-    userId: string;
-    otp: string;
-    deviceId: string;
-    rememberMe: boolean;
-  },
-  res: Response,
-) => {
+const verify2FA = async (payload: VerifyOtpSchema, res: Response) => {
+  console.log(payload);
   const user = await prisma.user.findUnique({
     where: { id: payload.userId },
   });
@@ -457,23 +479,34 @@ const verify2FA = async (
     throw new AppError(400, "OTP expired");
   }
 
-  const updated2FA = await prisma.oTP.delete({
+  await prisma.oTP.delete({
     where: { id: payload.id },
   });
 
-  await prisma.loggedInDevice.upsert({
+  const data = await prisma.loggedInDevice.upsert({
     where: {
-      deviceId: payload.deviceId,
+      userId_deviceId: { userId: payload.userId, deviceId: payload.deviceId },
     },
     update: {
+      deviceId: payload.deviceId,
       isTrusted: payload.rememberMe,
+      deviceName: payload.deviceName,
+      browserName: payload.browserName,
+      os: payload.os,
+      deviceType: payload.deviceType,
     },
     create: {
       userId: payload.userId,
       deviceId: payload.deviceId,
       isTrusted: payload.rememberMe,
+      deviceName: payload.deviceName,
+      browserName: payload.browserName,
+      os: payload.os,
+      deviceType: payload.deviceType,
     },
   });
+
+  console.log(data);
 
   const accessToken = generateJwt(
     {

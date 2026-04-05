@@ -12,7 +12,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { zodValidator } from "@/lib/zod-validator";
 import z from "zod";
 import cookie from "cookie";
-import { is } from "date-fns/locale";
+import { de, is } from "date-fns/locale";
 
 export const getNewAccessToken = async () => {
   try {
@@ -133,6 +133,10 @@ const loginSchema = z.object({
     .min(6, "password must be minimum 6 digit"),
   deviceId: z.string("deviceId is required").min(1, "deviceId is required"),
   rememberMe: z.boolean().default(false),
+  deviceName: z.string().nullable().optional(),
+  browserName: z.string().nullable().optional(),
+  os: z.string().nullable().optional(),
+  deviceType: z.string().nullable().optional(),
 });
 
 export const login = async (prevState: unknown, formData: FormData) => {
@@ -141,11 +145,16 @@ export const login = async (prevState: unknown, formData: FormData) => {
     password: formData.get("password"),
     deviceId: formData.get("deviceId"),
     rememberMe: formData.get("rememberMe") === "on",
+    deviceName: formData.get("deviceName"),
+    browserName: formData.get("browserName"),
+    os: formData.get("os"),
+    deviceType: formData.get("deviceType"),
   };
 
   try {
     const redirectTo = formData.get("redirect") || null;
     const validatedPayload = zodValidator(payload, loginSchema);
+    console.log(validatedPayload);
     if (!validatedPayload.success) {
       return {
         success: false,
@@ -256,6 +265,10 @@ export const verify2FA = async (prevState: unknown, formData: FormData) => {
     userId: z.string("userId is required").min(1, "userId is required"),
     otp: z.string("OTP is required").min(6, "OTP must be minimum 6 digit"),
     rememberMe: z.boolean().default(false),
+    deviceName: z.string().nullable().optional(),
+    browserName: z.string().nullable().optional(),
+    os: z.string().nullable().optional(),
+    deviceType: z.string().nullable().optional(),
   });
 
   const payload = {
@@ -264,6 +277,10 @@ export const verify2FA = async (prevState: unknown, formData: FormData) => {
     userId: formData.get("userId"),
     otp: formData.get("otp"),
     rememberMe: formData.get("rememberMe") === "true",
+    deviceName: formData.get("deviceName"),
+    browserName: formData.get("browserName"),
+    os: formData.get("os"),
+    deviceType: formData.get("deviceType"),
   };
   const redirectTo = formData.get("redirect") || null;
   try {
@@ -499,7 +516,7 @@ export const sendOtp = async (prevState: unknown, formData: FormData) => {
   }
 };
 
-export const changePassword = async (
+export const changePasswordWithReset = async (
   prevState: unknown,
   formData: FormData,
 ) => {
@@ -589,6 +606,65 @@ export const changePassword = async (
       const data = await res.json();
       return data;
     }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.message,
+      errors: [],
+      formData: payload,
+    };
+  }
+};
+
+export const changePassword = async (
+  prevState: unknown,
+  formData: FormData,
+) => {
+  const schema = z
+    .object({
+      currentPassword: z
+        .string("currentPassword is required")
+        .min(6, "currentPassword must be minimum 6 digit"),
+      newPassword: z
+        .string("newPassword is required")
+        .min(6, "newPassword must be minimum 6 digit"),
+      confirmPassword: z
+        .string("confirmPassword is required ")
+        .min(6, "confirmPassword must be minimum 6 digit"),
+    })
+    .superRefine((data, ctx) => {
+      if (data?.newPassword !== data?.confirmPassword) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Passwords do not match",
+          path: ["confirmPassword"],
+        });
+      }
+    });
+
+  const payload = {
+    currentPassword: formData.get("currentPassword")?.toString(),
+    newPassword: formData.get("newPassword")?.toString(),
+    confirmPassword: formData.get("confirmPassword")?.toString(),
+  };
+  try {
+    const validatedPayload = zodValidator(payload, schema);
+    if (!validatedPayload.success) {
+      return {
+        success: false,
+        errors: validatedPayload.errors,
+        formData: payload,
+        message: "validation error",
+      };
+    }
+    const res = await serverFetch.post("/v2/auth/change-password", {
+      body: JSON.stringify(validatedPayload.data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    return data;
   } catch (error: any) {
     return {
       success: false,

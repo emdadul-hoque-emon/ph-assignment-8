@@ -4,12 +4,7 @@ import { sendResponse } from "../../../utils/sendResponse";
 import { AuthService } from "./auth.service";
 
 const login = catchAsync(async (req, res, next) => {
-  const data = await AuthService.login(res, {
-    email: req.body.email,
-    password: req.body.password,
-    deviceId: req.body.deviceId,
-    rememberMe: req.body.rememberMe,
-  });
+  const data = await AuthService.login(res, req.body);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -130,16 +125,7 @@ const verify2FA = catchAsync(async (req, res, next) => {
     statusCode: 200,
     message: "2FA verified successfully",
     success: true,
-    data: await AuthService.verify2FA(
-      {
-        id: req.body.id,
-        userId: req.body.userId,
-        otp: req.body.otp,
-        deviceId: req.body.deviceId,
-        rememberMe: req.body.rememberMe,
-      },
-      res,
-    ),
+    data: await AuthService.verify2FA(req.body, res),
   });
 });
 

@@ -31,6 +31,10 @@ export type LoggedInDeviceMinAggregateOutputType = {
   country: string | null
   city: string | null
   userId: string | null
+  deviceName: string | null
+  browserName: string | null
+  os: string | null
+  deviceType: string | null
   createdAt: Date | null
   updatedAt: Date | null
   isTrusted: boolean | null
@@ -43,6 +47,10 @@ export type LoggedInDeviceMaxAggregateOutputType = {
   country: string | null
   city: string | null
   userId: string | null
+  deviceName: string | null
+  browserName: string | null
+  os: string | null
+  deviceType: string | null
   createdAt: Date | null
   updatedAt: Date | null
   isTrusted: boolean | null
@@ -55,6 +63,10 @@ export type LoggedInDeviceCountAggregateOutputType = {
   country: number
   city: number
   userId: number
+  deviceName: number
+  browserName: number
+  os: number
+  deviceType: number
   createdAt: number
   updatedAt: number
   isTrusted: number
@@ -69,6 +81,10 @@ export type LoggedInDeviceMinAggregateInputType = {
   country?: true
   city?: true
   userId?: true
+  deviceName?: true
+  browserName?: true
+  os?: true
+  deviceType?: true
   createdAt?: true
   updatedAt?: true
   isTrusted?: true
@@ -81,6 +97,10 @@ export type LoggedInDeviceMaxAggregateInputType = {
   country?: true
   city?: true
   userId?: true
+  deviceName?: true
+  browserName?: true
+  os?: true
+  deviceType?: true
   createdAt?: true
   updatedAt?: true
   isTrusted?: true
@@ -93,6 +113,10 @@ export type LoggedInDeviceCountAggregateInputType = {
   country?: true
   city?: true
   userId?: true
+  deviceName?: true
+  browserName?: true
+  os?: true
+  deviceType?: true
   createdAt?: true
   updatedAt?: true
   isTrusted?: true
@@ -178,6 +202,10 @@ export type LoggedInDeviceGroupByOutputType = {
   country: string | null
   city: string | null
   userId: string
+  deviceName: string | null
+  browserName: string | null
+  os: string | null
+  deviceType: string | null
   createdAt: Date
   updatedAt: Date
   isTrusted: boolean
@@ -211,6 +239,10 @@ export type LoggedInDeviceWhereInput = {
   country?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   city?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   userId?: Prisma.StringFilter<"LoggedInDevice"> | string
+  deviceName?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  browserName?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  os?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  deviceType?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   isTrusted?: Prisma.BoolFilter<"LoggedInDevice"> | boolean
@@ -224,6 +256,10 @@ export type LoggedInDeviceOrderByWithRelationInput = {
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
+  deviceName?: Prisma.SortOrderInput | Prisma.SortOrder
+  browserName?: Prisma.SortOrderInput | Prisma.SortOrder
+  os?: Prisma.SortOrderInput | Prisma.SortOrder
+  deviceType?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isTrusted?: Prisma.SortOrder
@@ -232,19 +268,24 @@ export type LoggedInDeviceOrderByWithRelationInput = {
 
 export type LoggedInDeviceWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  deviceId?: string
+  userId_deviceId?: Prisma.LoggedInDeviceUserIdDeviceIdCompoundUniqueInput
   AND?: Prisma.LoggedInDeviceWhereInput | Prisma.LoggedInDeviceWhereInput[]
   OR?: Prisma.LoggedInDeviceWhereInput[]
   NOT?: Prisma.LoggedInDeviceWhereInput | Prisma.LoggedInDeviceWhereInput[]
+  deviceId?: Prisma.StringFilter<"LoggedInDevice"> | string
   ipAddress?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   country?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   city?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   userId?: Prisma.StringFilter<"LoggedInDevice"> | string
+  deviceName?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  browserName?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  os?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  deviceType?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   isTrusted?: Prisma.BoolFilter<"LoggedInDevice"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "deviceId">
+}, "id" | "userId_deviceId">
 
 export type LoggedInDeviceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -253,6 +294,10 @@ export type LoggedInDeviceOrderByWithAggregationInput = {
   country?: Prisma.SortOrderInput | Prisma.SortOrder
   city?: Prisma.SortOrderInput | Prisma.SortOrder
   userId?: Prisma.SortOrder
+  deviceName?: Prisma.SortOrderInput | Prisma.SortOrder
+  browserName?: Prisma.SortOrderInput | Prisma.SortOrder
+  os?: Prisma.SortOrderInput | Prisma.SortOrder
+  deviceType?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isTrusted?: Prisma.SortOrder
@@ -271,6 +316,10 @@ export type LoggedInDeviceScalarWhereWithAggregatesInput = {
   country?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
   city?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
   userId?: Prisma.StringWithAggregatesFilter<"LoggedInDevice"> | string
+  deviceName?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
+  browserName?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
+  os?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
+  deviceType?: Prisma.StringNullableWithAggregatesFilter<"LoggedInDevice"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LoggedInDevice"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"LoggedInDevice"> | Date | string
   isTrusted?: Prisma.BoolWithAggregatesFilter<"LoggedInDevice"> | boolean
@@ -282,6 +331,10 @@ export type LoggedInDeviceCreateInput = {
   ipAddress?: string | null
   country?: string | null
   city?: string | null
+  deviceName?: string | null
+  browserName?: string | null
+  os?: string | null
+  deviceType?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   isTrusted?: boolean
@@ -295,6 +348,10 @@ export type LoggedInDeviceUncheckedCreateInput = {
   country?: string | null
   city?: string | null
   userId: string
+  deviceName?: string | null
+  browserName?: string | null
+  os?: string | null
+  deviceType?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   isTrusted?: boolean
@@ -306,6 +363,10 @@ export type LoggedInDeviceUpdateInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  os?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -319,6 +380,10 @@ export type LoggedInDeviceUncheckedUpdateInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  os?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -331,6 +396,10 @@ export type LoggedInDeviceCreateManyInput = {
   country?: string | null
   city?: string | null
   userId: string
+  deviceName?: string | null
+  browserName?: string | null
+  os?: string | null
+  deviceType?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   isTrusted?: boolean
@@ -342,6 +411,10 @@ export type LoggedInDeviceUpdateManyMutationInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  os?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -354,9 +427,18 @@ export type LoggedInDeviceUncheckedUpdateManyInput = {
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userId?: Prisma.StringFieldUpdateOperationsInput | string
+  deviceName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  os?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type LoggedInDeviceUserIdDeviceIdCompoundUniqueInput = {
+  userId: string
+  deviceId: string
 }
 
 export type LoggedInDeviceCountOrderByAggregateInput = {
@@ -366,6 +448,10 @@ export type LoggedInDeviceCountOrderByAggregateInput = {
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  deviceName?: Prisma.SortOrder
+  browserName?: Prisma.SortOrder
+  os?: Prisma.SortOrder
+  deviceType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isTrusted?: Prisma.SortOrder
@@ -378,6 +464,10 @@ export type LoggedInDeviceMaxOrderByAggregateInput = {
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  deviceName?: Prisma.SortOrder
+  browserName?: Prisma.SortOrder
+  os?: Prisma.SortOrder
+  deviceType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isTrusted?: Prisma.SortOrder
@@ -390,6 +480,10 @@ export type LoggedInDeviceMinOrderByAggregateInput = {
   country?: Prisma.SortOrder
   city?: Prisma.SortOrder
   userId?: Prisma.SortOrder
+  deviceName?: Prisma.SortOrder
+  browserName?: Prisma.SortOrder
+  os?: Prisma.SortOrder
+  deviceType?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   isTrusted?: Prisma.SortOrder
@@ -461,6 +555,10 @@ export type LoggedInDeviceCreateWithoutUserInput = {
   ipAddress?: string | null
   country?: string | null
   city?: string | null
+  deviceName?: string | null
+  browserName?: string | null
+  os?: string | null
+  deviceType?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   isTrusted?: boolean
@@ -472,6 +570,10 @@ export type LoggedInDeviceUncheckedCreateWithoutUserInput = {
   ipAddress?: string | null
   country?: string | null
   city?: string | null
+  deviceName?: string | null
+  browserName?: string | null
+  os?: string | null
+  deviceType?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   isTrusted?: boolean
@@ -513,6 +615,10 @@ export type LoggedInDeviceScalarWhereInput = {
   country?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   city?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   userId?: Prisma.StringFilter<"LoggedInDevice"> | string
+  deviceName?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  browserName?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  os?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
+  deviceType?: Prisma.StringNullableFilter<"LoggedInDevice"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LoggedInDevice"> | Date | string
   isTrusted?: Prisma.BoolFilter<"LoggedInDevice"> | boolean
@@ -524,6 +630,10 @@ export type LoggedInDeviceCreateManyUserInput = {
   ipAddress?: string | null
   country?: string | null
   city?: string | null
+  deviceName?: string | null
+  browserName?: string | null
+  os?: string | null
+  deviceType?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   isTrusted?: boolean
@@ -535,6 +645,10 @@ export type LoggedInDeviceUpdateWithoutUserInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  os?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -546,6 +660,10 @@ export type LoggedInDeviceUncheckedUpdateWithoutUserInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  os?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -557,6 +675,10 @@ export type LoggedInDeviceUncheckedUpdateManyWithoutUserInput = {
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   country?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   city?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  browserName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  os?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  deviceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isTrusted?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -571,6 +693,10 @@ export type LoggedInDeviceSelect<ExtArgs extends runtime.Types.Extensions.Intern
   country?: boolean
   city?: boolean
   userId?: boolean
+  deviceName?: boolean
+  browserName?: boolean
+  os?: boolean
+  deviceType?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   isTrusted?: boolean
@@ -584,6 +710,10 @@ export type LoggedInDeviceSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   country?: boolean
   city?: boolean
   userId?: boolean
+  deviceName?: boolean
+  browserName?: boolean
+  os?: boolean
+  deviceType?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   isTrusted?: boolean
@@ -597,6 +727,10 @@ export type LoggedInDeviceSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   country?: boolean
   city?: boolean
   userId?: boolean
+  deviceName?: boolean
+  browserName?: boolean
+  os?: boolean
+  deviceType?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   isTrusted?: boolean
@@ -610,12 +744,16 @@ export type LoggedInDeviceSelectScalar = {
   country?: boolean
   city?: boolean
   userId?: boolean
+  deviceName?: boolean
+  browserName?: boolean
+  os?: boolean
+  deviceType?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   isTrusted?: boolean
 }
 
-export type LoggedInDeviceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deviceId" | "ipAddress" | "country" | "city" | "userId" | "createdAt" | "updatedAt" | "isTrusted", ExtArgs["result"]["loggedInDevice"]>
+export type LoggedInDeviceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deviceId" | "ipAddress" | "country" | "city" | "userId" | "deviceName" | "browserName" | "os" | "deviceType" | "createdAt" | "updatedAt" | "isTrusted", ExtArgs["result"]["loggedInDevice"]>
 export type LoggedInDeviceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -638,6 +776,10 @@ export type $LoggedInDevicePayload<ExtArgs extends runtime.Types.Extensions.Inte
     country: string | null
     city: string | null
     userId: string
+    deviceName: string | null
+    browserName: string | null
+    os: string | null
+    deviceType: string | null
     createdAt: Date
     updatedAt: Date
     isTrusted: boolean
@@ -1071,6 +1213,10 @@ export interface LoggedInDeviceFieldRefs {
   readonly country: Prisma.FieldRef<"LoggedInDevice", 'String'>
   readonly city: Prisma.FieldRef<"LoggedInDevice", 'String'>
   readonly userId: Prisma.FieldRef<"LoggedInDevice", 'String'>
+  readonly deviceName: Prisma.FieldRef<"LoggedInDevice", 'String'>
+  readonly browserName: Prisma.FieldRef<"LoggedInDevice", 'String'>
+  readonly os: Prisma.FieldRef<"LoggedInDevice", 'String'>
+  readonly deviceType: Prisma.FieldRef<"LoggedInDevice", 'String'>
   readonly createdAt: Prisma.FieldRef<"LoggedInDevice", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"LoggedInDevice", 'DateTime'>
   readonly isTrusted: Prisma.FieldRef<"LoggedInDevice", 'Boolean'>

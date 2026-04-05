@@ -8,6 +8,10 @@ export const loginSchema = z.object({
     .min(6, "Password must be minimum 6 characters"),
   deviceId: z.string().min(1, "Device ID is required"),
   rememberMe: z.boolean().default(false),
+  deviceName: z.string().nullable().optional(),
+  browserName: z.string().nullable().optional(),
+  os: z.string().nullable().optional(),
+  deviceType: z.string().nullable().optional(),
 });
 
 export const googleLoginSchema = z.object({
@@ -42,3 +46,18 @@ export const changePasswordSchema = z.object({
 export const forgotPasswordSchema = z.object({
   email: z.string().email("Email is required"),
 });
+
+export const verifyOtpSchema = z.object({
+  id: z.string("Id is required").min(1, "Id is required"),
+  userId: z.string("User Id is required").min(1, "User Id is required"),
+  deviceId: z.string("Device Id is required").min(1, "Device Id is required"),
+  otp: z.string("OTP is required").min(1, "OTP is required"),
+  rememberMe: z.boolean().default(false),
+  deviceName: z.string().nullable().optional(),
+  browserName: z.string().nullable().optional(),
+  os: z.string().nullable().optional(),
+  deviceType: z.string().nullable().optional(),
+});
+
+export type VerifyOtpSchema = z.infer<typeof verifyOtpSchema>;
+export type LoginSchema = z.infer<typeof loginSchema>;

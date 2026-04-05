@@ -8,6 +8,7 @@ import {
   resetPasswordSchema,
   changePasswordSchema,
   forgotPasswordSchema,
+  verifyOtpSchema,
 } from "./auth.validation";
 import { checkAuth } from "../../../middlewares/checkAuth";
 import { UserRole } from "../../../../../prisma/generated/enums";
@@ -30,7 +31,11 @@ authRouter.post(
   AuthController.loginWithFacebook,
 );
 
-authRouter.post("/verify-otp", AuthController.verify2FA);
+authRouter.post(
+  "/verify-otp",
+  validateRequest(verifyOtpSchema),
+  AuthController.verify2FA,
+);
 
 // Get current user
 authRouter.get("/me", AuthController.getMe);

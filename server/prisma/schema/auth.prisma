@@ -11,26 +11,39 @@ model EmergencyContact {
 }
 
 model LoggedInDevice {
-  id        String   @id @default(uuid())
-  deviceId  String   @unique
-  ipAddress String?
-  country   String?
-  city      String?
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  isTrusted Boolean  @default(false)
+  id          String   @id @default(uuid())
+  deviceId    String
+  ipAddress   String?
+  country     String?
+  city        String?
+  userId      String
+  deviceName  String?
+  browserName String?
+  os          String?
+  deviceType  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isTrusted   Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, deviceId])
+}
+
+model TwoFactorAuth {
+  id        String          @id @default(uuid())
+  userId    String          @unique
+  method    TwoFactorMethod @default(EMAIL)
+  secret    String?
+  isEnabled Boolean         @default(false)
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model TwoFactorAuth {
-  id        String   @id @default(uuid())
-  userId    String   @unique
-  secret    String?
-  isEnabled Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+enum TwoFactorMethod {
+  TOTP
+  EMAIL
+  SECURITY_KEY
 }

@@ -5,6 +5,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { getDeviceInfo } from "@/lib/getDeviceInfo";
 import { sendOtp, verify2FA } from "@/services/auth/auth.service";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { RefreshCcw } from "lucide-react";
@@ -19,6 +20,12 @@ const OtpForm = () => {
   const [otpState, resendOtp, isResending] = useActionState(sendOtp, null);
   const [resendCooldown, setResendCooldown] = useState(120);
   const [deviceId, setDeviceId] = useState("");
+  const [deviceInfo, setDeviceInfo] = useState<{
+    deviceName?: string;
+    browserName?: string;
+    os?: string;
+    deviceType?: string;
+  }>({});
 
   useEffect(() => {
     const id = localStorage.getItem("device_id");
@@ -28,6 +35,17 @@ const OtpForm = () => {
       setDeviceId(id);
     }
   }, [router]);
+
+  useEffect(() => {
+    const deviceInfo = getDeviceInfo();
+
+    setDeviceInfo({
+      deviceName: deviceInfo.deviceName,
+      browserName: deviceInfo.browserName,
+      os: deviceInfo.os,
+      deviceType: deviceInfo.deviceType,
+    });
+  }, []);
 
   const searchParams = new URLSearchParams(params.toString());
   const id = searchParams.get("id") as string;
@@ -98,6 +116,22 @@ const OtpForm = () => {
       <input type="hidden" name="userId" value={userId} />
       <input type="hidden" name="redirect" value={redirect} />
       <input type="hidden" name="rememberMe" value={rememberMe} />
+      <input
+        type="hidden"
+        name="deviceName"
+        value={deviceInfo.deviceName || ""}
+      />
+      <input
+        type="hidden"
+        name="browserName"
+        value={deviceInfo.browserName || ""}
+      />
+      <input type="hidden" name="os" value={deviceInfo.os || ""} />
+      <input
+        type="hidden"
+        name="deviceType"
+        value={deviceInfo.deviceType || ""}
+      />
       <div className="space-y-2">
         <h2 className="text-headline-sm font-bold text-on-surface">
           Enter Security Code

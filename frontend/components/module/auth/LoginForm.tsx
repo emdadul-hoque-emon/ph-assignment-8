@@ -11,11 +11,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { login } from "@/services/auth/auth.service";
+import { getDeviceInfo } from "@/lib/getDeviceInfo";
 
 export default function LoginForm({ redirect }: { redirect?: string }) {
   const [showPassword, setShowPassword] = useState(false);
   const [data, loginAction, isPending] = useActionState(login, null);
   const [deviceId, setDeviceId] = useState<string | null>();
+  const [deviceInfo, setDeviceInfo] = useState<{
+    deviceName?: string;
+    browserName?: string;
+    os?: string;
+    deviceType?: string;
+  }>({});
 
   useEffect(() => {
     if (data && !data?.success && data.message) {
@@ -34,11 +41,38 @@ export default function LoginForm({ redirect }: { redirect?: string }) {
     }
   }, []);
 
+  useEffect(() => {
+    const deviceInfo = getDeviceInfo();
+
+    setDeviceInfo({
+      deviceName: deviceInfo.deviceName,
+      browserName: deviceInfo.browserName,
+      os: deviceInfo.os,
+      deviceType: deviceInfo.deviceType,
+    });
+  }, []);
+
   return (
     <form action={loginAction} className="space-y-5">
       {redirect && <input type="hidden" name="redirect" value={redirect} />}
 
       {deviceId && <input type="hidden" name="deviceId" value={deviceId} />}
+      <input
+        type="hidden"
+        name="deviceName"
+        value={deviceInfo.deviceName || ""}
+      />
+      <input
+        type="hidden"
+        name="browserName"
+        value={deviceInfo.browserName || ""}
+      />
+      <input type="hidden" name="os" value={deviceInfo.os || ""} />
+      <input
+        type="hidden"
+        name="deviceType"
+        value={deviceInfo.deviceType || ""}
+      />
 
       <div className="space-y-2">
         <Label
