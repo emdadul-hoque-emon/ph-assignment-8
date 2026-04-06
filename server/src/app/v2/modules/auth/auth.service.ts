@@ -1,11 +1,18 @@
 import { Response } from "express";
 import bcrypt from "bcryptjs";
+import speakeasy from "speakeasy";
+import QRCode from "qrcode";
+
 import AppError from "../../../helpers/appError";
 import { generateJwt, verifyJwt } from "../../../utils/jwt";
 import { envVars } from "../../../config/env";
 import { sendEmail } from "../../../utils/sendEmail";
 import prisma from "../../../config/db";
-import { AuthProvider, OTPType } from "../../../../../prisma/generated/enums";
+import {
+  AuthProvider,
+  OTPType,
+  TwoFactorMethod,
+} from "../../../../../prisma/generated/enums";
 import { generateOtp } from "../../../helpers/generate-otp";
 import { LoginSchema, VerifyOtpSchema } from "./auth.validation";
 
@@ -452,7 +459,6 @@ const changePassword = async (
 };
 
 const verify2FA = async (payload: VerifyOtpSchema, res: Response) => {
-  console.log(payload);
   const user = await prisma.user.findUnique({
     where: { id: payload.userId },
   });
@@ -506,8 +512,6 @@ const verify2FA = async (payload: VerifyOtpSchema, res: Response) => {
     },
   });
 
-  console.log(data);
-
   const accessToken = generateJwt(
     {
       userId: user.id,
@@ -543,6 +547,27 @@ const verify2FA = async (payload: VerifyOtpSchema, res: Response) => {
   });
 };
 
+const enable2FA = async (
+  userId: string,
+  email: string,
+  method: TwoFactorMethod,
+) => {
+  if (method === TwoFactorMethod.TOTP) {
+    const secret = speakeasy.generateSecret({
+      name: `TourBuddy (${email})`,
+    });
+
+    const qrCode = await QRCode.toDataURL(secret.otpauth_url as string);
+
+    return {
+      qrCode,
+      secret: secret.base32,
+    };
+  }
+
+  return null;
+};
+
 export const AuthService = {
   login,
   loginWithProvider,
@@ -552,4 +577,5 @@ export const AuthService = {
   resetPassword,
   changePassword,
   verify2FA,
+  enable2FA,
 };

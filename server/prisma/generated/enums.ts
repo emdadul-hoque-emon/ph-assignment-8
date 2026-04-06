@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const TwoFactorMethod = {
+  TOTP: 'TOTP',
+  EMAIL: 'EMAIL',
+  SECURITY_KEY: 'SECURITY_KEY'
+} as const
+
+export type TwoFactorMethod = (typeof TwoFactorMethod)[keyof typeof TwoFactorMethod]
+
+
 export const OTPType = {
   TWO_FACTOR: 'TWO_FACTOR',
   PASSWORD_RESET: 'PASSWORD_RESET',

@@ -684,3 +684,43 @@ export const logout = async () => {
     return false;
   }
 };
+
+export const registerTwoFactor = async (
+  prevState: unknown,
+  formData: FormData,
+) => {
+  const schema = z.object({
+    method: z.enum(["EMAIL", "TOTP", "PASS_KEY"], "Invalid method"),
+  });
+  const payload = {
+    method: formData.get("method"),
+  };
+
+  try {
+    const validatedPayload = zodValidator(payload, schema);
+    if (!validatedPayload.success) {
+      return {
+        success: false,
+        errors: validatedPayload.errors,
+        formData: payload,
+        message: "validation error",
+      };
+    }
+
+    const res = await serverFetch.post("/v2/auth/two-factor/register", {
+      body: JSON.stringify(validatedPayload.data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.message,
+      errors: [],
+      formData: payload,
+    };
+  }
+};

@@ -119,6 +119,7 @@ export type LoggedInDeviceScalarFieldEnum = (typeof LoggedInDeviceScalarFieldEnu
 export const TwoFactorAuthScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  method: 'method',
   secret: 'secret',
   isEnabled: 'isEnabled',
   createdAt: 'createdAt',

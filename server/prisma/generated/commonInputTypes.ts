@@ -123,6 +123,23 @@ export type BoolWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
 }
 
+export type EnumTwoFactorMethodFilter<$PrismaModel = never> = {
+  equals?: $Enums.TwoFactorMethod | Prisma.EnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  in?: $Enums.TwoFactorMethod[] | Prisma.ListEnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TwoFactorMethod[] | Prisma.ListEnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTwoFactorMethodFilter<$PrismaModel> | $Enums.TwoFactorMethod
+}
+
+export type EnumTwoFactorMethodWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TwoFactorMethod | Prisma.EnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  in?: $Enums.TwoFactorMethod[] | Prisma.ListEnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TwoFactorMethod[] | Prisma.ListEnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTwoFactorMethodWithAggregatesFilter<$PrismaModel> | $Enums.TwoFactorMethod
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTwoFactorMethodFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTwoFactorMethodFilter<$PrismaModel>
+}
+
 export type FloatFilter<$PrismaModel = never> = {
   equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
@@ -495,6 +512,23 @@ export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedBoolFilter<$PrismaModel>
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
+}
+
+export type NestedEnumTwoFactorMethodFilter<$PrismaModel = never> = {
+  equals?: $Enums.TwoFactorMethod | Prisma.EnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  in?: $Enums.TwoFactorMethod[] | Prisma.ListEnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TwoFactorMethod[] | Prisma.ListEnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTwoFactorMethodFilter<$PrismaModel> | $Enums.TwoFactorMethod
+}
+
+export type NestedEnumTwoFactorMethodWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TwoFactorMethod | Prisma.EnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  in?: $Enums.TwoFactorMethod[] | Prisma.ListEnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TwoFactorMethod[] | Prisma.ListEnumTwoFactorMethodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTwoFactorMethodWithAggregatesFilter<$PrismaModel> | $Enums.TwoFactorMethod
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTwoFactorMethodFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTwoFactorMethodFilter<$PrismaModel>
 }
 
 export type NestedFloatFilter<$PrismaModel = never> = {

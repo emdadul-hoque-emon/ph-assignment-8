@@ -1602,6 +1602,7 @@ export type LoggedInDeviceScalarFieldEnum = (typeof LoggedInDeviceScalarFieldEnu
 export const TwoFactorAuthScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
+  method: 'method',
   secret: 'secret',
   isEnabled: 'isEnabled',
   createdAt: 'createdAt',
@@ -1877,6 +1878,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'TwoFactorMethod'
+ */
+export type EnumTwoFactorMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TwoFactorMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'TwoFactorMethod[]'
+ */
+export type ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TwoFactorMethod[]'>
     
 
 
