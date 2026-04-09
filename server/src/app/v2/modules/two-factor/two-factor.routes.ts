@@ -15,5 +15,20 @@ twoFactorRoutes.post(
   checkAuth(...Object.values(UserRole)),
   TwoFactorController.sendOtp,
 );
+twoFactorRoutes.post(
+  "/verify-otp",
+  checkAuth(...Object.values(UserRole)),
+  TwoFactorController.verifyOtp,
+);
+twoFactorRoutes.post(
+  "/disable",
+  checkAuth(...Object.values(UserRole)),
+  TwoFactorController.disable2fa,
+);
+twoFactorRoutes.get(
+  "/get",
+  checkAuth(...Object.values(UserRole)),
+  TwoFactorController.get2fa,
+);
 
 export default twoFactorRoutes;

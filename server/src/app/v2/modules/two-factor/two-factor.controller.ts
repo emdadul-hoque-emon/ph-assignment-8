@@ -38,7 +38,53 @@ const sendOtp = catchAsync(async (req, res, next) => {
   });
 });
 
+const verifyOtp = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  if (!user) {
+    throw new AppError(404, "No user found");
+  }
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Otp verified successfully",
+    success: true,
+    data: await TwoFactorService.verifyOtp(
+      user.userId,
+      req.body.otp,
+      req.body.id,
+    ),
+  });
+});
+
+const disable2fa = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  if (!user) {
+    throw new AppError(404, "No user found");
+  }
+  sendResponse(res, {
+    statusCode: 200,
+    message: "2FA disabled successfully",
+    success: true,
+    data: await TwoFactorService.disable2FA(user.userId),
+  });
+});
+
+const get2fa = catchAsync(async (req, res, next) => {
+  const user = req.user;
+  if (!user) {
+    throw new AppError(404, "No user found");
+  }
+  sendResponse(res, {
+    statusCode: 200,
+    message: "2FA fetched successfully",
+    success: true,
+    data: await TwoFactorService.get2FA(user.userId),
+  });
+});
+
 export const TwoFactorController = {
   register2fa,
   sendOtp,
+  verifyOtp,
+  disable2fa,
+  get2fa,
 };

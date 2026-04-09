@@ -423,7 +423,7 @@ export const forgotPassword = async (
 export const verifyOtp = async (prevState: unknown, formData: FormData) => {
   const schema = z.object({
     otp: z.string("OTP is required").min(6, "OTP must be minimum 6 digit"),
-    id: z.string("id is required").regex(/^[0-9a-fA-F]{24}$/, "Invalid id"),
+    id: z.string("id is required").min(1, "id is required"),
   });
   const payload = {
     otp: formData.get("otp"),
@@ -440,15 +440,12 @@ export const verifyOtp = async (prevState: unknown, formData: FormData) => {
       };
     }
 
-    const data = await serverFetch.post(
-      `/otp/verify-otp?session_id=${validatedPayload?.data?.id}`,
-      {
-        body: JSON.stringify({ otp: validatedPayload?.data?.otp }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const data = await serverFetch.post(`/v2/two-factor/verify-otp`, {
+      body: JSON.stringify(validatedPayload.data),
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+    });
     const res = await data.json();
 
     if (!res?.success) {

@@ -56,7 +56,6 @@ const sendOtp = async (userId: string, email: string, docId: string | null) => {
           expiresAt: new Date(Date.now() + 10 * 60 * 1000),
         },
       });
-      return otpDoc;
     } else {
       await prisma.oTP.deleteMany({
         where: {
@@ -98,6 +97,13 @@ const sendOtp = async (userId: string, email: string, docId: string | null) => {
     throw new AppError(500, "Error sending OTP");
   }
 
+  console.log({
+    to: email,
+    subject: "Two-factor authentication",
+    templateName: "otp-email",
+    templateData: { otp, otpExpiresInMinutes: 10 },
+  });
+
   try {
     await sendEmail({
       to: email,
@@ -106,10 +112,78 @@ const sendOtp = async (userId: string, email: string, docId: string | null) => {
       templateData: { otp, otpExpiresInMinutes: 10 },
     });
   } catch (error) {
+    console.log(error);
     throw new AppError(500, "Error sending OTP");
   }
 
   return otpDoc;
 };
 
-export const TwoFactorService = { enable2FA, sendOtp };
+const verifyOtp = async (
+  userId: string,
+  otp: string,
+  docId: string,
+  method: TwoFactorMethod = TwoFactorMethod.EMAIL,
+) => {
+  const doc = await prisma.oTP.findUnique({ where: { id: docId } });
+  if (!doc) {
+    throw new AppError(400, "Otp not found");
+  }
+  if (doc.userId !== userId) {
+    throw new AppError(403, "Invalid otp");
+  }
+  if (doc.expiresAt < new Date(Date.now())) {
+    throw new AppError(400, "Otp expired. Please request a new one");
+  }
+  const isMatch = await bcrypt.compare(otp, doc.otp);
+  if (!isMatch) {
+    throw new AppError(400, "Invalid otp");
+  }
+
+  const f2a = await prisma.twoFactorAuth.upsert({
+    where: {
+      userId: doc.userId,
+    },
+    create: {
+      email: doc.email,
+      userId: doc.userId,
+      method,
+      isEnabled: true,
+    },
+    update: {
+      email: doc.email,
+      method,
+      isEnabled: true,
+    },
+  });
+
+  await prisma.oTP.deleteMany({
+    where: {
+      userId: doc.userId,
+    },
+  });
+  return true;
+};
+
+const disable2FA = async (userId: string) => {
+  return await prisma.twoFactorAuth.update({
+    where: {
+      userId,
+    },
+    data: {
+      isEnabled: false,
+    },
+  });
+};
+
+const get2FA = async (userId: string) => {
+  return await prisma.twoFactorAuth.findUnique({ where: { userId } });
+};
+
+export const TwoFactorService = {
+  enable2FA,
+  sendOtp,
+  verifyOtp,
+  disable2FA,
+  get2FA,
+};

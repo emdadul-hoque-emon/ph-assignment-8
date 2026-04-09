@@ -50,7 +50,6 @@ const TravelerProfileModal = ({
   isEdit?: boolean;
   children?: React.ReactNode;
 }) => {
-  console.log(user);
   const [interests, setInterests] = React.useState<
     { label: string; value: string }[]
   >(
@@ -88,8 +87,6 @@ const TravelerProfileModal = ({
       router.refresh();
     }
   }, [state, router]);
-
-  console.log(state);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { send2faOtp } from "@/services/auth/auth.service";
+import { send2faOtp, verifyOtp } from "@/services/auth/auth.service";
 import { ChevronLeftIcon, RefreshCcwIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useActionState, useEffect } from "react";
@@ -36,7 +36,7 @@ const EmailSetup = ({ open, setOpen, setRootOpen, email }: Props) => {
       searchParams.set("id", state.data.id);
       searchParams.set("email", state.data.email);
       searchParams.set("type", state.data.type);
-      router.push(`?${searchParams.toString()}`);
+      router.push(`?${searchParams.toString()}`, { scroll: false });
       setOpen(false);
       setOtpOpen(true);
     } else if (state && !state?.success) {
@@ -117,6 +117,21 @@ const EnterOtp = ({
   const [countdown, setCountdown] = React.useState(120);
   const router = useRouter();
   const params = useSearchParams();
+  const [isResending, startResend] = React.useTransition();
+  const [state, sentOtp, isPending] = useActionState(send2faOtp, null);
+  const [verifyOtpState, verifyOtpAction, isVerifying] = useActionState(
+    verifyOtp,
+    null,
+  );
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(params.toString());
+    const id = searchParams.get("id");
+    if (!id) {
+      setOtpOpen(false);
+      setRootOpen(false);
+    }
+  }, [params]);
 
   useEffect(() => {
     if (!otpOpen) {
@@ -139,14 +154,60 @@ const EnterOtp = ({
     }
   }, [countdown, otpOpen]);
 
+  useEffect(() => {
+    if (!state) return;
+    if (state?.success) {
+      let isTostShown = false;
+      if (!isTostShown) {
+        toast.success("A new code has been sent.");
+        isTostShown = true;
+      }
+      const searchParams = new URLSearchParams(params.toString());
+      searchParams.set("id", state.data.id);
+      searchParams.set("email", state.data.email);
+      searchParams.set("type", state.data.type);
+      router.push(`?${searchParams.toString()}`, { scroll: false });
+    } else if (state && !state?.success) {
+      toast.error("Error sending OTP. Please try again.");
+    }
+  }, [state?.success]);
+
   const handleResend = () => {
+    setCountdown(120);
+
     const searchParams = new URLSearchParams(params.toString());
     const id = searchParams.get("id");
     const email = searchParams.get("email");
     const type = searchParams.get("type");
 
-    console.log(id, email, type);
+    const formData = new FormData();
+    formData.append("id", id || "");
+    formData.append("email", email || "");
+    formData.append("type", type || "");
+
+    startResend(() => {
+      sentOtp(formData);
+      localStorage.setItem("otp_sent_time", Date.now().toString());
+    });
   };
+
+  useEffect(() => {
+    if (!verifyOtpState) return;
+    if (verifyOtpState?.success) {
+      toast.success("Two-factor authentication setup successful.");
+      const searchParams = new URLSearchParams(params.toString());
+      searchParams.delete("id");
+      searchParams.delete("email");
+      searchParams.delete("type");
+      setRootOpen(false);
+      setOtpOpen(false);
+      router.push(`?${searchParams.toString()}`, { scroll: false });
+    } else if (!verifyOtpState?.success && !verifyOtpState?.errors?.length) {
+      toast.error(
+        verifyOtpState?.message || "Error verifying OTP. Please try again.",
+      );
+    }
+  }, [verifyOtpState]);
 
   return (
     <div>
@@ -171,46 +232,51 @@ const EnterOtp = ({
             </DialogDescription>
           </DialogHeader>
 
-          <Field>
-            <FieldLabel htmlFor="otp" className="w-full">
-              Verification Code
-            </FieldLabel>
-            <FieldContent>
-              <Input
-                id="otp"
-                value={otp}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/\D/g, "").slice(0, 6);
-                  setOtp(value);
-                }}
-                placeholder="Enter 6-digit code"
-                inputMode="numeric"
-                maxLength={6}
-              />
-            </FieldContent>
-          </Field>
+          <form action={verifyOtpAction}>
+            <input
+              type="hidden"
+              name="id"
+              value={new URLSearchParams(params.toString()).get("id") || ""}
+            />
+            <Field>
+              <FieldLabel htmlFor="otp" className="w-full">
+                Verification Code
+              </FieldLabel>
+              <FieldContent>
+                <Input
+                  id="otp"
+                  value={otp}
+                  name="otp"
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, "").slice(0, 6);
+                    setOtp(value);
+                  }}
+                  placeholder="Enter 6-digit code"
+                  inputMode="numeric"
+                  maxLength={6}
+                />
+              </FieldContent>
+            </Field>
 
-          <Button
-            disabled={otp.length !== 6}
-            onClick={() => {
-              toast.success("Verification is ready to be connected.");
-            }}
-          >
-            Verify
-          </Button>
-
-          <button
-            type="button"
-            disabled={countdown > 0}
-            className="text-sm text-primary flex items-center gap-2 disabled:text-muted-foreground disabled:cursor-not-allowed"
-            onClick={() => {
-              handleResend();
-              toast.success("A new code has been sent.");
-            }}
-          >
-            <RefreshCcwIcon size={14} />
-            {countdown > 0 ? `Resend code in ${countdown}s` : "Resend code"}
-          </button>
+            <button
+              type="button"
+              disabled={countdown > 0 || isResending}
+              className="mt-1 text-sm text-primary flex items-center gap-2 disabled:text-muted-foreground cursor-pointer disabled:cursor-not-allowed"
+              onClick={() => {
+                handleResend();
+                toast.success("A new code has been sent.");
+              }}
+            >
+              <RefreshCcwIcon size={14} />
+              {countdown > 0 ? `Resend code in ${countdown}s` : "Resend code"}
+            </button>
+            <Button
+              disabled={otp.length !== 6 || isVerifying}
+              className="mt-3 w-full"
+            >
+              Verify
+            </Button>
+          </form>
         </DialogContent>
       </Dialog>
     </div>

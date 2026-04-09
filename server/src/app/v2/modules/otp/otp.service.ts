@@ -25,6 +25,16 @@ const sendOtp = async (payload: SendOtpSchema) => {
     userId = user.id;
   } else if (payload.userId) {
     userId = payload.userId;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { email: true },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    email = user.email;
   } else {
     throw new AppError(400, "Email or userId is required");
   }
@@ -39,6 +49,7 @@ const sendOtp = async (payload: SendOtpSchema) => {
     },
     create: {
       userId,
+      email,
       otp: hashedOtp,
       type: payload.type,
       expiresAt: new Date(Date.now() + 10 * 60 * 1000),
