@@ -166,7 +166,7 @@ const verifyOtp = async (
 };
 
 const disable2FA = async (userId: string) => {
-  return await prisma.twoFactorAuth.update({
+  const data = await prisma.twoFactorAuth.update({
     where: {
       userId,
     },
@@ -174,6 +174,9 @@ const disable2FA = async (userId: string) => {
       isEnabled: false,
     },
   });
+
+  console.log(data);
+  return data;
 };
 
 const get2FA = async (userId: string) => {

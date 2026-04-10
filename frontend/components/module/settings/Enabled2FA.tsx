@@ -17,8 +17,9 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { disable2FA } from "@/services/auth/auth.service";
 import { ChevronLeftIcon, ChevronRight } from "lucide-react";
-import React from "react";
+import React, { useTransition } from "react";
 import { toast } from "sonner";
 
 type TwoFactorData = {
@@ -214,6 +215,29 @@ const AlertDialogComponent = ({
   setEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   setTwoFactorData: React.Dispatch<React.SetStateAction<TwoFactorData | null>>;
 }) => {
+  const [isDisabling, startDisableTransition] = useTransition();
+
+  const handleDisable2FA = async () => {
+    try {
+      startDisableTransition(async () => {
+        const data = await disable2FA();
+        if (data?.success) {
+          toast.success("Two-factor authentication has been turned off.");
+          setTwoFactorData(null);
+          setEnabled(false);
+          setOpenAlertDialog(false);
+        } else {
+          toast.error(
+            "Failed to turn off two-factor authentication. Please try again.",
+          );
+        }
+      });
+    } catch (error) {
+      toast.error(
+        "Failed to turn off two-factor authentication. Please try again.",
+      );
+    }
+  };
   return (
     <AlertDialog open={openAlertDialog} onOpenChange={setOpenAlertDialog}>
       <AlertDialogContent>
@@ -231,25 +255,10 @@ const AlertDialogComponent = ({
           <AlertDialogCancel className="flex-1">Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="flex-1"
-            onClick={() => {
-              // Handle disable email 2FA logic
-              setEnabled(false);
-              setOpenAlertDialog(false);
-              const toastId = toast.loading(
-                "Turning off two-factor authentication...",
-              );
-              setTimeout(() => {
-                toast.success(
-                  "Two-factor authentication has been turned off.",
-                  {
-                    id: toastId,
-                  },
-                );
-                setTwoFactorData(null);
-              }, 1000);
-            }}
+            disabled={isDisabling}
+            onClick={() => handleDisable2FA()}
           >
-            Turn off
+            {isDisabling ? "Turning off..." : "Turn off"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

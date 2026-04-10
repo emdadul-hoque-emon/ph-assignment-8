@@ -768,3 +768,22 @@ export const send2faOtp = async (prevState: unknown, formData: FormData) => {
     };
   }
 };
+
+export const disable2FA = async () => {
+  try {
+    const res = await serverFetch.post(`/v2/two-factor/disable`);
+    const data = await res.json();
+    if (data?.success) {
+      return data;
+    } else {
+      throw new Error(data?.message);
+    }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error?.message,
+      errors: [],
+      formData: {},
+    };
+  }
+};
