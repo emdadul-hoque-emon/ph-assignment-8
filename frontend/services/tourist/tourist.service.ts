@@ -1,11 +1,12 @@
 "use server";
-import { Gender, ITourist, IUser } from "@/interfaces/user.interface";
+import { Gender, ITourist, IUser, UserRole } from "@/interfaces/user.interface";
 import { zodValidator } from "@/lib/zod-validator";
 import z from "zod";
 import { login } from "../auth/auth.service";
 import { serverFetch } from "@/lib/server-fetch";
 import { IResponse } from "@/interfaces";
 import { revalidateTag } from "next/cache";
+import { IGuide } from "@/interfaces/guide.interface";
 
 const touristSchema = z
   .object({
@@ -178,7 +179,7 @@ export const deleteTourist = async (
   }
 };
 
-const travelerSchema = z.object({
+export const travelerSchema = z.object({
   name: z.string("name is required").min(2, "name is required"),
   interests: z.array(z.string("interests is required")),
   gender: z.enum(Object.values(Gender), "Invalide gender").default(Gender.MALE),
@@ -188,21 +189,22 @@ const travelerSchema = z.object({
   bloodGroup: z.string().optional(),
   dateOfBirth: z.string().optional(),
 });
+export const guideSchema = z.object({
+  name: z.string("name is required").min(2, "name is required"),
+  specilities: z.array(z.string("specilities is required")),
+  gender: z.enum(Object.values(Gender), "Invalide gender").default(Gender.MALE),
+  city: z.string("city is required").min(2, "city is required"),
+  country: z.string("country is required").min(2, "country is required"),
+  bio: z.string().optional(),
+  bloodGroup: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+});
 
-export const editTourist = async (
+export const editTourist = async <T>(
   id: string,
   currentState: unknown,
   formData: FormData,
-): Promise<{
-  success: boolean;
-  message: string;
-  data: IUser<ITourist> | null;
-  formData: z.infer<typeof travelerSchema>;
-  errors?: {
-    field: string;
-    message: string;
-  }[];
-}> => {
+) => {
   const dateOfBirth = formData.get("dateOfBirth") as string;
   const payload = {
     name: formData.get("name"),
@@ -210,22 +212,31 @@ export const editTourist = async (
     interests: ((formData.get("interests") as string) || "")
       .split(",")
       .map((i) => i.trim()),
+    specilities: ((formData.get("specilities") as string) || "")
+      .split(",")
+      .map((i) => i.trim()),
     gender: formData.get("gender"),
     city: formData.get("city"),
     country: formData.get("country"),
     bloodGroup: formData.get("bloodGroup"),
     dateOfBirth: dateOfBirth ? new Date(dateOfBirth).toISOString() : null,
+    role: formData.get("role"),
   };
   const avatar = formData.get("avatar") as File;
 
   try {
-    const validatedPayload = zodValidator(payload, travelerSchema);
+    if (!payload.role) {
+      throw new Error("role is required");
+    }
+    const schema =
+      payload?.role === UserRole.TOURIST ? travelerSchema : guideSchema;
+    const validatedPayload = zodValidator(payload, schema);
 
     if (!validatedPayload.success) {
       return {
         success: false,
         message: "validation failed",
-        formData: payload as z.infer<typeof travelerSchema>,
+        formData: payload as T,
         data: null,
         errors: validatedPayload.errors,
       };
@@ -261,8 +272,16 @@ export const editTourist = async (
     return {
       success: false,
       message: error?.message || "Failed to edit tourist",
-      formData: payload as z.infer<typeof travelerSchema>,
+      formData: payload as T,
       data: null,
     };
   }
 };
+
+export async function editUser<T>(
+  id: string,
+  currentState: unknown,
+  formData: FormData,
+) {
+  return editTourist<T>(id, currentState, formData);
+}

@@ -4,6 +4,8 @@ export interface IGuide {
   id: string;
   // Professional profile
   gender: Gender;
+  dateOfBirth: string;
+  bloodGroup?: string;
   specialties: string[];
   aboutMe: string;
   experienceYears: number;

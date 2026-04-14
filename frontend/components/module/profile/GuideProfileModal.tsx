@@ -1,18 +1,6 @@
 "use client";
-import React, { useActionState, useEffect } from "react";
-import {
-  MapPin,
-  Camera,
-  Edit,
-  User,
-  Globe,
-  FileText,
-  Trash2,
-  Calendar,
-  Droplet,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+
+import InputFieldError from "@/components/shared/InputFieldError";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,17 +12,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Field, FieldContent, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { MultiSelect } from "@/components/ui/multi-select";
-import { TOURIST_PREFERENCES } from "@/constants/user";
-import InputFieldError from "@/components/shared/InputFieldError";
-import { IInputErrorState } from "@/lib/getInputFieldError";
-import {
-  editTourist,
-  editUser,
-  travelerSchema,
-} from "@/services/tourist/tourist.service";
-import { Gender, ITourist, IUser, UserRole } from "@/interfaces/user.interface";
-import Image from "next/image";
 import {
   Select,
   SelectContent,
@@ -42,23 +21,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
+import { TOURIST_PREFERENCES } from "@/constants/user";
+import { IGuide } from "@/interfaces/guide.interface";
+import { Gender, IUser, UserRole } from "@/interfaces/user.interface";
+import { IInputErrorState } from "@/lib/getInputFieldError";
+import {
+  editTourist,
+  editUser,
+  guideSchema,
+} from "@/services/tourist/tourist.service";
+import {
+  Calendar,
+  Camera,
+  Droplet,
+  Edit,
+  FileText,
+  Globe,
+  MapPin,
+  Trash2,
+  User,
+} from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import React, { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 import z from "zod";
 
-const TravelerProfileModal = ({
-  user,
-  isEdit = true,
-  children,
-}: {
-  user: IUser<ITourist>;
+type Props = {
+  user: IUser<IGuide>;
+  children: React.ReactNode;
   isEdit?: boolean;
-  children?: React.ReactNode;
-}) => {
-  const [interests, setInterests] = React.useState<
+};
+
+type EditGuideState = {
+  success: boolean;
+  message: string;
+  data: IUser<IGuide> | null;
+  formData: z.infer<typeof guideSchema>;
+  errors?: {
+    field: string;
+    message: string;
+  }[];
+};
+
+const GuideProfileModal = ({ user, children, isEdit = true }: Props) => {
+  const [open, setOpen] = React.useState(false);
+  const [specilities, setSpecilities] = React.useState<
     { label: string; value: string }[]
   >(
-    user.profile.interests.map((interest) => ({
+    user.profile.specialties.map((interest) => ({
       label: interest,
       value: interest,
     })) || [],
@@ -69,9 +81,8 @@ const TravelerProfileModal = ({
   );
   const [avatarFile, setAvatarFile] = React.useState<File | null>(null);
   const fileRef = React.useRef<HTMLInputElement>(null);
-  const [open, setOpen] = React.useState(false);
-  const [state, updateProfile, isPending] = useActionState(
-    (editTourist<z.infer<typeof travelerSchema>>).bind(null, user.id),
+  const [state, updateProfile, isPending] = useActionState<EditGuideState>(
+    editTourist.bind(null, user.id),
     null,
   );
   const router = useRouter();
@@ -92,7 +103,6 @@ const TravelerProfileModal = ({
       router.refresh();
     }
   }, [state, router]);
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild={!!children}>
@@ -106,24 +116,24 @@ const TravelerProfileModal = ({
       <DialogContent className=" max-h-[80vh] overflow-auto">
         <DialogHeader>
           <DialogTitle>
-            {isEdit ? "Edit User Profile" : "Create User Profile"}
+            {isEdit ? "Edit Guide Profile" : "Create Guide Profile"}
           </DialogTitle>
           <DialogDescription>
             {isEdit
               ? "Update your profile information at any time."
-              : "Fill in the details to create your user profile."}
+              : "Fill in the details to create your guide profile."}
           </DialogDescription>
         </DialogHeader>
         <form action={updateProfile}>
           <input
             type="hidden"
             name="interests"
-            value={interests
+            value={specilities
               .map((i) => i.value)
               .join(",")
               .toString()}
           />
-          <input type="hidden" name="role" value={UserRole.TOURIST} />
+          <input type="hidden" name="role" value={UserRole.GUIDE} />
           <div className="overflow-y-auto p-6">
             <div className="flex flex-col items-center gap-4 mb-3">
               <div className="relative group">
@@ -263,36 +273,36 @@ const TravelerProfileModal = ({
             </Field>
             <div className="md:col-span-2 space-y-3 grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
               <Field className="space-y-1 gap-px w-full mb-0">
-                <FieldLabel htmlFor="interests">Interests</FieldLabel>
+                <FieldLabel htmlFor="specialties">Specialties</FieldLabel>
                 <FieldContent>
                   <MultiSelect
                     options={TOURIST_PREFERENCES}
                     onValueChange={(e) =>
-                      setInterests(
+                      setSpecilities(
                         e.map((i) => {
-                          const interest = TOURIST_PREFERENCES.find(
+                          const specilities = TOURIST_PREFERENCES.find(
                             (p) => p.value.toLowerCase() === i.toLowerCase(),
                           );
                           return {
-                            label: interest?.label || "",
-                            value: interest?.value || "",
+                            label: specilities?.label || "",
+                            value: specilities?.value || "",
                           };
                         }),
                       )
                     }
                     value={
-                      state?.formData?.interests ||
-                      interests.map((i) => i.value)
+                      state?.formData?.specilities ||
+                      specilities.map((i) => i.value)
                     }
-                    placeholder="Select interest..."
-                    searchPlaceholder="Search interest..."
+                    placeholder="Select specialties..."
+                    searchPlaceholder="Search specialties..."
                     maxDisplayed={2}
-                    id="interests"
+                    id="specialties"
                   />
                 </FieldContent>
                 <InputFieldError
                   state={state as IInputErrorState}
-                  field="interests"
+                  field="specialties"
                 />
               </Field>
 
@@ -399,4 +409,4 @@ const TravelerProfileModal = ({
   );
 };
 
-export default TravelerProfileModal;
+export default GuideProfileModal;
