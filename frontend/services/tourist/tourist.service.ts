@@ -189,16 +189,6 @@ export const travelerSchema = z.object({
   bloodGroup: z.string().optional(),
   dateOfBirth: z.string().optional(),
 });
-export const guideSchema = z.object({
-  name: z.string("name is required").min(2, "name is required"),
-  specilities: z.array(z.string("specilities is required")),
-  gender: z.enum(Object.values(Gender), "Invalide gender").default(Gender.MALE),
-  city: z.string("city is required").min(2, "city is required"),
-  country: z.string("country is required").min(2, "country is required"),
-  bio: z.string().optional(),
-  bloodGroup: z.string().optional(),
-  dateOfBirth: z.string().optional(),
-});
 
 export const editTourist = async <T>(
   id: string,
@@ -279,91 +269,6 @@ export const editTourist = async <T>(
       success: false,
       message: error?.message || "Failed to edit tourist",
       formData: payload as z.infer<typeof travelerSchema>,
-      data: null,
-      errors: undefined,
-    };
-  }
-};
-
-export const editGuide = async (
-  id: string,
-  currentState: unknown,
-  formData: FormData,
-): Promise<{
-  success: boolean;
-  message: string;
-  data: IUser<IGuide> | null;
-  errors:
-    | {
-        field: string;
-        message: string;
-      }[]
-    | undefined;
-  formData: z.infer<typeof guideSchema>;
-}> => {
-  const dateOfBirth = formData.get("dateOfBirth") as string;
-  const payload = {
-    name: formData.get("name"),
-    bio: formData.get("bio"),
-    specilities: ((formData.get("specilities") as string) || "")
-      .split(",")
-      .map((i) => i.trim()),
-    gender: formData.get("gender"),
-    city: formData.get("city"),
-    country: formData.get("country"),
-    bloodGroup: formData.get("bloodGroup"),
-    dateOfBirth: dateOfBirth ? new Date(dateOfBirth).toISOString() : null,
-    role: formData.get("role"),
-  };
-  const avatar = formData.get("avatar") as File;
-
-  try {
-    if (!payload.role) {
-      throw new Error("role is required");
-    }
-    const validatedPayload = zodValidator(payload, guideSchema);
-
-    if (!validatedPayload.success) {
-      return {
-        success: false,
-        message: "validation failed",
-        formData: payload as z.infer<typeof guideSchema>,
-        data: null,
-        errors: validatedPayload.errors,
-      };
-    }
-
-    const formData = new FormData();
-    Object.entries(validatedPayload.data as Record<string, any>).forEach(
-      ([key, value]) => {
-        formData.append(key, String(value));
-      },
-    );
-    if (avatar.size) {
-      formData.append("avatar", avatar as File);
-    }
-    const res = await serverFetch.put(`/v2/users/${id}`, {
-      body: formData,
-      credentials: "include",
-    });
-
-    revalidateTag("me", "max");
-
-    const data = await res.json();
-
-    if (!data?.success) {
-      throw new Error(data?.message);
-    }
-
-    return {
-      ...data,
-      formData: payload as z.infer<typeof guideSchema>,
-    };
-  } catch (error: any) {
-    return {
-      success: false,
-      message: error?.message || "Failed to edit tourist",
-      formData: payload as z.infer<typeof guideSchema>,
       data: null,
       errors: undefined,
     };

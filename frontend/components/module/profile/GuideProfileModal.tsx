@@ -26,11 +26,7 @@ import { TOURIST_PREFERENCES } from "@/constants/user";
 import { IGuide } from "@/interfaces/guide.interface";
 import { Gender, IUser, UserRole } from "@/interfaces/user.interface";
 import { IInputErrorState } from "@/lib/getInputFieldError";
-import {
-  editGuide,
-  editTourist,
-  guideSchema,
-} from "@/services/tourist/tourist.service";
+import { editGuide } from "@/services/guide/guide.service";
 import {
   Calendar,
   Camera,
@@ -52,17 +48,6 @@ type Props = {
   user: IUser<IGuide>;
   children: React.ReactNode;
   isEdit?: boolean;
-};
-
-type EditGuideState = {
-  success: boolean;
-  message: string;
-  data: IUser<IGuide> | null;
-  formData: z.infer<typeof guideSchema>;
-  errors?: {
-    field: string;
-    message: string;
-  }[];
 };
 
 const GuideProfileModal = ({ user, children, isEdit = true }: Props) => {

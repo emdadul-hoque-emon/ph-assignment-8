@@ -14,32 +14,15 @@ export const getGuides = async (queryString?: string) => {
   return data;
 };
 
-const guideSchema = z.object({
+export const guideSchema = z.object({
   name: z.string("name is required").min(2, "name is required"),
-  email: z.email("Invalide email address"),
-  phone: z.string("phone is required").min(10, "phone is required"),
-  password: z
-    .string("password is required")
-    .min(6, "password must be minimum 6 digit"),
-  image: z.file("image is required").optional(),
-  bio: z.string("bio is required").min(2, "bio is required"),
-  expertise: z.string("expertise is required").transform((z) => {
-    return z?.split(",")?.map((i) => i.trim());
-  }),
-  languages: z.string("languages is required").transform((z) => {
-    return z?.split(",")?.map((i) => i.trim());
-  }),
+  specilities: z.array(z.string("specilities is required")),
   gender: z.enum(Object.values(Gender), "Invalide gender").default(Gender.MALE),
-  hourlyRate: z
-    .string("hourly rate is required")
-    .min(1, "hourly rate is required")
-    .transform((z) => parseFloat(z.toString())),
-  address: z.string("address is required").min(2, "address is required"),
-  experienceYears: z
-    .string("experience years is required")
-    .min(1, "experience years is required")
-    .transform((z) => parseFloat(z.toString())),
-  currency: z.string("currency is required").optional(),
+  city: z.string("city is required").min(2, "city is required"),
+  country: z.string("country is required").min(2, "country is required"),
+  bio: z.string().optional(),
+  bloodGroup: z.string().optional(),
+  dateOfBirth: z.string().optional(),
 });
 
 export const createGuide = async (prevState: unknown, formData: FormData) => {
@@ -131,111 +114,86 @@ export const createGuide = async (prevState: unknown, formData: FormData) => {
 };
 
 export const editGuide = async (
-  guideId: string,
-  prevState: unknown,
+  id: string,
+  currentState: unknown,
   formData: FormData,
-) => {
+): Promise<{
+  success: boolean;
+  message: string;
+  data: IUser<IGuide> | null;
+  errors:
+    | {
+        field: string;
+        message: string;
+      }[]
+    | undefined;
+  formData: z.infer<typeof guideSchema>;
+}> => {
+  const dateOfBirth = formData.get("dateOfBirth") as string;
+  const payload = {
+    name: formData.get("name"),
+    bio: formData.get("bio"),
+    specilities: ((formData.get("specilities") as string) || "")
+      .split(",")
+      .map((i) => i.trim()),
+    gender: formData.get("gender"),
+    city: formData.get("city"),
+    country: formData.get("country"),
+    bloodGroup: formData.get("bloodGroup"),
+    dateOfBirth: dateOfBirth ? new Date(dateOfBirth).toISOString() : null,
+    role: formData.get("role"),
+  };
+  const avatar = formData.get("avatar") as File;
+
   try {
-    const schema = z.object({
-      name: z.string("name is required").min(2, "name is required"),
-      phone: z.string("phone is required").min(10, "phone is required"),
-      // image: z.file("image is required").optional(),
-      bio: z.string("bio is required").min(2, "bio is required"),
-      expertise: z.string("expertise is required").transform((z) => {
-        return z?.split(",")?.map((i) => i.trim());
-      }),
-      languages: z.string("languages is required").transform((z) => {
-        return z?.split(",")?.map((i) => i.trim());
-      }),
-      gender: z
-        .enum(Object.values(Gender), "Invalide gender")
-        .default(Gender.MALE),
-      hourlyRate: z
-        .string("hourly rate is required")
-        .min(1, "hourly rate is required")
-        .transform((z) => parseFloat(z.toString())),
-      address: z.string("address is required"),
-      experienceYears: z
-        .string("experience years is required")
-        .min(1, "experience years is required")
-        .transform((z) => parseFloat(z.toString())),
-      currency: z.string("currency is required").optional(),
-    });
-    const payload = {
-      name: formData.get("name"),
-      image: formData.get("image") || null,
-      languages: formData.get("languages") || null,
-      expertise: formData.get("expertise") || null,
-      bio: formData.get("bio"),
-      phone: formData.get("phone"),
-      gender: formData.get("gender") as Gender,
-      address: formData.get("address"),
-      hourlyRate: formData.get("hourlyRate"),
-      experienceYears: formData.get("experienceYears"),
-      currency: formData.get("currency") || "",
-    };
+    if (!payload.role) {
+      throw new Error("role is required");
+    }
+    const validatedPayload = zodValidator(payload, guideSchema);
 
-    const validationResult = zodValidator(payload, schema);
-
-    if (!validationResult.success && validationResult.errors) {
+    if (!validatedPayload.success) {
       return {
         success: false,
-        errors: validationResult.errors,
-        formData: payload,
-        message: "validation error",
+        message: "validation failed",
+        formData: payload as z.infer<typeof guideSchema>,
+        data: null,
+        errors: validatedPayload.errors,
       };
     }
 
-    if (!validationResult.data) {
-      return {
-        success: false,
-        errors: validationResult.errors,
-        formData: payload,
-        message: "validation error",
-      };
-    }
-
-    const modifiedFormData = new FormData();
-
-    modifiedFormData.append("name", payload?.name as string);
-    if ((formData.get("image") as File)?.size) {
-      modifiedFormData.append("image", payload?.image as Blob);
-    }
-    modifiedFormData.append("languages", payload?.languages as string);
-    modifiedFormData.append("expertise", payload?.expertise as string);
-    modifiedFormData.append("bio", payload?.bio as string);
-    modifiedFormData.append("phone", payload?.phone as string);
-    modifiedFormData.append("gender", payload?.gender as string);
-    modifiedFormData.append("address", payload?.address as string);
-    modifiedFormData.append("hourlyRate", payload?.hourlyRate as string);
-    modifiedFormData.append(
-      "experienceYears",
-      payload?.experienceYears as string,
-    );
-    modifiedFormData.append("currency", payload?.currency as string);
-
-    const res = await serverFetch.put(`/guides/${guideId}`, {
-      body: JSON.stringify(validationResult.data),
-      headers: {
-        "Content-Type": "application/json",
+    const formData = new FormData();
+    Object.entries(validatedPayload.data as Record<string, any>).forEach(
+      ([key, value]) => {
+        formData.append(key, String(value));
       },
+    );
+    if (avatar.size) {
+      formData.append("avatar", avatar as File);
+    }
+    const res = await serverFetch.put(`/v2/users/${id}`, {
+      body: formData,
+      credentials: "include",
     });
+
+    revalidateTag("me", "max");
 
     const data = await res.json();
 
     if (!data?.success) {
       throw new Error(data?.message);
     }
-    revalidateTag("me", "max");
-    return data;
+
+    return {
+      ...data,
+      formData: payload as z.infer<typeof guideSchema>,
+    };
   } catch (error: any) {
-    console.log(error);
-    if (error?.digest?.startsWith("NEXT_REDIRECT")) {
-      throw error;
-    }
     return {
       success: false,
-      message: error?.message,
+      message: error?.message || "Failed to edit tourist",
+      formData: payload as z.infer<typeof guideSchema>,
+      data: null,
+      errors: undefined,
     };
   }
 };
