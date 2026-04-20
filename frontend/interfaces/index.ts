@@ -11,3 +11,8 @@ export interface IMeta {
   page: number;
   limit: number;
 }
+
+export enum TwoFactorMethod {
+  EMAIL = "EMAIL",
+  TOTP = "TOTP",
+}

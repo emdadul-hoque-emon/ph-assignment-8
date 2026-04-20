@@ -1,15 +1,25 @@
 import OtpForm from "@/components/module/twoFactor/form";
-import { Button } from "@/components/ui/button";
-import { RefreshCcw } from "lucide-react";
+import { TwoFactorMethod } from "@/interfaces";
 import { notFound } from "next/navigation";
 
 const TwoFactorAuthentication = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ id: string; user_id: string }>;
+  searchParams: Promise<{
+    id: string;
+    user_id: string;
+    method: TwoFactorMethod;
+  }>;
 }) => {
   const params = await searchParams;
-  if (!params.id || !params.user_id) {
+  if (
+    (!params.method &&
+      !Object.values(TwoFactorMethod).includes(params.method)) ||
+    !params.user_id
+  ) {
+    notFound();
+  }
+  if (!params.id && params.method === TwoFactorMethod.EMAIL) {
     notFound();
   }
   return (

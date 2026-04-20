@@ -1,4 +1,5 @@
 import z from "zod";
+import { TwoFactorMethod } from "../../../../generated/enums";
 
 export const loginSchema = z.object({
   email: z.string().email("Email is required"),
@@ -48,7 +49,8 @@ export const forgotPasswordSchema = z.object({
 });
 
 export const verifyOtpSchema = z.object({
-  id: z.string("Id is required").min(1, "Id is required"),
+  id: z.string("Id is required").nullable().optional(),
+  method: z.enum(TwoFactorMethod, "Method is required"),
   userId: z.string("User Id is required").min(1, "User Id is required"),
   deviceId: z.string("Device Id is required").min(1, "Device Id is required"),
   otp: z.string("OTP is required").min(1, "OTP is required"),

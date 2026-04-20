@@ -1,5 +1,6 @@
 import { Response } from "express";
 import bcrypt from "bcryptjs";
+import speakeasy from "speakeasy";
 
 import AppError from "../../../helpers/appError";
 import { generateJwt, verifyJwt } from "../../../utils/jwt";
@@ -32,7 +33,6 @@ const login = async (res: Response, body: ILogin) => {
     deviceType,
     os,
   }: LoginSchema = body;
-  console.log(body, "Body");
   const user = await prisma.user.findUnique({ where: { email } });
 
   if (!user) {
@@ -60,8 +60,6 @@ const login = async (res: Response, body: ILogin) => {
       userId_deviceId: { userId: user.id, deviceId: deviceId },
     },
   });
-
-  console.log(session, user.id, body);
 
   if (twoFactor?.isEnabled) {
     if (session && session.isTrusted) {
@@ -124,36 +122,41 @@ const login = async (res: Response, body: ILogin) => {
       });
       return;
     }
-    const otp = generateOtp(6);
-    console.log({ otp });
-    const otpDoc = await prisma.oTP.create({
-      data: {
-        userId: user.id,
-        email:
+
+    let otpDoc;
+    if (twoFactor.method === TwoFactorMethod.EMAIL) {
+      const otp = generateOtp(6);
+      console.log({ otp });
+      otpDoc = await prisma.oTP.create({
+        data: {
+          userId: user.id,
+          email:
+            twoFactor.method === TwoFactorMethod.EMAIL
+              ? (twoFactor?.email as string)
+              : user.email,
+          otp: await bcrypt.hash(otp, 10),
+          type: OTPType.TWO_FACTOR,
+          expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+        },
+      });
+      sendEmail({
+        subject: "Two-factor authentication",
+        to:
           twoFactor.method === TwoFactorMethod.EMAIL
             ? (twoFactor?.email as string)
             : user.email,
-        otp: await bcrypt.hash(otp, 10),
-        type: OTPType.TWO_FACTOR,
-        expiresAt: new Date(Date.now() + 10 * 60 * 1000),
-      },
-    });
-    sendEmail({
-      subject: "Two-factor authentication",
-      to:
-        twoFactor.method === TwoFactorMethod.EMAIL
-          ? (twoFactor?.email as string)
-          : user.email,
-      templateName: "otp-email",
-      templateData: { otp, otpExpiresInMinutes: 10 },
-    });
+        templateName: "otp-email",
+        templateData: { otp, otpExpiresInMinutes: 10 },
+      });
+    }
     return {
       status: "requires-otp",
       message:
         "Two-factor authentication is enabled. Please enter the OTP to continue.",
-      id: otpDoc.id,
+      id: otpDoc?.id,
       userId: user.id,
       rememberMe,
+      method: twoFactor.method,
     };
   }
 
@@ -472,29 +475,50 @@ const verify2FA = async (payload: VerifyOtpSchema, res: Response) => {
     throw new AppError(404, "No user found");
   }
 
-  const otpDoc = await prisma.oTP.findUnique({
-    where: { id: payload.id },
+  const twoFactor = await prisma.twoFactorAuth.findUnique({
+    where: {
+      userId: payload.userId,
+    },
   });
 
-  if (!otpDoc) {
+  if (!twoFactor) {
     throw new AppError(404, "No 2FA found");
   }
 
-  const isOtpMatched = await bcrypt.compare(payload.otp, otpDoc.otp);
-  if (!isOtpMatched) {
-    throw new AppError(400, "Incorrect OTP");
+  if (payload.method === TwoFactorMethod.EMAIL && payload.id) {
+    const otpDoc = await prisma.oTP.findUnique({
+      where: { id: payload.id },
+    });
+
+    if (!otpDoc) {
+      throw new AppError(404, "No 2FA found");
+    }
+
+    const isOtpMatched = await bcrypt.compare(payload.otp, otpDoc.otp);
+    if (!isOtpMatched) {
+      throw new AppError(400, "Incorrect OTP");
+    }
+
+    const isExpired = otpDoc.expiresAt < new Date(Date.now());
+    if (isExpired) {
+      throw new AppError(400, "OTP expired");
+    }
+
+    await prisma.oTP.delete({
+      where: { id: payload.id },
+    });
   }
 
-  const isExpired = otpDoc.expiresAt < new Date(Date.now());
-  if (isExpired) {
-    throw new AppError(400, "OTP expired");
+  if (payload.method === TwoFactorMethod.TOTP) {
+    speakeasy.totp.verify({
+      secret: twoFactor.totpSecret as string,
+      encoding: "base32",
+      token: payload.otp,
+      window: 1,
+    });
   }
 
-  await prisma.oTP.delete({
-    where: { id: payload.id },
-  });
-
-  const data = await prisma.loggedInDevice.upsert({
+  await prisma.loggedInDevice.upsert({
     where: {
       userId_deviceId: { userId: payload.userId, deviceId: payload.deviceId },
     },

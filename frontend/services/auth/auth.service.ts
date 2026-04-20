@@ -13,6 +13,7 @@ import { zodValidator } from "@/lib/zod-validator";
 import z from "zod";
 import cookie from "cookie";
 import { de, is } from "date-fns/locale";
+import { TwoFactorMethod } from "@/interfaces";
 
 export const getNewAccessToken = async () => {
   try {
@@ -178,11 +179,10 @@ export const login = async (prevState: unknown, formData: FormData) => {
       throw new Error(data?.message);
     }
 
-    if (data?.data?.status === "requires-otp" && data?.data?.id) {
+    if (data?.data?.status === "requires-otp" && data?.data?.method) {
       redirect(
-        `/two-factor-authentication?id=${data?.data?.id}&user_id=${data?.data?.userId}&rememberMe=${data?.data?.rememberMe}`,
+        `/two-factor-authentication?id=${data?.data?.id}&user_id=${data?.data?.userId}&rememberMe=${data?.data?.rememberMe}&method=${data?.data?.method}`,
       );
-      // throw data;
     }
 
     const cookiesHeaders = res.headers.getSetCookie();
@@ -261,7 +261,8 @@ export const login = async (prevState: unknown, formData: FormData) => {
 export const verify2FA = async (prevState: unknown, formData: FormData) => {
   const schema = z.object({
     deviceId: z.string("deviceId is required").min(1, "deviceId is required"),
-    id: z.string("id is required").min(1, "id is required"),
+    id: z.string("id is required").nullable().optional(),
+    method: z.enum(TwoFactorMethod, "Method is required"),
     userId: z.string("userId is required").min(1, "userId is required"),
     otp: z.string("OTP is required").min(6, "OTP must be minimum 6 digit"),
     rememberMe: z.boolean().default(false),
@@ -274,6 +275,7 @@ export const verify2FA = async (prevState: unknown, formData: FormData) => {
   const payload = {
     deviceId: formData.get("deviceId"),
     id: formData.get("id"),
+    method: formData.get("method"),
     userId: formData.get("userId"),
     otp: formData.get("otp"),
     rememberMe: formData.get("rememberMe") === "true",
@@ -292,6 +294,13 @@ export const verify2FA = async (prevState: unknown, formData: FormData) => {
         formData: payload,
         message: "validation error",
       };
+    }
+
+    if (
+      validatedPayload.data?.method === TwoFactorMethod.EMAIL &&
+      !validatedPayload.data?.id
+    ) {
+      throw new Error("id is required");
     }
     const res = await serverFetch.post(`/v2/auth/verify-otp`, {
       method: "POST",

@@ -5,12 +5,18 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { TwoFactorMethod } from "@/interfaces";
 import { getDeviceInfo } from "@/lib/getDeviceInfo";
 import { sendOtp, verify2FA } from "@/services/auth/auth.service";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { RefreshCcw } from "lucide-react";
 import { notFound, useRouter, useSearchParams } from "next/navigation";
-import React, { useActionState, useEffect, useState } from "react";
+import React, {
+  useActionState,
+  useEffect,
+  useState,
+  useTransition,
+} from "react";
 import { toast } from "sonner";
 
 const OtpForm = () => {
@@ -26,6 +32,7 @@ const OtpForm = () => {
     os?: string;
     deviceType?: string;
   }>({});
+  const [isPendingTransition, startTransition] = useTransition();
 
   useEffect(() => {
     const id = localStorage.getItem("device_id");
@@ -49,6 +56,7 @@ const OtpForm = () => {
 
   const searchParams = new URLSearchParams(params.toString());
   const id = searchParams.get("id") as string;
+  const method = searchParams.get("method") as TwoFactorMethod;
   const userId = searchParams.get("user_id") as string;
   const redirect = searchParams.get("redirect") as string;
   const rememberMe = searchParams.get("rememberMe") as string;
@@ -90,7 +98,10 @@ const OtpForm = () => {
     formData.append("userId", userId);
     formData.append("deviceId", deviceId);
     formData.append("type", "TWO_FACTOR");
-    await resendOtp(formData);
+    formData.append("method", method);
+    startTransition(async () => {
+      await resendOtp(formData);
+    });
   };
 
   useEffect(() => {
@@ -116,6 +127,7 @@ const OtpForm = () => {
       <input type="hidden" name="userId" value={userId} />
       <input type="hidden" name="redirect" value={redirect} />
       <input type="hidden" name="rememberMe" value={rememberMe} />
+      <input type="hidden" name="method" value={method} />
       <input
         type="hidden"
         name="deviceName"
@@ -156,7 +168,7 @@ const OtpForm = () => {
         </InputOTP>
       </div>
       <Button
-        disabled={isPending || isResending}
+        disabled={isPending || isResending || isPendingTransition}
         className="w-full py-4 text-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-lg shadow-primary/20"
       >
         Verify Identity
@@ -165,7 +177,7 @@ const OtpForm = () => {
       <div className="pt-4 space-y-4 border-t border-outline-variant/10">
         <div className="flex items-center justify-between">
           <button
-            disabled={resendCooldown > 0 || isResending}
+            disabled={resendCooldown > 0 || isResending || isPendingTransition}
             onClick={handleResendOtp}
             type="button"
             className="text-label-md font-bold text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 cursor-pointer"
