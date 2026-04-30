@@ -23,14 +23,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function AdminDashboardPage() {
-  const { user, isAuthenticated } = useAuth();
-  const router = useRouter();
-
-  // if (!isAuthenticated || user?.role !== "admin") {
-  //   router.push("/login");
-  //   return null;
-  // }
-
   const stats = [
     {
       label: "Total Users",

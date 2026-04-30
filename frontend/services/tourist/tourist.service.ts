@@ -73,11 +73,9 @@ export const createTouristAction = async (
     address: formData.get("address") || "",
     agree: formData.get("agree"),
   };
-  console.log(payload);
   try {
     const validationResult = zodValidator(payload, touristSchema);
 
-    console.log({ validationResult: validationResult.data, formData: payload });
     if (!validationResult.success && validationResult.errors) {
       return {
         success: false,

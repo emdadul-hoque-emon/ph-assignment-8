@@ -290,148 +290,48 @@ const updateTripDate = async () => {
   return updatedTrip;
 };
 
-async function main() {
-  // ========== OLD SEEDING CODE (COMMENTED OUT) ==========
-  // Uncomment the sections below to re-seed the database with initial data
-
-  // await prisma.user.create({
-  //   data: {
-  //     name: "Admin One",
-  //     email: "admin@tourbuddy.com",
-  //     password: await bcrypt.hash("admin123@#", 10),
-  //     role: "ADMIN",
-  //     country: "Bangladesh",
-  //     city: "Cumilla",
-  //   },
-  // });
-  // for (const { languages, specialties, aboutMe, ...g } of guides) {
-  //   const rating = Number((Math.random() * (5 - 4) + 4).toFixed(1));
-  //   await prisma.user.create({
-  //     data: {
-  //       ...g,
-  //       password: await bcrypt.hash(g.password, 10),
-  //       guideProfile: {
-  //         create: {
-  //           rating: rating,
-  //           hourlyRate: Math.round(Math.random() * (40 - 20) + 20),
-  //           experience: Math.floor(Math.random() * (10 - 3) + 3),
-  //           aboutMe: aboutMe,
-  //           specialties: specialties,
-  //           languages: languages,
-  //           isTopRated: rating >= 4.6,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
-  // for (const t of travelers) {
-  //   await prisma.user.create({
-  //     data: {
-  //       ...t,
-  //       password: await bcrypt.hash(t.password, 10),
-  //     },
-  //   });
-  // }
-  // for (let index = 0; index < toursData.length; index++) {
-  //   const { itineraries, ...tour } = toursData[index];
-  //   await prisma.tour.create({
-  //     data: {
-  //       ...tour,
-  //       itineraries: {
-  //         createMany: {
-  //           data: itineraries.createMany,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
-
-  // ========== TRIPS SEEDING (MAIN) ==========
-  console.log("Generating trips data...");
-  // const tours = await prisma.tour.findMany({});
-  // const { trips, tripIncludes: tripIncludeItems } = generateTripsData(tours);
-
-  // console.log(`Creating ${trips.length} trips...`);
-  // for (const trip of trips) {
-  //   await prisma.trip.create({
-  //     data: trip,
-  //   });
-  // }
-
-  // console.log(`Creating ${tripIncludeItems.length} trip include items...`);
-  // for (const tripIncludeItem of tripIncludeItems) {
-  //   await prisma.tripIncludeItem.create({
-  //     data: tripIncludeItem,
-  //   });
-  // }
-
-  // console.log("Updating broken image URLs...");
-
-  // for (const tour of updates) {
-  //   await prisma.tour.update({
-  //     where: { id: tour.id },
-  //     data: { image: tour.url }, // Change 'imageUrl' to 'image' if that is your schema field name
-  //   });
-  // }
-
-  // await prisma.user.updateMany({
-  //   where: {
-  //     role: {
-  //       not: "ADMIN",
-  //     },
-  //   },
-  //   data: {
-  //     provider: "CREDENTIALS",
-  //   },
-  // });
-
-  const users = await prisma.user.findMany({
-    select: {
-      id: true,
+const updateTravelerLanguages = async () => {
+  const travelers = await prisma.travelerProfile.updateMany({
+    where: {
+      id: "94767fba-d49c-40f3-938e-20d91bcc3943",
+    },
+    data: {
+      languages: {
+        set: ["Avestan"],
+      },
     },
   });
 
-  for (const user of users) {
-    // await prisma.travelerProfile.update({
-    //   where: {
-    //     userId: user.id,
-    //   },
-    //   data: {
-    //     gender: Gender.MALE,
-    //   },
-    // });
-    // await prisma.guideProfile.update({
-    //   where: {
-    //     userId: user.id,
-    //   },
-    //   data: {
-    //     gender: Gender.MALE,
-    //   },
-    // });
-    await prisma.twoFactorAuth.create({
-      data: {
-        userId: user.id,
-      },
-    });
+  return travelers;
+};
+const updateTravelerInterests = async () => {
+  const travelers = await prisma.travelerProfile.findMany({});
+
+  for (let index = 0; index < travelers.length; index++) {
+    const element = travelers[index];
+    if (element.interests.filter(Boolean).length === 0) {
+      await prisma.travelerProfile.update({
+        where: {
+          id: element.id,
+        },
+        data: {
+          interests: {
+            set: [],
+          },
+        },
+      });
+    }
   }
 
-  // for (const user of users) {
-  //   // 1. Shuffle the interests and pick a random subset (e.g., between 1 and 4 interests)
-  //   const randomInterests = interests
-  //     .sort(() => 0.5 - Math.random()) // Simple shuffle
-  //     .slice(0, Math.floor(Math.random() * 4) + 1); // Select 1 to 4 items
+  console.log(
+    travelers,
+    travelers[0].interests.length,
+    travelers[0].interests.filter(Boolean).length,
+  );
+};
 
-  //   await prisma.travelerProfile.create({
-  //     data: {
-  //       interests: randomInterests,
-  //       userId: user.id,
-  //       aboutMe: user.bio as string,
-  //       languages: getLanguages(user.country as string),
-  //     },
-  //   });
-  // }
-
-  console.log("Seed completed successfully!");
+async function main() {
+  return await updateTravelerInterests();
 }
 
 main()

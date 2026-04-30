@@ -24,7 +24,7 @@ const TourManagementHeader = () => {
       />
 
       <ManagementPageHeader
-        title="Guide Management"
+        title="Tour Management"
         description="Manage Tours information and details"
         actions={{
           label: "Add tour",

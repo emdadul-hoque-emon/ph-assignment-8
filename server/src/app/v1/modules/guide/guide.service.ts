@@ -10,43 +10,22 @@ import { IGuide } from "./guide.interface";
 import { DynamicQueryBuilder } from "../../../lib/queryBuilderByPipline";
 import { Booking } from "../booking/booking.model";
 import { Trip } from "../trip/trip.model";
+import prisma from "../../../config/db";
 
 const getGuides = async (queryString?: Record<string, string>) => {
-  const builder = new QueryBuilder<IGuide>(Guide, {
-    ...queryString,
-  });
-  const res = await builder
-    .filter()
-    .search(["email", "name", "phone"])
-    .paginate()
-    .select(["-password"])
-    .execWithMeta();
-
-  const builder2 = new DynamicQueryBuilder<IGuide>(
-    Guide,
-    {
-      ...queryString,
+  const res = await prisma.guideProfile.findMany({
+    select: {
+      specialties: true,
+      languages: true,
     },
-    [
-      {
-        model: User,
-        localField: "userId",
-        foreignField: "_id",
-        as: "profile",
-        filterKeys: ["gender", "role"],
-        searchFields: ["name", "email", "phone"],
-      },
-    ],
-  );
-  const res2 = await builder2
-    .searchPopulated() // Search populated models (includes documents)
-    .filter() // Filter main model
-    .filterPopulated() // Filter populated models (reuses same populated docs)
-    .sort()
-    .paginate()
-    .exec();
+  });
 
-  return { guides: res2.data, meta: res.meta };
+  const total = await prisma.guideProfile.count();
+
+  return {
+    guides: [...new Set(res.flatMap((guide) => guide.languages))],
+    meta: { total, limit: 20 },
+  };
 };
 
 const getGuide = async (id: string) => {

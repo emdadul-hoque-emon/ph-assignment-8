@@ -12,6 +12,7 @@ import { IUser } from "@/interfaces/user.interface";
 import { queryStringFormatter } from "@/lib/formatters";
 import { Suspense } from "react";
 import GuideFilter from "@/components/module/guide/GuideFilter";
+import { serverFetch } from "@/lib/server-fetch";
 
 const page = async ({
   searchParams,
@@ -20,7 +21,8 @@ const page = async ({
 }) => {
   const searchParamsObj = await searchParams;
   const queryString = queryStringFormatter(searchParamsObj);
-  const data: IResponse<IUser<IGuide>[]> = await getGuides(queryString);
+  const res = await serverFetch.get(`/v2/users?role=GUIDE&${queryString}`);
+  const data: IResponse<IUser<IGuide>[]> = await res.json();
 
   return (
     <div className="space-y-4 p-6">
@@ -30,7 +32,9 @@ const page = async ({
         <GuidesTable guides={data.data} />
         <TablePagination
           currentPage={data?.meta?.page || 1}
-          totalPages={data?.meta?.totalPages || 1}
+          totalPages={
+            Math.ceil((data?.meta?.total || 1) / (data?.meta?.limit || 1)) || 1
+          }
         />
       </Suspense>
     </div>

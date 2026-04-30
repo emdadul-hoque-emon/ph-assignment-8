@@ -61,8 +61,6 @@ export default function SignupForm({ tourist }: { tourist?: IUser<ITourist> }) {
     }
   }, []);
 
-  console.log(state, interests, preferedLanguage);
-
   return (
     <form action={signupAction} className="space-y-5">
       <input type="hidden" name="isSignUp" value="true" />
@@ -194,11 +192,9 @@ export default function SignupForm({ tourist }: { tourist?: IUser<ITourist> }) {
             <MultiSelect
               options={categories}
               onValueChange={(e) => {
-                console.log(e);
                 setInterests(
                   e.map((i) => {
                     const interest = categories.find((p) => p.value === i);
-                    console.log({ interest });
                     return {
                       label: interest?.label || "",
                       value: interest?.value || "",

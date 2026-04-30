@@ -121,12 +121,6 @@ const getAllTourFromDB = async (options: any, filters: any) => {
     const unique = mainarr.filter(
       (item, index, arr) => arr.indexOf(item) === index,
     );
-    console.log(
-      unique.map((i) => ({
-        label: i.charAt(0).toUpperCase() + i.slice(1),
-        value: i,
-      })),
-    );
   }
 
   const whereConditions: Prisma.TourWhereInput =

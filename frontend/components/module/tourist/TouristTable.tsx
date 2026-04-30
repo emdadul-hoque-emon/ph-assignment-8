@@ -11,9 +11,13 @@ import { deleteTourist } from "@/services/tourist/tourist.service";
 
 interface GuidesTableProps {
   tourists: IUser<ITourist>[];
+  emptyMessage?: string;
 }
 
-const TouristsTable = ({ tourists }: GuidesTableProps) => {
+const TouristsTable = ({
+  tourists,
+  emptyMessage = "Tourists not found",
+}: GuidesTableProps) => {
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [deletingTourist, setDeletingTourist] =
@@ -69,7 +73,7 @@ const TouristsTable = ({ tourists }: GuidesTableProps) => {
         onEdit={handleEdit}
         onDelete={handleDelete}
         getRowKey={(tourist) => tourist.id!}
-        emptyMessage="No tourists found"
+        emptyMessage={emptyMessage}
       />
 
       {/* Edit Tourist Form Dialog */}

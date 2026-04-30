@@ -12,6 +12,10 @@ const getAllUsers = catchAsync(async (req, res, next) => {
     "country",
     "city",
     "topGuides",
+    "specialties",
+    "languages",
+    "interests",
+    "gender",
   ]);
 
   const data = await UserService.getAllUserFromDB(options, filters);

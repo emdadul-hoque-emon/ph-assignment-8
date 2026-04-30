@@ -3,13 +3,9 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
-  Edit,
-  Eye,
-  Loader2,
-  MoreHorizontal,
-  Trash,
+  Loader2
 } from "lucide-react";
-import { ReactNode, useState, useTransition } from "react";
+import { ReactNode, useTransition } from "react";
 import {
   Table,
   TableBody,
@@ -18,14 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import { set } from "zod";
 import ManagementTableRow from "./ManagementTableRow";
 import { useRouter, useSearchParams } from "next/navigation";
 

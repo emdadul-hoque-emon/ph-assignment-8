@@ -6,11 +6,13 @@ import {
   BookOpen,
 } from "lucide-react";
 import CustomLink from "@/components/shared/CustomLink";
-import React, { Suspense } from "react";
+import React from "react";
 import Sidebar from "./@sidebar/page";
-import ProfileSidebarSkeleton from "./@sidebar/loading";
+import { auth } from "@/lib/session";
+import { redirect } from "next/navigation";
+import { UserRole } from "@/interfaces/user.interface";
 
-const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
+const ProfileLayout = async ({ children }: { children: React.ReactNode }) => {
   const navItems = [
     {
       name: "Dashboard",
@@ -42,14 +44,17 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
       href: "#",
     },
   ];
+  const session = await auth();
+  if (!session) {
+    redirect("/login?redirect=/profile");
+  }
 
+  if (session.role === UserRole.ADMIN) {
+    redirect("/admin/dashboard");
+  }
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-surface relative pt-6">
-      {/* SideNavBar (Shared Component) - Desktop Only */}
-      {/* <Suspense fallback={<ProfileSidebarSkeleton />}> */}
       <Sidebar />
-      {/* </Suspense> */}
-      {/* {sidebar} */}
       <div className="mb-14 lg:mb-0">{children}</div>
       <nav className="fixed bottom-0 left-0 w-full shadow-2xl bg-background flex items-center justify-between lg:hidden z-40 border-t px-4">
         {navItems.map((item) => {

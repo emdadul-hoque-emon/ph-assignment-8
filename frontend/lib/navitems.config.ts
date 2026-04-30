@@ -127,20 +127,15 @@ export const adminNavItems: INavSection[] = [
         roles: [UserRole.ADMIN],
       },
       {
-        title: "Schedules",
-        href: "/admin/dashboard/schedules-management",
-        icon: "Clock",
-        roles: [UserRole.ADMIN],
-      },
-    ],
-  },
-  {
-    title: "Trip Management",
-    items: [
-      {
         title: "Trips",
         href: "/admin/dashboard/trips-management",
-        icon: "Clipboard",
+        icon: "Plane",
+        roles: [UserRole.ADMIN],
+      },
+      {
+        title: "Destinations",
+        href: "/admin/dashboard/destinations-management",
+        icon: "MapPin",
         roles: [UserRole.ADMIN],
       },
     ],
@@ -152,6 +147,12 @@ export const adminNavItems: INavSection[] = [
         title: "Top Cities",
         href: "/admin/dashboard/cities-management",
         icon: "MapPin",
+        roles: [UserRole.ADMIN],
+      },
+      {
+        title: "Trip Includes",
+        href: "/admin/dashboard/trip-includes-management",
+        icon: "BookmarkPlus",
         roles: [UserRole.ADMIN],
       },
     ],

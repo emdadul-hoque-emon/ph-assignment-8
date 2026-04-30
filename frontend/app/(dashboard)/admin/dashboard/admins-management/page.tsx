@@ -10,8 +10,9 @@ import SelectFilter from "@/components/shared/SelectFilter";
 import TablePagination from "@/components/shared/TablePagination";
 import TableSkeleton from "@/components/shared/TableSkeleton";
 import { IMeta, IResponse } from "@/interfaces";
-import { ITourist, IUser } from "@/interfaces/user.interface";
+import { ITourist, IUser, UserRole } from "@/interfaces/user.interface";
 import { queryStringFormatter } from "@/lib/formatters";
+import { serverFetch } from "@/lib/server-fetch";
 import React, { Suspense } from "react";
 
 const page = async ({
@@ -21,7 +22,10 @@ const page = async ({
 }) => {
   const searchParamsObj = await searchParams;
   const queryString = queryStringFormatter(searchParamsObj);
-  const data: IResponse<IUser<ITourist>[]> = await getUsers(queryString);
+  const res = await serverFetch.get(
+    `/v2/users?role=${UserRole.ADMIN}&${queryString}`,
+  );
+  const data: IResponse<IUser[]> = await getUsers(queryString);
 
   return (
     <div className="space-y-4 p-6">
@@ -35,7 +39,7 @@ const page = async ({
         <RefreshButton />
       </div>
       <Suspense fallback={<TableSkeleton columns={10} rows={10} />}>
-        <UsersTable tourists={data.data} />
+        <UsersTable tourists={[]} emptyMessage="Admins not found" />
         <TablePagination
           currentPage={data.meta?.page || 1}
           totalPages={data.meta?.totalPages || 1}

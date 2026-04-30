@@ -9,9 +9,7 @@ import { TourInfoCell } from "./TourInfoCell";
 export const toursColumns: IColumn<ITour>[] = [
   {
     header: "Tours",
-    accessor: (tour) => (
-      <TourInfoCell name={tour.title} photo={tour.images[0]} />
-    ),
+    accessor: (tour) => <TourInfoCell name={tour.title} photo={tour.image} />,
   },
   {
     header: "Location",

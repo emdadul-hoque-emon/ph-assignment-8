@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TOURIST_PREFERENCES } from "@/constants/user";
+import { GUIDE_SPECIALTIES } from "@/constants/user";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Gender } from "@/interfaces/user.interface";
 import { Check, ChevronsUpDown, Filter, X } from "lucide-react";
@@ -38,7 +38,7 @@ const GuideFilter = () => {
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  const [expertise, setExpertise] = React.useState<string[]>([]);
+  const [specialties, setSpecialties] = React.useState<string[]>([]);
   const [languages, setLanguages] = React.useState<string[]>([]);
   const [name, setName] = React.useState<string>("");
   const [email, setEmail] = React.useState<string>("");
@@ -47,43 +47,41 @@ const GuideFilter = () => {
   const [open, setOpen] = React.useState(false);
   const [languagesModalOpen, setLanguagesModalOpen] = React.useState(false);
 
-  const debouncedExpertise = useDebounce(expertise, 500);
-  const debouncedLanguages = useDebounce(languages, 500);
   const debouncedName = useDebounce(name, 500);
   const debouncedEmail = useDebounce(email, 500);
   const debouncedPhone = useDebounce(phone, 500);
   const debouncedGender = useDebounce(gender, 500);
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams();
 
     if (debouncedName) {
-      params.set("name", debouncedName);
+      params.append("name", debouncedName);
     } else {
       params.delete("name");
     }
     if (debouncedEmail) {
-      params.set("email", debouncedEmail);
+      params.append("email", debouncedEmail);
     } else {
       params.delete("email");
     }
     if (debouncedPhone) {
-      params.set("phone", debouncedPhone);
+      params.append("phone", debouncedPhone);
     } else {
       params.delete("phone");
     }
-    if (debouncedExpertise.length > 0) {
-      debouncedExpertise.forEach((e) => params.set("expertise", e));
-    } else {
-      params.delete("expertise");
-    }
-    if (debouncedLanguages.length > 0) {
-      debouncedLanguages.forEach((l) => params.set("languages", l));
-    } else {
-      params.delete("languages");
-    }
+    // if (debouncedSpecialties.length > 0) {
+    //   debouncedSpecialties.forEach((s) => params.set("specialties", s));
+    // } else {
+    //   params.delete("specialties");
+    // }
+    // if (debouncedLanguages.length > 0) {
+    //   debouncedLanguages.forEach((l) => params.append("languages", l));
+    // } else {
+    //   params.delete("languages");
+    // }
     if (debouncedGender) {
-      params.set("gender", debouncedGender);
+      params.append("gender", debouncedGender);
     } else {
       params.delete("gender");
     }
@@ -92,60 +90,75 @@ const GuideFilter = () => {
     startTransition(() => {
       router.push(`?${params.toString()}`);
     });
-  }, [
-    debouncedExpertise,
-    debouncedLanguages,
-    debouncedName,
-    debouncedEmail,
-    debouncedPhone,
-    debouncedGender,
-  ]);
+  }, [debouncedName, debouncedEmail, debouncedPhone, debouncedGender]);
 
-  const toggleExpertise = (value: string) => {
-    if (expertise.includes(value)) {
-      setExpertise(expertise.filter((e) => e !== value));
+  const toggleSpecialty = (value: string) => {
+    if (specialties.includes(value)) {
+      setSpecialties(specialties.filter((s) => s !== value));
     } else {
-      setExpertise([...expertise, value]);
+      setSpecialties([...specialties, value]);
     }
   };
   const toggleLanguage = (value: string) => {
     if (languages.includes(value)) {
-      setLanguages(languages.filter((e) => e !== value));
+      setLanguages(languages.filter((l) => l !== value));
     } else {
-      setLanguages([...expertise, value]);
+      setLanguages([...languages, value]);
     }
   };
 
-  const applyToggleExpertiseFilter = () => {
-    // const params = new URLSearchParams(searchParams.toString());
-    // params.delete("interests");
+  const applyToggleSpecialtyFilter = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("specialties");
 
-    // if (interests.length > 0) {
-    //   interests.forEach((i) => params.set("interests", i));
-    // }
+    if (specialties.length > 0) {
+      specialties.forEach((s) => params.append("specialties", s));
+    }
 
-    // startTransition(() => {
-    //   router.push(`?${params.toString()}`);
-    // });
+    startTransition(() => {
+      router.push(`?${params.toString()}`);
+    });
 
     setOpen(false);
   };
+  const applyToggleLanguageFilter = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("languages");
+
+    if (languages.length > 0) {
+      languages.forEach((l) => params.append("languages", l));
+    }
+
+    startTransition(() => {
+      router.push(`?${params.toString()}`);
+    });
+
+    setLanguagesModalOpen(false);
+  };
 
   const clearAllFilters = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("specialties");
+    params.delete("languages");
+    params.delete("name");
+    params.delete("email");
+    params.delete("phone");
+    params.delete("gender");
+
+    startTransition(() => {
+      router.push(`?${params.toString()}`);
+    });
+
     setName("");
     setEmail("");
     setPhone("");
-    setExpertise([]);
+    setSpecialties([]);
     setLanguages([]);
     setGender("");
-
-    startTransition(() => {
-      router.push(window.location.href);
-    });
   };
 
   const activeFiltersCount =
-    expertise.length +
+    specialties.length +
     languages.length +
     (gender ? 1 : 0) +
     (email ? 1 : 0) +
@@ -174,30 +187,30 @@ const GuideFilter = () => {
               className="w-60 justify-between h-10"
             >
               <Filter className="mr-2 h-4 w-4" />
-              {expertise.length > 0
-                ? `${expertise.length} selected`
-                : "Select expertise"}
+              {specialties.length > 0
+                ? `${specialties.length} selected`
+                : "Select specialties"}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-60 p-0" align="start">
             <Command>
-              <CommandInput placeholder="Search expertise..." />
+              <CommandInput placeholder="Search specialties..." />
               <CommandList>
                 <CommandEmpty>No specialty found.</CommandEmpty>
                 <CommandGroup>
-                  {TOURIST_PREFERENCES.map((interest, index) => {
-                    const isSelected = expertise.includes(interest.value);
+                  {GUIDE_SPECIALTIES.map((interest, index) => {
+                    const isSelected = specialties.includes(interest);
                     return (
                       <CommandItem
                         key={index}
-                        value={interest.value}
-                        onSelect={() => toggleExpertise(interest.value)}
+                        value={interest}
+                        onSelect={() => toggleSpecialty(interest)}
                         className={isSelected ? "bg-accent" : ""}
                       >
                         <Checkbox checked={isSelected} className="mr-2" />
                         <span className={isSelected ? "font-medium" : ""}>
-                          {interest.label}
+                          {interest}
                         </span>
                         {isSelected && (
                           <Check className="ml-auto h-4 w-4 text-primary" />
@@ -209,7 +222,7 @@ const GuideFilter = () => {
               </CommandList>
               <div className="p-2 border-t">
                 <Button
-                  onClick={applyToggleExpertiseFilter}
+                  onClick={applyToggleSpecialtyFilter}
                   className="w-full"
                   size="sm"
                   disabled={isPending}
@@ -244,12 +257,12 @@ const GuideFilter = () => {
                 <CommandEmpty>No language found.</CommandEmpty>
                 <CommandGroup>
                   {allLanguages.map((l, index) => {
-                    const isSelected = languages.includes(l.code);
+                    const isSelected = languages.includes(l.name);
                     return (
                       <CommandItem
                         key={index}
-                        value={l.code}
-                        onSelect={() => toggleLanguage(l.code)}
+                        value={l.name}
+                        onSelect={() => toggleLanguage(l.name)}
                         className={isSelected ? "bg-accent" : ""}
                       >
                         <Checkbox checked={isSelected} className="mr-2" />
@@ -266,7 +279,7 @@ const GuideFilter = () => {
               </CommandList>
               <div className="p-2 border-t">
                 <Button
-                  onClick={applyToggleExpertiseFilter}
+                  onClick={applyToggleLanguageFilter}
                   className="w-full"
                   size="sm"
                   disabled={isPending}
@@ -310,17 +323,17 @@ const GuideFilter = () => {
 
       {/* Row 3: Active Specialty Badges - Fixed Height to Prevent Shift */}
 
-      {expertise.length > 0 && (
+      {specialties.length > 0 && (
         <div className="min-h-8 flex items-center">
           <div className="flex flex-wrap gap-2">
-            {expertise.map((e) => (
-              <Badge key={e} variant="outline" className="px-2.5 py-1 h-7">
-                {e}
+            {specialties.map((s) => (
+              <Badge key={s} variant="outline" className="px-2.5 py-1 h-7">
+                {s}
                 <Button
                   variant="ghost"
-                  onClick={() => toggleExpertise(e)}
+                  onClick={() => toggleSpecialty(s)}
                   className="ml-1.5 hover:text-destructive transition-colors"
-                  aria-label={`Remove ${e}`}
+                  aria-label={`Remove ${s}`}
                 >
                   <X className="h-3 w-3" />
                 </Button>

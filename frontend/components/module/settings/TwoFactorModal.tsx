@@ -56,7 +56,6 @@ const TwoFactorModal = ({ children }: Props) => {
           credentials: "include",
         });
         const res = await data.json();
-        console.log(res, "response from server");
         setTwoFactorData(res?.data);
       } catch (error) {
         toast.error("Failed to fetch two-factor data");

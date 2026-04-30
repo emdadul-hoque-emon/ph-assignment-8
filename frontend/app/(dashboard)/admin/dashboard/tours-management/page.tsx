@@ -12,6 +12,7 @@ import React, { Suspense } from "react";
 import languages from "@/data/iso/languages.json";
 import { TOUR_CATEGORIES } from "@/constants/user";
 import TourFilter from "@/components/module/tour/TourFilter";
+import { serverFetch } from "@/lib/server-fetch";
 
 const page = async ({
   searchParams,
@@ -20,7 +21,8 @@ const page = async ({
 }) => {
   const searchParamsObj = await searchParams;
   const queryString = queryStringFormatter(searchParamsObj);
-  const data = await getTours(queryString);
+  const res = await serverFetch.get(`/v2/tours?${queryString}`);
+  const data = await res.json();
   return (
     <div className="space-y-4 p-6">
       <TourManagementHeader />
@@ -29,7 +31,9 @@ const page = async ({
         <ToursTable tours={data?.data as ITour[]} />
         <TablePagination
           currentPage={data?.meta?.page || 1}
-          totalPages={data?.meta?.totalPages || 0}
+          totalPages={
+            Math.ceil((data?.meta?.total || 1) / (data?.meta?.limit || 1)) || 0
+          }
         />
       </Suspense>
     </div>

@@ -9,6 +9,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { zodValidator } from "@/lib/zod-validator";
 import z from "zod";
 import cookie from "cookie";
+import { UserRole } from "@/interfaces/user.interface";
 
 export const getNewAccessToken = async () => {
   try {
@@ -149,7 +150,6 @@ export const login = async (prevState: unknown, formData: FormData) => {
   try {
     const redirectTo = formData.get("redirect") || null;
     const validatedPayload = zodValidator(payload, loginSchema);
-    console.log(validatedPayload);
     if (!validatedPayload.success) {
       return {
         success: false,
@@ -235,7 +235,9 @@ export const login = async (prevState: unknown, formData: FormData) => {
         redirect("/profile");
       }
     } else {
-      redirect("/profile");
+      if (verifiedToken.role === UserRole.ADMIN) {
+        redirect("/admin/dashboard");
+      } else redirect("/profile");
     }
   } catch (error: any) {
     console.log(error);
