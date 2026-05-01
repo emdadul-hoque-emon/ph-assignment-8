@@ -14,7 +14,7 @@ export async function Navbar({
 }) {
   const session = await auth();
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 md:px-20 py-4 bg-white dark:bg-slate-900 backdrop-blur-2xl ">
+    <header className="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 px-6 md:px-20 py-4 bg-white dark:bg-slate-900 backdrop-blur-2xl h-20.25">
       <div className="flex items-center gap-8">
         <div className="flex items-center gap-2 text-primary w-50 h-12">
           <Link

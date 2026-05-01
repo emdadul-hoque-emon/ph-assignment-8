@@ -1,6 +1,5 @@
 import { auth } from "@/lib/session";
 import { redirect } from "next/navigation";
-import React from "react";
 import DashboardSidebarContent from "./DashboardSidebarContent";
 import { getDefaultDashboardRoute } from "@/lib/auth-utils";
 import { INavSection } from "@/interfaces/dashboard.interface";

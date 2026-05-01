@@ -1,5 +1,5 @@
 "use client";
-import { IUser } from "@/interfaces/user.interface";
+import { IUser, UserRole } from "@/interfaces/user.interface";
 import React from "react";
 import {
   DropdownMenu,
@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Dropdown } from "react-day-picker";
 import Image from "next/image";
 import Link from "next/link";
 import { logout } from "@/services/auth/auth.service";
@@ -39,11 +38,13 @@ const ProfileDropdown = ({ session }: { session: IUser<null> }) => {
             Profile
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard" className="w-full">
-            Dashboard
-          </Link>
-        </DropdownMenuItem>
+        {session.role === UserRole.ADMIN && (
+          <DropdownMenuItem asChild>
+            <Link href="/admin/dashboard" className="w-full">
+              Dashboard
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href="/settings" className="w-full">
             Settings

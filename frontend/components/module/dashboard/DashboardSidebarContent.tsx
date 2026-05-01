@@ -6,7 +6,6 @@ import { INavSection } from "@/interfaces/dashboard.interface";
 import { IUser } from "@/interfaces/user.interface";
 import { getIconComponent } from "@/lib/icon-mappers";
 import { cn } from "@/lib/utils";
-import { Bell } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -23,11 +22,15 @@ const DashboardSidebarContent = ({
 }: IDashboardSidebarContentProps) => {
   const pathname = usePathname();
   return (
-    <div className="hidden md:flex h-full w-64 flex-col border-r bg-card">
+    <div className="flex h-full max-w-64 flex-col border-r bg-card">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b px-6">
-        <Link href={dashboardHome} className="flex items-center space-y-2">
-          <span className="text-xl font-bold text-primary">Local Guide</span>
+      <div className="flex h-20.25 items-center border-b px-6">
+        <Link
+          href={dashboardHome}
+          className="flex items-center space-y-2 relative w-full h-[80%] py-2"
+        >
+          <span className="text-xl font-bold sr-only">LocalGuide</span>
+          <h1 className="font-bold text-lg">Admin Dashboard</h1>
         </Link>
       </div>
 
@@ -54,7 +57,7 @@ const DashboardSidebarContent = ({
                         "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all",
                         isActive
                           ? "bg-primary text-primary-foreground"
-                          : " text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                          : " text-muted-foreground hover:bg-primary/10 hover:text-primary/10-foreground",
                       )}
                     >
                       <Icon className="size-4" />
