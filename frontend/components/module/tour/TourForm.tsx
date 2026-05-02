@@ -1,7 +1,12 @@
 import InputFieldError from "@/components/shared/InputFieldError";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { SearchableSelect } from "@/components/ui/searchable-select";
 import {
@@ -15,20 +20,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { IInputErrorState } from "@/lib/getInputFieldError";
 import { unicodeToEmoji } from "@/lib/unicodeToEmoji";
 import { createTour, updateTour } from "@/services/tour/tour.service";
-import { Loader2, Trash2, X } from "lucide-react";
+import { Check, ChevronsUpDown, Loader2, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import { useActionState, useEffect, useRef, useState } from "react";
 import languages from "@/data/iso/languages.json";
 import { toast } from "sonner";
 import { ITour } from "@/interfaces/tour.interface";
 import { TOUR_CATEGORIES } from "@/constants/user";
-
-interface Country {
-  id: number;
-  name: string;
-  iso2: string;
-  emoji: string;
-}
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { se } from "date-fns/locale";
+import { serverFetch } from "@/lib/server-fetch";
 
 interface TourFormProps {
   tourData?: ITour;
@@ -36,71 +50,26 @@ interface TourFormProps {
   onClose?: () => void;
 }
 
+interface Destination {
+  city: string;
+  country: string;
+  id: string;
+}
+
 const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
   const isEdit = !!tourData;
   const [category, setCategory] = useState(tourData?.category || "");
   const [tourImage, setTourImage] = useState<File | null>(null);
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [cities, setCities] = useState<
-    { name: string; country_name: string }[]
-  >([]);
-  const [selectedCity, setSelectedCity] = useState<string | null>(
-    tourData?.city || "",
-  );
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(
-    tourData?.country || "",
-  );
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(
     tourData?.language || "",
   );
+  const [selectedDestination, setSelectedDestination] =
+    useState<Destination | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const action = !isEdit ? createTour : updateTour;
   const [state, formAction, isPending] = useActionState(action, null);
-
-  useEffect(() => {
-    const fetchContries = async () => {
-      const res = await fetch(
-        "https://country-state-city-nine.vercel.app/api/v1/country",
-      );
-      const data = await res.json();
-      setCountries(data?.data);
-    };
-
-    fetchContries();
-  }, []);
-
-  useEffect(() => {
-    const fetchCities = async () => {
-      if (!selectedCountry || !countries.length) return;
-
-      const countryId = countries.find(
-        (country) => country.name === selectedCountry,
-      )?.id;
-
-      if (!countryId) return;
-
-      const res = await fetch(
-        `https://country-state-city-nine.vercel.app/api/v1/city/country/${countryId}`,
-      );
-      const data = await res.json();
-
-      setCities(data?.data || []);
-    };
-
-    fetchCities();
-  }, [selectedCountry, countries]);
-
-  useEffect(() => {
-    if (!cities.length || !tourData?.city) return;
-
-    const cityExists = cities.some((city) => city.name === tourData.city);
-
-    if (cityExists) {
-      setSelectedCity(tourData.city);
-    }
-  }, [cities, tourData]);
 
   useEffect(() => {
     if (state?.success) {
@@ -126,245 +95,393 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
     }
   }, [state]);
 
+  useEffect(() => {
+    if (!tourImage) return;
+    const url = URL.createObjectURL(tourImage);
+    return () => URL.revokeObjectURL(url);
+  }, [tourImage]);
+
   return (
-    <form action={formAction} className="space-y-6">
-      {isEdit && tourData && (
-        <input type="hidden" name="tourId" value={tourData._id} />
-      )}
-      <input type="hidden" name="category" value={category} />
-      <input type="hidden" name="language" value={selectedLanguage as string} />
-
-      {/* Basic Information */}
-      <div className="space-y-4">
-        <Field>
-          <FieldLabel>Tour Name *</FieldLabel>
-          <Input
-            name="title"
-            placeholder="e.g. Historic City Walking Tour"
-            defaultValue={
-              state?.formData?.title || (isEdit ? tourData.title : undefined)
-            }
-          />
-          <InputFieldError state={state as IInputErrorState} field="title" />
-        </Field>
-
-        <Field>
-          <FieldLabel>Description *</FieldLabel>
-          <Textarea
-            name="description"
-            placeholder="Describe what makes this tour special..."
-            rows={4}
-            defaultValue={
-              state?.formData?.description ||
-              (isEdit ? tourData.description : undefined)
-            }
-          />
-          <InputFieldError
-            state={state as IInputErrorState}
-            field="description"
-          />
-        </Field>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field>
-            <FieldLabel>Country *</FieldLabel>
-            <Input
-              name="country"
-              placeholder="e.g. Japan"
-              defaultValue={
-                state?.formData?.country ||
-                (isEdit ? tourData.country : undefined)
-              }
-            />
-            <InputFieldError
-              state={state as IInputErrorState}
-              field="country"
-            />
-          </Field>
-          <Field>
-            <FieldLabel>City *</FieldLabel>
-            <Input
-              name="city"
-              placeholder="e.g. Tokyo"
-              defaultValue={
-                state?.formData?.city || (isEdit ? tourData.city : undefined)
-              }
-            />
-            <InputFieldError state={state as IInputErrorState} field="city" />
-          </Field>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field className="relative">
-            <FieldLabel>Language *</FieldLabel>
-            <SearchableSelect
-              options={languages
-                .map((c) => ({
-                  value: c.name,
-                  label: c.name,
-                }))
-                .sort((a, b) => a.value.localeCompare(b.value))}
-              value={selectedLanguage as string}
-              onValueChange={(v) => {
-                setSelectedLanguage(v);
-              }}
-            />
-            <InputFieldError
-              state={state as IInputErrorState}
-              field="category"
-            />
-          </Field>
-
-          <Field>
-            <FieldLabel>Category *</FieldLabel>
-            <Select
-              name="category"
-              value={category}
-              onValueChange={setCategory}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {TOUR_CATEGORIES.map((category) => (
-                  <SelectItem key={category.value} value={category.value}>
-                    {category.label}
-                  </SelectItem>
-                ))}
-                <SelectItem value="cultural">Cultural</SelectItem>
-                <SelectItem value="adventure">Adventure</SelectItem>
-                <SelectItem value="food">Food & Culinary</SelectItem>
-                <SelectItem value="leisure">Leisure</SelectItem>
-                <SelectItem value="nature">Nature</SelectItem>
-                <SelectItem value="history">History</SelectItem>
-              </SelectContent>
-            </Select>
-            <InputFieldError
-              state={state as IInputErrorState}
-              field="category"
-            />
-          </Field>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field>
-            <FieldLabel>Price (USD) *</FieldLabel>
-            <Input
-              name="price"
-              type="number"
-              placeholder="89"
-              min="0"
-              defaultValue={
-                state?.formData?.price || (isEdit ? tourData.price : undefined)
-              }
-            />
-            <InputFieldError state={state as IInputErrorState} field="price" />
-          </Field>
-
-          {/* <Field>
-            <FieldLabel>Duration *</FieldLabel>
-            <Input
-              name="duration"
-              placeholder="e.g. 3 hours"
-              defaultValue={
-                state?.formData?.duration ||
-                (isEdit ? tourData.duration : undefined)
-              }
-            />
-            <InputFieldError
-              state={state as IInputErrorState}
-              field="duration"
-            />
-          </Field> */}
-        </div>
-      </div>
-
-      {/* Tour Images */}
-      <Field className="space-y-2 pt-4 gap-0">
-        <FieldLabel className="text-sm text-muted-foreground">
-          Upload images that represent your tour
-        </FieldLabel>
-        <InputFieldError state={state as IInputErrorState} field="image" />
-        <Input
-          type="file"
-          accept="image/*"
-          name="images"
-          placeholder="Tour banner"
-          onChange={(e) => setTourImage(e.target.files?.[0] as File)}
-          multiple
-          max={3}
-        />
-        {tourImage && (
-          <div className="mt-2 flex items-center gap-2">
-            <div className="h-30 w-full rounded-lg overflow-hidden relative">
-              <Image
-                src={URL.createObjectURL(tourImage)}
-                alt="Tour banner"
-                fill
-                className="object-cover aspect-video"
-              />
-              <Button
-                type="button"
-                onClick={() => setTourImage(null)}
-                variant={"outline"}
-                size={"sm"}
-                className="text-sm text-muted-foreground absolute top-1 right-1 hover:bg-primary-foreground/20 rounded-full size-6"
-              >
-                <X />
-              </Button>
-            </div>
-          </div>
+    <div className="">
+      <form action={formAction} className="space-y-6">
+        {isEdit && tourData && (
+          <input type="hidden" name="tourId" value={tourData._id} />
         )}
-      </Field>
+        <input type="hidden" name="category" value={category} />
+        <input
+          type="hidden"
+          name="language"
+          value={selectedLanguage as string}
+        />
+        <input
+          type="hidden"
+          name="destinationId"
+          value={selectedDestination ? selectedDestination.id : ""}
+        />
 
-      {/* Additional Settings */}
-      <div className="space-y-3 pt-4 border-t">
-        <h3 className="font-semibold text-base">Additional Settings</h3>
-        <FieldGroup className="space-y-2 gap-0">
-          <Field orientation={"horizontal"}>
-            <Checkbox
-              id="active"
-              name="isActive"
-              className="rounded"
-              defaultChecked={
-                state?.formData?.isActive ||
-                (isEdit ? tourData.isActive : false)
+        {/* Basic Information */}
+        <div className="space-y-4">
+          <Field>
+            <FieldLabel htmlFor="tour_name">Tour Name *</FieldLabel>
+            <Input
+              name="title"
+              id="tour_name"
+              placeholder="e.g. Historic City Walking Tour"
+              defaultValue={
+                state?.formData?.title || (isEdit ? tourData.title : undefined)
               }
             />
-            <FieldLabel
-              htmlFor="active"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <span className="text-sm">Active tour</span>
-            </FieldLabel>
+            <InputFieldError state={state as IInputErrorState} field="title" />
           </Field>
-          <Field orientation={"horizontal"}>
-            <Checkbox
-              name="isFeatured"
-              id="featured"
-              className="rounded"
-              defaultChecked={
-                state?.formData?.isFeatured ||
-                (isEdit ? tourData.isFeatured : false)
+
+          <Field>
+            <FieldLabel htmlFor="description">Description *</FieldLabel>
+            <Textarea
+              name="description"
+              id="description"
+              placeholder="Describe what makes this tour special..."
+              rows={4}
+              defaultValue={
+                state?.formData?.description ||
+                (isEdit ? tourData.description : undefined)
               }
             />
-            <FieldLabel
-              htmlFor="featured"
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <span className="text-sm">Featured tour</span>
-            </FieldLabel>
+            <InputFieldError
+              state={state as IInputErrorState}
+              field="description"
+            />
           </Field>
-        </FieldGroup>
-      </div>
 
-      {/* Submit Buttons */}
-      <div className="flex gap-3 pt-4 border-t">
-        <Button type="submit" size="lg" className="flex-1" disabled={isPending}>
-          {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-          {isEdit ? "Update Tour" : "Create Tour"}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field>
+              <FieldLabel htmlFor="maxGroupSize">Max Group Size *</FieldLabel>
+              <Input
+                name="maxGroupSize"
+                id="maxGroupSize"
+                type="number"
+                placeholder="e.g. 10"
+                min="1"
+                defaultValue={
+                  state?.formData?.maxGroupSize ||
+                  (isEdit ? tourData.maxGroupSize : undefined)
+                }
+              />
+              <InputFieldError
+                state={state as IInputErrorState}
+                field="maxGroupSize"
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="priceFrom">Price From (USD) *</FieldLabel>
+              <Input
+                name="priceFrom"
+                id="priceFrom"
+                type="number"
+                placeholder="89"
+                min="0"
+                defaultValue={
+                  state?.formData?.priceFrom ||
+                  (isEdit ? tourData.priceFrom : undefined)
+                }
+              />
+              <InputFieldError
+                state={state as IInputErrorState}
+                field="priceFrom"
+              />
+            </Field>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field className="relative">
+              <FieldLabel htmlFor="language">Language *</FieldLabel>
+              <SearchableSelect
+                id="language"
+                options={languages
+                  .map((c) => ({
+                    value: c.name,
+                    label: c.name,
+                  }))
+                  .sort((a, b) => a.value.localeCompare(b.value))}
+                value={selectedLanguage as string}
+                onValueChange={(v) => {
+                  setSelectedLanguage(v);
+                }}
+              />
+              <InputFieldError
+                state={state as IInputErrorState}
+                field="language"
+              />
+            </Field>
+
+            <Field>
+              <FieldLabel htmlFor="category">Category *</FieldLabel>
+              <Select
+                name="category"
+                value={category}
+                onValueChange={setCategory}
+              >
+                <SelectTrigger id="category" className="w-full">
+                  <SelectValue placeholder="Select a category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TOUR_CATEGORIES.map((category) => (
+                    <SelectItem key={category.value} value={category.value}>
+                      {category.label}
+                    </SelectItem>
+                  ))}
+                  <SelectItem value="cultural">Cultural</SelectItem>
+                  <SelectItem value="adventure">Adventure</SelectItem>
+                  <SelectItem value="food">Food & Culinary</SelectItem>
+                  <SelectItem value="leisure">Leisure</SelectItem>
+                  <SelectItem value="nature">Nature</SelectItem>
+                  <SelectItem value="history">History</SelectItem>
+                </SelectContent>
+              </Select>
+              <InputFieldError
+                state={state as IInputErrorState}
+                field="category"
+              />
+            </Field>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field>
+              <FieldLabel htmlFor="durationDays">Duration Days *</FieldLabel>
+              <Input
+                name="durationDays"
+                id="durationDays"
+                type="number"
+                placeholder="e.g. 1"
+                min="1"
+                defaultValue={
+                  state?.formData?.durationDays ||
+                  (isEdit ? tourData.durationDays : undefined)
+                }
+              />
+              <InputFieldError
+                state={state as IInputErrorState}
+                field="durationDays"
+              />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="destinationId">Destination *</FieldLabel>
+              <FieldContent>
+                <DestionationsSelect
+                  selectedOption={selectedDestination}
+                  setSelectedOption={setSelectedDestination}
+                />
+              </FieldContent>
+            </Field>
+          </div>
+        </div>
+
+        {/* Tour Images */}
+        <Field className="space-y-2 pt-4 gap-0">
+          <FieldLabel
+            htmlFor="tourImages"
+            className="text-sm text-muted-foreground"
+          >
+            Upload images that represent your tour
+          </FieldLabel>
+          <InputFieldError state={state as IInputErrorState} field="image" />
+          <Input
+            type="file"
+            accept="image/*"
+            name="images"
+            id="tourImages"
+            placeholder="Tour banner"
+            onChange={(e) => setTourImage(e.target.files?.[0] as File)}
+            multiple
+            max={3}
+          />
+          <div className="relative">
+            {tourImage && (
+              <div className="mt-2 flex items-center gap-2">
+                <div className="h-30 w-full rounded-lg overflow-hidden">
+                  <Image
+                    src={URL.createObjectURL(tourImage)}
+                    alt="Tour banner"
+                    fill
+                    className="object-cover"
+                  />
+                  <Button
+                    type="button"
+                    onClick={() => setTourImage(null)}
+                    variant={"outline"}
+                    size={"sm"}
+                    className="absolute top-1 right-1 rounded-full size-6"
+                  >
+                    <X />
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        </Field>
+
+        {/* Additional Settings */}
+        <div className="space-y-3 pt-4 border-t">
+          <h3 className="font-semibold text-base">Additional Settings</h3>
+          <FieldGroup className="space-y-2 gap-0">
+            <Field orientation={"horizontal"}>
+              <Checkbox
+                id="active"
+                name="isActive"
+                className="rounded"
+                defaultChecked={
+                  state?.formData?.isActive ||
+                  (isEdit ? tourData.isActive : false)
+                }
+              />
+              <FieldLabel
+                htmlFor="active"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <span className="text-sm">Active tour</span>
+              </FieldLabel>
+            </Field>
+            <Field orientation={"horizontal"}>
+              <Checkbox
+                name="isFeatured"
+                id="featured"
+                className="rounded"
+                defaultChecked={
+                  state?.formData?.isFeatured ||
+                  (isEdit ? tourData.isFeatured : false)
+                }
+              />
+              <FieldLabel
+                htmlFor="featured"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <span className="text-sm">Featured tour</span>
+              </FieldLabel>
+            </Field>
+          </FieldGroup>
+        </div>
+
+        {/* Submit Buttons */}
+        <div className="flex gap-3 pt-4 border-t">
+          <Button
+            type="submit"
+            size="lg"
+            className="flex-1"
+            disabled={isPending}
+          >
+            {isPending && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+            {isEdit ? "Update Tour" : "Create Tour"}
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+const DestionationsSelect = ({
+  selectedOption,
+  setSelectedOption,
+}: {
+  selectedOption: Destination | null;
+  setSelectedOption: React.Dispatch<React.SetStateAction<Destination | null>>;
+}) => {
+  const [openPopover, setOpenPopover] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [destionations, setDestinations] = useState<Destination[]>([]);
+  const [loading, setLoading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const fetchDestionations = async () => {
+      try {
+        setLoading(true);
+
+        const response = await serverFetch.get("/v2/destinations");
+        const data = await response.json();
+        console.log(data);
+        setDestinations(data.data);
+      } catch (error) {
+        console.error("Error fetching destinations:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDestionations();
+  }, [openPopover]);
+  return (
+    <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          // aria-expanded={open}
+          className={cn("w-full justify-between")}
+          // disabled={disabled}
+        >
+          <span className="truncate">
+            {selectedOption
+              ? `${selectedOption.city}, ${selectedOption.country}`
+              : "Select a destination..."}
+          </span>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
-      </div>
-    </form>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-[--radix-popover-trigger-width] p-0"
+        align="start"
+        sideOffset={5}
+        style={{ zIndex: 9999 }}
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          inputRef.current?.focus();
+        }}
+      >
+        <Command>
+          <CommandInput
+            ref={inputRef}
+            placeholder={"Search destinations..."}
+            value={searchQuery}
+            onValueChange={setSearchQuery}
+          />
+          {loading ? (
+            <CommandList className="max-h-75 overflow-y-auto">
+              <CommandEmpty>Loading destinations...</CommandEmpty>
+            </CommandList>
+          ) : destionations.length === 0 ? (
+            <CommandList className="max-h-75 overflow-y-auto">
+              <CommandEmpty>No destinations found.</CommandEmpty>
+            </CommandList>
+          ) : (
+            <CommandList className="max-h-75 overflow-y-auto">
+              <CommandEmpty>{"No results found."}</CommandEmpty>
+              <CommandGroup>
+                {destionations.map((v, index) => (
+                  <CommandItem
+                    key={v.id}
+                    value={v.id}
+                    onSelect={(currentValue) => {
+                      setSelectedOption(
+                        destionations.find((d) => d.id === currentValue) ||
+                          null,
+                      );
+                      setOpenPopover(false);
+                    }}
+                    className="cursor-pointer justify-start"
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        selectedOption?.id === v.id
+                          ? "opacity-100"
+                          : "opacity-0",
+                      )}
+                    />
+                    {v.city}, {v.country}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          )}
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };
 

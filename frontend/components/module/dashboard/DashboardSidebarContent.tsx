@@ -24,12 +24,12 @@ const DashboardSidebarContent = ({
   return (
     <div className="relative flex h-full max-w-64 flex-col border-r bg-card">
       {/* Logo */}
-      <div className="flex h-40! items-center border-b px-6">
+      <div className="flex items-center border-b px-6 py-4.5">
         <Link
           href={dashboardHome}
-          className="flex items-center space-y-2 relative w-full h-full py-2"
+          className="flex items-center space-y-2 relative w-full py-2"
         >
-          <h1 className="font-bold text-lg h-full ">Admin Dashboard</h1>
+          <h1 className="font-bold text-lg ">Admin Dashboard</h1>
         </Link>
       </div>
 

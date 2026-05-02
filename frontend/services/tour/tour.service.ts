@@ -20,8 +20,8 @@ const tourSchema = {
   language: z
     .string("language is required")
     .min(1, "At least one language is required"),
-  isActive: z.any().transform((z) => z === "on"),
-  isFeatured: z.any().transform((z) => z === "on"),
+  isActive: z.boolean().optional().default(false),
+  isFeatured: z.boolean().optional().default(false),
 };
 
 export const createTour = async (prevState: unknown, formData: FormData) => {
@@ -30,17 +30,20 @@ export const createTour = async (prevState: unknown, formData: FormData) => {
     images: formData.get("images"),
     description: formData.get("description"),
     category: formData.get("category"),
-    city: formData.get("city"),
-    country: formData.get("country"),
-    price: formData.get("price"),
+    destinationId: formData.get("destinationId"),
+    maxGroupSize: formData.get("maxGroupSize"),
+    priceFrom: formData.get("priceFrom"),
+    durationDays: formData.get("durationDays"),
     language: formData.get("language"),
-    isActive: formData.get("isActive"),
-    isFeatured: formData.get("isFeatured"),
+    isActive: formData.get("isActive") === "on",
+    isFeatured: formData.get("isFeatured") === "on",
   };
   try {
+    console.log(payload);
+    throw new Error("error");
     const validationResult = zodValidator(
       payload,
-      z.object({ ...tourSchema, images: z.file("image is required") })
+      z.object({ ...tourSchema, images: z.file("image is required") }),
     );
     if (!validationResult.success && validationResult.errors) {
       return {
@@ -68,12 +71,13 @@ export const createTour = async (prevState: unknown, formData: FormData) => {
     }
     modifiedFormData.append("description", payload.description as string);
     modifiedFormData.append("category", payload.category as string);
-    modifiedFormData.append("city", payload.city as string);
-    modifiedFormData.append("country", payload.country as string);
-    modifiedFormData.append("price", payload.price as string);
+    modifiedFormData.append("destinationId", payload.destinationId as string);
+    modifiedFormData.append("maxGroupSize", payload.maxGroupSize as string);
+    modifiedFormData.append("priceFrom", payload.priceFrom as string);
+    modifiedFormData.append("durationDays", payload.durationDays as string);
     modifiedFormData.append("language", payload.language as string);
 
-    const res = await serverFetch.post("/tours", {
+    const res = await serverFetch.post("/v2/tours", {
       body: modifiedFormData,
     });
     const data = await res.json();
@@ -110,7 +114,7 @@ export const updateTour = async (prevState: unknown, formData: FormData) => {
         id: z.string("id is required").regex(/^[0-9a-fA-F]{24}$/, "Invalid id"),
         isActive: z.any().transform((z) => z === "on"),
         isFeatured: z.any().transform((z) => z === "on"),
-      })
+      }),
     );
     if (!validationResult.success && validationResult.errors) {
       return {
