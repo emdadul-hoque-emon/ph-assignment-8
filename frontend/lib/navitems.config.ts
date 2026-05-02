@@ -127,15 +127,68 @@ export const adminNavItems: INavSection[] = [
         roles: [UserRole.ADMIN],
       },
       {
+        title: "Create Tour",
+        href: "/admin/dashboard/tours-management/create-tour",
+        icon: "PlusCircle",
+        roles: [UserRole.ADMIN],
+      },
+      {
+        title: "Update Tour",
+        href: "/admin/dashboard/tours-management/update-tour",
+        icon: "Edit",
+        roles: [UserRole.ADMIN],
+      },
+
+      {
+        title: "Destinations",
+        href: "/admin/dashboard/destinations-management",
+        icon: "MapPin",
+        roles: [UserRole.ADMIN],
+      },
+    ],
+  },
+  {
+    title: "Trip Management",
+    items: [
+      {
         title: "Trips",
         href: "/admin/dashboard/trips-management",
         icon: "Plane",
         roles: [UserRole.ADMIN],
       },
       {
+        title: "Create Trip",
+        href: "/admin/dashboard/trips-management/create-trip",
+        icon: "PlusCircle",
+        roles: [UserRole.ADMIN],
+      },
+      {
+        title: "Update Trip",
+        href: "/admin/dashboard/trips-management/update-trip",
+        icon: "Edit",
+        roles: [UserRole.ADMIN],
+      },
+    ],
+  },
+  {
+    title: "Destination Management",
+    items: [
+      {
         title: "Destinations",
         href: "/admin/dashboard/destinations-management",
-        icon: "MapPin",
+        icon: "Plane",
+        roles: [UserRole.ADMIN],
+      },
+      {
+        title: "Create Destination",
+        href: "/admin/dashboard/destinations-management/create-destination",
+        icon: "PlusCircle",
+        roles: [UserRole.ADMIN],
+      },
+      {
+        title: "Update Destination",
+        href: "/admin/dashboard/destinations-management/update-destination",
+        icon: "Edit",
         roles: [UserRole.ADMIN],
       },
     ],

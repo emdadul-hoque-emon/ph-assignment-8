@@ -1,16 +1,10 @@
-import { getTours } from "@/action/tour";
 import TourManagementHeader from "@/components/module/tour/TourManagementHeader";
 import ToursTable from "@/components/module/tour/TourTable";
-import RefreshButton from "@/components/shared/RefreshButton";
-import SearchFilter from "@/components/shared/SearchFilter";
-import SelectFilter from "@/components/shared/SelectFilter";
 import TablePagination from "@/components/shared/TablePagination";
 import TableSkeleton from "@/components/shared/TableSkeleton";
 import { ITour } from "@/interfaces/tour.interface";
 import { queryStringFormatter } from "@/lib/formatters";
-import React, { Suspense } from "react";
-import languages from "@/data/iso/languages.json";
-import { TOUR_CATEGORIES } from "@/constants/user";
+import { Suspense } from "react";
 import TourFilter from "@/components/module/tour/TourFilter";
 import { serverFetch } from "@/lib/server-fetch";
 

@@ -45,13 +45,13 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
     { name: string; country_name: string }[]
   >([]);
   const [selectedCity, setSelectedCity] = useState<string | null>(
-    tourData?.city || ""
+    tourData?.city || "",
   );
   const [selectedCountry, setSelectedCountry] = useState<string | null>(
-    tourData?.country || ""
+    tourData?.country || "",
   );
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(
-    tourData?.language || ""
+    tourData?.language || "",
   );
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -62,7 +62,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
   useEffect(() => {
     const fetchContries = async () => {
       const res = await fetch(
-        "https://country-state-city-nine.vercel.app/api/v1/country"
+        "https://country-state-city-nine.vercel.app/api/v1/country",
       );
       const data = await res.json();
       setCountries(data?.data);
@@ -76,13 +76,13 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
       if (!selectedCountry || !countries.length) return;
 
       const countryId = countries.find(
-        (country) => country.name === selectedCountry
+        (country) => country.name === selectedCountry,
       )?.id;
 
       if (!countryId) return;
 
       const res = await fetch(
-        `https://country-state-city-nine.vercel.app/api/v1/city/country/${countryId}`
+        `https://country-state-city-nine.vercel.app/api/v1/city/country/${countryId}`,
       );
       const data = await res.json();
 
@@ -132,8 +132,6 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
         <input type="hidden" name="tourId" value={tourData._id} />
       )}
       <input type="hidden" name="category" value={category} />
-      {/* <input type="hidden" name="country" value={selectedCountry as string} /> */}
-      {/* <input type="hidden" name="city" value={selectedCity as string} /> */}
       <input type="hidden" name="language" value={selectedLanguage as string} />
 
       {/* Basic Information */}

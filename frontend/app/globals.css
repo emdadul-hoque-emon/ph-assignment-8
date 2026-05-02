@@ -25,6 +25,8 @@
   --ring: oklch(0.42 0.15 260);
   --surface: oklch(18.887% 0.00625 237.047);
   --radius: 0.75rem;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.6 0.118 184.704);
 }
 
 .dark {
@@ -48,6 +50,8 @@
   --input: oklch(0.25 0.01 260);
   --surface: oklch(18.887% 0.00625 237.047);
   --ring: oklch(0.65 0.18 260);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
 }
 
 @theme inline {

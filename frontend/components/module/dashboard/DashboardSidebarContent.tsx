@@ -22,25 +22,24 @@ const DashboardSidebarContent = ({
 }: IDashboardSidebarContentProps) => {
   const pathname = usePathname();
   return (
-    <div className="flex h-full max-w-64 flex-col border-r bg-card">
+    <div className="relative flex h-full max-w-64 flex-col border-r bg-card">
       {/* Logo */}
-      <div className="flex h-20.25 items-center border-b px-6">
+      <div className="flex h-40! items-center border-b px-6">
         <Link
           href={dashboardHome}
-          className="flex items-center space-y-2 relative w-full h-[80%] py-2"
+          className="flex items-center space-y-2 relative w-full h-full py-2"
         >
-          <span className="text-xl font-bold sr-only">LocalGuide</span>
-          <h1 className="font-bold text-lg">Admin Dashboard</h1>
+          <h1 className="font-bold text-lg h-full ">Admin Dashboard</h1>
         </Link>
       </div>
 
       {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 py-4">
+      <ScrollArea className="flex-1 px-3 py-4 h-full pb-30">
         <nav className="space-y-6">
           {navItems.map((section, sectionIdx) => (
             <div key={sectionIdx}>
               {section.title && (
-                <h4 className="mb-2 px-3 text-xs font-bold text-muted-foreground upp tracking-wider">
+                <h4 className="mb-2 px-3 text-xs font-bold upp tracking-wider">
                   {section.title}
                 </h4>
               )}
@@ -80,7 +79,7 @@ const DashboardSidebarContent = ({
       </ScrollArea>
 
       {/* User info */}
-      <div className="border-t p-4">
+      <div className="absolute bottom-0 left-0 z-10 border-t p-4 w-full bg-card">
         <div className="flex items-center gap-3">
           <div className="size-8 rounded-full bg-primary/10 flex justify-center items-center">
             <span className="text-sm text-primary font-semibold">
