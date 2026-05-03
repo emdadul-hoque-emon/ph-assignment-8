@@ -34,13 +34,17 @@ const getSingleTour = catchAsync(async (req, res, next) => {
     message: "Tour fetched successfully",
     statusCode: 200,
     success: true,
-    data: await TourService.getSingleTour(req.params.id),
+    data: await TourService.getSingleTour(
+      req.params.id,
+      req?.query?.isSlug === "true",
+    ),
   });
 });
 
 const createTour = catchAsync(async (req, res, next) => {
   const userId = req.user?.userId;
-  const data = await TourService.createTourInDB(req.body, userId);
+  const image = req.file as Express.Multer.File;
+  const data = await TourService.createTourInDB(req.body, userId, image);
 
   sendResponse(res, {
     message: "Tour created successfully",

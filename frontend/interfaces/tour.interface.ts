@@ -5,10 +5,12 @@ export interface ITour {
   _id: string;
   id: string;
   title: string;
+  slug: string;
   description: string;
   category: string;
   city: string;
   country: string;
+  destinationId: string;
   destination: {
     city: string;
     country: string;

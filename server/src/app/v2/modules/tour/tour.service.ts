@@ -1,7 +1,9 @@
+import slugify from "slugify";
 import { Prisma, TourDifficulty } from "../../../../../prisma/generated/client";
 import prisma from "../../../config/db";
 import { paginationHelper } from "../../../helpers/paginationHelper";
 import AppError from "../../../helpers/appError";
+import { uploadFileToCloudinary } from "../../../utils/upload-files";
 
 const getAllTourFromDB = async (options: any, filters: any) => {
   const { limit, skip, page, sortBy, sortOrder } =
@@ -158,78 +160,145 @@ const getAllTourFromDB = async (options: any, filters: any) => {
   };
 };
 
-const getSingleTour = async (id: string) => {
-  const result = await prisma.tour.findUnique({
-    where: {
-      id,
-    },
-    include: {
-      destination: {
-        select: {
-          city: true,
-          country: true,
-          languages: true,
-        },
+const getSingleTour = async (id: string, isSlug = false) => {
+  if (!isSlug) {
+    const result = await prisma.tour.findUnique({
+      where: {
+        id,
       },
-
-      trips: {
-        select: {
-          guide: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-              phone: true,
-              city: true,
-              avatar: true,
-            },
+      include: {
+        destination: {
+          select: {
+            city: true,
+            country: true,
+            languages: true,
           },
-          includes: {
-            select: {
-              tripInclude: {
-                select: {
-                  category: true,
-                  title: true,
-                  description: true,
+        },
+
+        trips: {
+          select: {
+            guide: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                city: true,
+                avatar: true,
+              },
+            },
+            includes: {
+              select: {
+                tripInclude: {
+                  select: {
+                    category: true,
+                    title: true,
+                    description: true,
+                  },
                 },
               },
             },
+            startDate: true,
+            endDate: true,
+            price: true,
+            maxGuests: true,
+            bookedSeats: true,
+            status: true,
           },
-          startDate: true,
-          endDate: true,
-          price: true,
-          maxGuests: true,
-          bookedSeats: true,
-          status: true,
+        },
+        itineraries: {
+          select: {
+            dayNumber: true,
+            title: true,
+            description: true,
+            icon: true,
+          },
         },
       },
-      itineraries: {
-        select: {
-          dayNumber: true,
-          title: true,
-          description: true,
-          icon: true,
+    });
+    return {
+      ...result,
+      trips: result?.trips.map((trip) => ({
+        ...trip,
+        includes: trip.includes.map((include) => include.tripInclude),
+      })),
+    };
+  } else {
+    const result = await prisma.tour.findUnique({
+      where: {
+        slug: id,
+      },
+      include: {
+        destination: {
+          select: {
+            city: true,
+            country: true,
+            languages: true,
+          },
+        },
+
+        trips: {
+          select: {
+            guide: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                city: true,
+                avatar: true,
+              },
+            },
+            includes: {
+              select: {
+                tripInclude: {
+                  select: {
+                    category: true,
+                    title: true,
+                    description: true,
+                  },
+                },
+              },
+            },
+            startDate: true,
+            endDate: true,
+            price: true,
+            maxGuests: true,
+            bookedSeats: true,
+            status: true,
+          },
+        },
+        itineraries: {
+          select: {
+            dayNumber: true,
+            title: true,
+            description: true,
+            icon: true,
+          },
         },
       },
-    },
-  });
-  return {
-    ...result,
-    trips: result?.trips.map((trip) => ({
-      ...trip,
-      includes: trip.includes.map((include) => include.tripInclude),
-    })),
-  };
+    });
+    return {
+      ...result,
+      trips: result?.trips.map((trip) => ({
+        ...trip,
+        includes: trip.includes.map((include) => include.tripInclude),
+      })),
+    };
+  }
 };
 
-const createTourInDB = async (payload: any, userId: string) => {
+const createTourInDB = async (
+  payload: any,
+  userId: string,
+  image: Express.Multer.File,
+) => {
   const {
     title,
     description,
     destinationId,
     category,
     priceFrom,
-    image,
     durationDays,
     maxGroupSize,
   } = payload;
@@ -243,12 +312,22 @@ const createTourInDB = async (payload: any, userId: string) => {
     throw new AppError(404, "Destination not found");
   }
 
-  // Generate slug if not provided
-  const tourSlug = title
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9\-]/g, "");
+  const tourSlug = slugify(title, { lower: true, strict: true, trim: true });
+
+  let imageUrl: string = "";
+  if (image) {
+    const result = await uploadFileToCloudinary(image, "tour-buddy/tours");
+    if (!result?.url) {
+      throw new AppError(400, "Image upload failed");
+    }
+
+    console.log(result);
+    imageUrl = result.url;
+  }
+
+  if (!imageUrl) {
+    throw new AppError(400, "Image upload failed");
+  }
 
   // Create tour
   const result = await prisma.tour.create({
@@ -258,7 +337,7 @@ const createTourInDB = async (payload: any, userId: string) => {
       destinationId,
       category: category.toUpperCase(),
       priceFrom,
-      image: image || "https://via.placeholder.com/400x300",
+      image: imageUrl,
       slug: tourSlug,
       durationDays,
       maxGroupSize,

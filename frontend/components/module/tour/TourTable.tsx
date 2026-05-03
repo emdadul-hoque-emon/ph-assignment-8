@@ -24,16 +24,16 @@ const ToursTable = ({ tours }: ToursTableProps) => {
     });
   };
 
-  const handleView = (doctor: ITour) => {
-    setViewingTour(doctor);
+  const handleView = (tour: ITour) => {
+    setViewingTour(tour);
   };
 
-  const handleEdit = (doctor: ITour) => {
-    setEditingTour(doctor);
+  const handleEdit = (tour: ITour) => {
+    router.push(`/admin/dashboard/tours-management/update-tour/${tour.slug}`);
   };
 
-  const handleDelete = (doctor: ITour) => {
-    setDeletingTour(doctor);
+  const handleDelete = (tour: ITour) => {
+    setDeletingTour(tour);
   };
 
   const confirmDelete = async () => {

@@ -2,7 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { INavSection } from "@/interfaces/dashboard.interface";
+import { INavItem, INavSection } from "@/interfaces/dashboard.interface";
 import { IUser } from "@/interfaces/user.interface";
 import { getIconComponent } from "@/lib/icon-mappers";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,22 @@ const DashboardSidebarContent = ({
   navItems,
 }: IDashboardSidebarContentProps) => {
   const pathname = usePathname();
+
+  const isRouteActive = (pathname: string, item: INavItem): boolean => {
+    // root safe
+    if (item.href === "/admin/dashboard")
+      return pathname === "/admin/dashboard";
+
+    // prefix match (for parent menus)
+    if (item.matchPrefix) {
+      return pathname === item.href;
+    } else {
+      return pathname === item.href || pathname.startsWith(item.href + "/");
+    }
+
+    // exact match (for child routes)
+    return pathname === item.href;
+  };
   return (
     <div className="relative flex h-full max-w-64 flex-col border-r bg-card">
       {/* Logo */}
@@ -45,7 +61,7 @@ const DashboardSidebarContent = ({
               )}
               <div className="space-y-1">
                 {section.items.map((item) => {
-                  const isActive = pathname === item.href;
+                  const isActive = isRouteActive(pathname, item);
                   const Icon = getIconComponent(item.icon);
 
                   return (

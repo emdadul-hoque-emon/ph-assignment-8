@@ -18,9 +18,16 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { IInputErrorState } from "@/lib/getInputFieldError";
-import { unicodeToEmoji } from "@/lib/unicodeToEmoji";
 import { createTour, updateTour } from "@/services/tour/tour.service";
-import { Check, ChevronsUpDown, Eye, Loader2, Trash2, X } from "lucide-react";
+import {
+  Check,
+  ChevronsUpDown,
+  Edit,
+  Eye,
+  Loader2,
+  Trash2,
+  X,
+} from "lucide-react";
 import Image from "next/image";
 import { useActionState, useEffect, useRef, useState } from "react";
 import languages from "@/data/iso/languages.json";
@@ -41,7 +48,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { se } from "date-fns/locale";
 import { serverFetch } from "@/lib/server-fetch";
 import {
   Dialog,
@@ -50,7 +56,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { file } from "zod";
+import { set } from "zod";
 
 interface TourFormProps {
   tourData?: ITour;
@@ -66,7 +72,9 @@ interface Destination {
 
 const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
   const isEdit = !!tourData;
-  const [category, setCategory] = useState(tourData?.category || "");
+  const [category, setCategory] = useState(
+    tourData?.category?.toLowerCase() || "",
+  );
   const [tourImage, setTourImage] = useState<File | null>(null);
   const [selectedLanguage, setSelectedLanguage] = useState<string | null>(
     tourData?.language || "",
@@ -74,7 +82,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
   const [selectedDestination, setSelectedDestination] =
     useState<Destination | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const action = !isEdit ? createTour : updateTour;
   const [state, formAction, isPending] = useActionState(action, null);
@@ -103,18 +111,19 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
     }
   }, [state, tourImage]);
 
+  console.log(state);
+
   useEffect(() => {
     if (!tourImage) return;
     const url = URL.createObjectURL(tourImage);
     return () => URL.revokeObjectURL(url);
   }, [tourImage]);
 
-  console.log(state);
   return (
     <div className="relative">
-      <form action={formAction} className="space-y-6">
+      <form ref={formRef} action={formAction} className="space-y-6">
         {isEdit && tourData && (
-          <input type="hidden" name="tourId" value={tourData._id} />
+          <input type="hidden" name="tourId" value={tourData.id} />
         )}
         <input type="hidden" name="category" value={category} />
         <input
@@ -125,7 +134,13 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
         <input
           type="hidden"
           name="destinationId"
-          value={selectedDestination ? selectedDestination.id : ""}
+          value={
+            selectedDestination
+              ? selectedDestination.id
+              : tourData
+                ? tourData.destinationId
+                : ""
+          }
         />
 
         {/* Basic Information */}
@@ -247,7 +262,16 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
               <FieldLabel htmlFor="destinationId">Destination *</FieldLabel>
               <FieldContent>
                 <DestionationsSelect
-                  selectedOption={selectedDestination}
+                  selectedOption={
+                    selectedDestination ||
+                    (tourData
+                      ? {
+                          id: tourData.destinationId,
+                          city: tourData.destination.city,
+                          country: tourData.destination.country,
+                        }
+                      : null)
+                  }
                   setSelectedOption={setSelectedDestination}
                 />
               </FieldContent>
@@ -257,32 +281,79 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
               />
             </Field>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Tour Images */}
-            <Field className="space-y-2 gap-0">
-              <div className="flex justify-between items-center">
-                <FieldLabel htmlFor="tourImages">
-                  Upload images that represent your tour
-                </FieldLabel>
-                {tourImage && <ImagePreview file={tourImage} />}
-              </div>
-              <Input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                name="image"
-                id="tourImages"
-                placeholder="Tour banner"
-                onChange={(e) => setTourImage(e.target.files?.[0] as File)}
-                multiple
-                max={3}
+
+          {/* Tour Images */}
+          {tourData?.image && !tourImage ? (
+            <div className="relative h-45 w-[60%] mx-auto">
+              <Button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const field = document.createElement("input");
+                  field.type = "file";
+                  field.accept = "image/*";
+                  field.click();
+                  field.onchange = () => {
+                    const file = field.files?.[0];
+                    if (file) setTourImage(file);
+                  };
+                }}
+                variant={"ghost"}
+                className="z-10 absolute top-2 right-2"
+              >
+                <Edit className="h-4 w-4" />
+              </Button>
+              <Image
+                src={tourData.image}
+                alt={tourData.title}
+                fill
+                className="z-1"
               />
-              <InputFieldError
-                state={state as IInputErrorState}
-                field="image"
-              />
-            </Field>
-          </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field className="space-y-2 gap-0">
+                <div className="flex justify-between items-center">
+                  <FieldLabel htmlFor="tourImages">
+                    Upload images that represent your tour
+                  </FieldLabel>
+                  <div className="flex gap-1">
+                    {tourImage && <ImagePreview file={tourImage} />}
+                    {tourImage && (
+                      <Button
+                        type="button"
+                        variant={"ghost"}
+                        size={"icon"}
+                        onClick={(e) => {
+                          setTourImage(null);
+                          if (fileInputRef.current) {
+                            fileInputRef.current.value = "";
+                          }
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                </div>
+                <Input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  id="tourImages"
+                  placeholder="Tour banner"
+                  onChange={(e) => setTourImage(e.target.files?.[0] as File)}
+                  multiple
+                  max={3}
+                />
+                <InputFieldError
+                  state={state as IInputErrorState}
+                  field="image"
+                />
+              </Field>
+            </div>
+          )}
         </div>
 
         {/* Additional Settings */}
@@ -290,7 +361,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
           <h3 className="font-semibold text-base">Additional Settings</h3>
           <FieldGroup className="space-y-2 gap-0">
             {[
-              { label: "Active tour", field: "isActive" },
+              { label: "Published tour", field: "isPublished" },
               { label: "Featured tour", field: "isFeatured" },
             ].map((setting) => {
               return (
@@ -305,12 +376,13 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
                     id={setting.field}
                     className="rounded"
                     defaultChecked={
-                      (state?.formData?.[setting.field] ? true : false) ||
-                      (isEdit
-                        ? tourData[setting.field as keyof ITour]
-                          ? true
+                      state?.formData?.[setting.field]
+                        ? true
+                        : isEdit
+                          ? tourData[setting.field as keyof ITour]
+                            ? true
+                            : false
                           : false
-                        : false)
                     }
                   />
                   <FieldLabel
@@ -355,6 +427,7 @@ const DestionationsSelect = ({
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  console.log(selectedOption);
   useEffect(() => {
     const fetchDestionations = async () => {
       try {
@@ -370,7 +443,7 @@ const DestionationsSelect = ({
         setLoading(false);
       }
     };
-    fetchDestionations();
+    if (openPopover) fetchDestionations();
   }, [openPopover]);
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>

@@ -1,6 +1,7 @@
-import { INavItem, INavSection } from "@/interfaces/dashboard.interface";
+import { INavSection } from "@/interfaces/dashboard.interface";
 import { getDefaultDashboardRoute } from "./auth-utils";
 import { UserRole } from "@/interfaces/user.interface";
+import { match } from "assert";
 
 export const getCommonNavitems = (role: UserRole) => {
   const defaultDashboardRoute = getDefaultDashboardRoute(role);
@@ -12,12 +13,7 @@ export const getCommonNavitems = (role: UserRole) => {
           href: defaultDashboardRoute,
           icon: "LayoutDashboard",
           roles: Object.values(UserRole),
-        },
-        {
-          title: "My Profile",
-          href: "/profile",
-          icon: "User",
-          roles: Object.values(UserRole),
+          matchPrefix: true,
         },
       ],
     },
@@ -82,6 +78,7 @@ export const guideNavItems: INavSection[] = [
         icon: "Calender",
         badge: "5",
         roles: [UserRole.GUIDE],
+        matchPrefix: true,
       },
       {
         title: "Schedules",
@@ -125,6 +122,7 @@ export const adminNavItems: INavSection[] = [
         href: "/admin/dashboard/tours-management",
         icon: "Clipboard",
         roles: [UserRole.ADMIN],
+        matchPrefix: true,
       },
       {
         title: "Create Tour",
@@ -155,6 +153,7 @@ export const adminNavItems: INavSection[] = [
         href: "/admin/dashboard/trips-management",
         icon: "Plane",
         roles: [UserRole.ADMIN],
+        matchPrefix: true,
       },
       {
         title: "Create Trip",
@@ -178,6 +177,7 @@ export const adminNavItems: INavSection[] = [
         href: "/admin/dashboard/destinations-management",
         icon: "Plane",
         roles: [UserRole.ADMIN],
+        matchPrefix: true,
       },
       {
         title: "Create Destination",

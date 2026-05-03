@@ -7,6 +7,7 @@ export interface INavItem {
   badge?: string | number;
   description?: string;
   roles: UserRole[];
+  matchPrefix?: boolean;
 }
 
 export interface INavSection {

@@ -16,8 +16,10 @@ export const toursColumns: IColumn<ITour>[] = [
     accessor: (tour) => (
       <div className="flex flex-col">
         <span className="text-sm">{tour?.city}</span>
-        {tour.country && (
-          <span className="text-sm text-gray-500">{tour.country}</span>
+        {tour.destination && (
+          <span className="text-sm text-gray-500">
+            {tour.destination.city}, {tour.destination.country}
+          </span>
         )}
       </div>
     ),
@@ -26,7 +28,7 @@ export const toursColumns: IColumn<ITour>[] = [
     header: "Price",
     accessor: (tour) => (
       <span className="text-sm font-semibold text-green-500">
-        ${tour?.price}
+        ${tour?.priceFrom}
       </span>
     ),
   },
@@ -44,7 +46,7 @@ export const toursColumns: IColumn<ITour>[] = [
   {
     header: "Total Trips",
     accessor: (tour) => (
-      <div className="flex items-center gap-1">
+      <div className="w-fullflex items-center gap-1 text-center">
         <span className="text-sm font-medium">{tour?.totalTrips || 0}</span>
       </div>
     ),
@@ -59,9 +61,9 @@ export const toursColumns: IColumn<ITour>[] = [
   },
   {
     header: "Status",
-    accessor: (guide) => (
+    accessor: (tour) => (
       <StatusBadgeCell
-        isDeleted={!guide.isActive}
+        isDeleted={tour.isActive}
         deletedText="In-active"
         activeText="Active"
       />
