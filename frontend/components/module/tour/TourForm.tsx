@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { IInputErrorState } from "@/lib/getInputFieldError";
 import { unicodeToEmoji } from "@/lib/unicodeToEmoji";
 import { createTour, updateTour } from "@/services/tour/tour.service";
-import { Check, ChevronsUpDown, Loader2, Trash2, X } from "lucide-react";
+import { Check, ChevronsUpDown, Eye, Loader2, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import { useActionState, useEffect, useRef, useState } from "react";
 import languages from "@/data/iso/languages.json";
@@ -43,6 +43,14 @@ import {
 } from "@/components/ui/command";
 import { se } from "date-fns/locale";
 import { serverFetch } from "@/lib/server-fetch";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { file } from "zod";
 
 interface TourFormProps {
   tourData?: ITour;
@@ -93,7 +101,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
         fileInputRef.current.files = dataTransfer.files;
       }
     }
-  }, [state]);
+  }, [state, tourImage]);
 
   useEffect(() => {
     if (!tourImage) return;
@@ -101,8 +109,9 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
     return () => URL.revokeObjectURL(url);
   }, [tourImage]);
 
+  console.log(state);
   return (
-    <div className="">
+    <div className="relative">
       <form action={formAction} className="space-y-6">
         {isEdit && tourData && (
           <input type="hidden" name="tourId" value={tourData._id} />
@@ -153,42 +162,28 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
           </Field>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Field>
-              <FieldLabel htmlFor="maxGroupSize">Max Group Size *</FieldLabel>
-              <Input
-                name="maxGroupSize"
-                id="maxGroupSize"
-                type="number"
-                placeholder="e.g. 10"
-                min="1"
-                defaultValue={
-                  state?.formData?.maxGroupSize ||
-                  (isEdit ? tourData.maxGroupSize : undefined)
-                }
-              />
-              <InputFieldError
-                state={state as IInputErrorState}
-                field="maxGroupSize"
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor="priceFrom">Price From (USD) *</FieldLabel>
-              <Input
-                name="priceFrom"
-                id="priceFrom"
-                type="number"
-                placeholder="89"
-                min="0"
-                defaultValue={
-                  state?.formData?.priceFrom ||
-                  (isEdit ? tourData.priceFrom : undefined)
-                }
-              />
-              <InputFieldError
-                state={state as IInputErrorState}
-                field="priceFrom"
-              />
-            </Field>
+            <InputNumber
+              defaultValue={
+                state?.formData?.maxGroupSize ||
+                (isEdit ? tourData.maxGroupSize : undefined)
+              }
+              placeholder="e.g. 10"
+              state={state}
+              label="Max Group Size *"
+              id="maxGroupSize"
+              field="maxGroupSize"
+            />
+            <InputNumber
+              defaultValue={
+                state?.formData?.priceFrom ||
+                (isEdit ? tourData.priceFrom : undefined)
+              }
+              placeholder="89"
+              state={state}
+              label="Price From (USD) *"
+              id="priceFrom"
+              field="priceFrom"
+            />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field className="relative">
@@ -228,12 +223,6 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
                       {category.label}
                     </SelectItem>
                   ))}
-                  <SelectItem value="cultural">Cultural</SelectItem>
-                  <SelectItem value="adventure">Adventure</SelectItem>
-                  <SelectItem value="food">Food & Culinary</SelectItem>
-                  <SelectItem value="leisure">Leisure</SelectItem>
-                  <SelectItem value="nature">Nature</SelectItem>
-                  <SelectItem value="history">History</SelectItem>
                 </SelectContent>
               </Select>
               <InputFieldError
@@ -243,24 +232,17 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
             </Field>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Field>
-              <FieldLabel htmlFor="durationDays">Duration Days *</FieldLabel>
-              <Input
-                name="durationDays"
-                id="durationDays"
-                type="number"
-                placeholder="e.g. 1"
-                min="1"
-                defaultValue={
-                  state?.formData?.durationDays ||
-                  (isEdit ? tourData.durationDays : undefined)
-                }
-              />
-              <InputFieldError
-                state={state as IInputErrorState}
-                field="durationDays"
-              />
-            </Field>
+            <InputNumber
+              defaultValue={
+                state?.formData?.durationDays ||
+                (isEdit ? tourData.durationDays : undefined)
+              }
+              placeholder="e.g. 1"
+              state={state}
+              label="Duration Days *"
+              id="durationDays"
+              field="durationDays"
+            />
             <Field>
               <FieldLabel htmlFor="destinationId">Destination *</FieldLabel>
               <FieldContent>
@@ -269,92 +251,77 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
                   setSelectedOption={setSelectedDestination}
                 />
               </FieldContent>
+              <InputFieldError
+                state={state as IInputErrorState}
+                field="destinationId"
+              />
+            </Field>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Tour Images */}
+            <Field className="space-y-2 gap-0">
+              <div className="flex justify-between items-center">
+                <FieldLabel htmlFor="tourImages">
+                  Upload images that represent your tour
+                </FieldLabel>
+                {tourImage && <ImagePreview file={tourImage} />}
+              </div>
+              <Input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                name="image"
+                id="tourImages"
+                placeholder="Tour banner"
+                onChange={(e) => setTourImage(e.target.files?.[0] as File)}
+                multiple
+                max={3}
+              />
+              <InputFieldError
+                state={state as IInputErrorState}
+                field="image"
+              />
             </Field>
           </div>
         </div>
-
-        {/* Tour Images */}
-        <Field className="space-y-2 pt-4 gap-0">
-          <FieldLabel
-            htmlFor="tourImages"
-            className="text-sm text-muted-foreground"
-          >
-            Upload images that represent your tour
-          </FieldLabel>
-          <InputFieldError state={state as IInputErrorState} field="image" />
-          <Input
-            type="file"
-            accept="image/*"
-            name="images"
-            id="tourImages"
-            placeholder="Tour banner"
-            onChange={(e) => setTourImage(e.target.files?.[0] as File)}
-            multiple
-            max={3}
-          />
-          <div className="relative">
-            {tourImage && (
-              <div className="mt-2 flex items-center gap-2">
-                <div className="h-30 w-full rounded-lg overflow-hidden">
-                  <Image
-                    src={URL.createObjectURL(tourImage)}
-                    alt="Tour banner"
-                    fill
-                    className="object-cover"
-                  />
-                  <Button
-                    type="button"
-                    onClick={() => setTourImage(null)}
-                    variant={"outline"}
-                    size={"sm"}
-                    className="absolute top-1 right-1 rounded-full size-6"
-                  >
-                    <X />
-                  </Button>
-                </div>
-              </div>
-            )}
-          </div>
-        </Field>
 
         {/* Additional Settings */}
         <div className="space-y-3 pt-4 border-t">
           <h3 className="font-semibold text-base">Additional Settings</h3>
           <FieldGroup className="space-y-2 gap-0">
-            <Field orientation={"horizontal"}>
-              <Checkbox
-                id="active"
-                name="isActive"
-                className="rounded"
-                defaultChecked={
-                  state?.formData?.isActive ||
-                  (isEdit ? tourData.isActive : false)
-                }
-              />
-              <FieldLabel
-                htmlFor="active"
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <span className="text-sm">Active tour</span>
-              </FieldLabel>
-            </Field>
-            <Field orientation={"horizontal"}>
-              <Checkbox
-                name="isFeatured"
-                id="featured"
-                className="rounded"
-                defaultChecked={
-                  state?.formData?.isFeatured ||
-                  (isEdit ? tourData.isFeatured : false)
-                }
-              />
-              <FieldLabel
-                htmlFor="featured"
-                className="flex items-center gap-2 cursor-pointer"
-              >
-                <span className="text-sm">Featured tour</span>
-              </FieldLabel>
-            </Field>
+            {[
+              { label: "Active tour", field: "isActive" },
+              { label: "Featured tour", field: "isFeatured" },
+            ].map((setting) => {
+              return (
+                <Field
+                  orientation={"horizontal"}
+                  key={setting.field}
+                  className="gap-2"
+                >
+                  <Checkbox
+                    key={`${setting.field}-${state?.formData?.[setting.field] ?? ""}`}
+                    name={setting.field}
+                    id={setting.field}
+                    className="rounded"
+                    defaultChecked={
+                      (state?.formData?.[setting.field] ? true : false) ||
+                      (isEdit
+                        ? tourData[setting.field as keyof ITour]
+                          ? true
+                          : false
+                        : false)
+                    }
+                  />
+                  <FieldLabel
+                    htmlFor={setting.field}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <span className="text-sm">{setting.label}</span>
+                  </FieldLabel>
+                </Field>
+              );
+            })}
           </FieldGroup>
         </div>
 
@@ -411,9 +378,7 @@ const DestionationsSelect = ({
         <Button
           variant="outline"
           role="combobox"
-          // aria-expanded={open}
           className={cn("w-full justify-between")}
-          // disabled={disabled}
         >
           <span className="truncate">
             {selectedOption
@@ -482,6 +447,68 @@ const DestionationsSelect = ({
         </Command>
       </PopoverContent>
     </Popover>
+  );
+};
+
+interface InputNumberProps {
+  label: string;
+  id: string;
+  field: string;
+  placeholder?: string;
+  state: IInputErrorState | null;
+  defaultValue?: number;
+}
+const InputNumber = ({
+  label,
+  id,
+  state,
+  defaultValue,
+  field,
+  placeholder,
+}: InputNumberProps) => {
+  return (
+    <Field>
+      <FieldLabel htmlFor={id}>{label} </FieldLabel>
+      <Input
+        name={id}
+        id={id}
+        type="number"
+        placeholder={placeholder || "e.g. 1"}
+        min="1"
+        defaultValue={defaultValue}
+      />
+      <InputFieldError state={state as IInputErrorState} field={field} />
+    </Field>
+  );
+};
+
+const ImagePreview = ({ file }: { file: File }) => {
+  const [imageUrl, setImageUrl] = useState<string>("");
+  useEffect(() => {
+    const reader = new FileReader();
+    reader.onloadend = () => setImageUrl(reader.result as string);
+    reader.readAsDataURL(file);
+  }, [file]);
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant={"ghost"} size={"sm"} className="">
+          <Eye className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-3xl">
+        <DialogTitle>Image Preview</DialogTitle>
+        <DialogDescription className="sr-only"> </DialogDescription>
+
+        <Image
+          src={imageUrl}
+          alt="Preview"
+          width={800}
+          height={600}
+          className="object-contain"
+        />
+      </DialogContent>
+    </Dialog>
   );
 };
 

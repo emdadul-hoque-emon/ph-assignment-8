@@ -1,4 +1,4 @@
-import { Prisma } from "../../../../../prisma/generated/client";
+import { Prisma, TourDifficulty } from "../../../../../prisma/generated/client";
 import prisma from "../../../config/db";
 import { paginationHelper } from "../../../helpers/paginationHelper";
 import AppError from "../../../helpers/appError";
@@ -230,25 +230,9 @@ const createTourInDB = async (payload: any, userId: string) => {
     category,
     priceFrom,
     image,
-    slug,
     durationDays,
     maxGroupSize,
-    difficulty,
   } = payload;
-
-  // Validate required fields
-  if (
-    !title ||
-    !description ||
-    !destinationId ||
-    !category ||
-    priceFrom === null ||
-    !durationDays ||
-    !maxGroupSize ||
-    !difficulty
-  ) {
-    throw new AppError(400, "Missing required fields");
-  }
 
   // Validate destination exists
   const destinationExists = await prisma.destination.findUnique({
@@ -260,13 +244,11 @@ const createTourInDB = async (payload: any, userId: string) => {
   }
 
   // Generate slug if not provided
-  const tourSlug =
-    slug ||
-    title
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9\-]/g, "");
+  const tourSlug = title
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "");
 
   // Create tour
   const result = await prisma.tour.create({
@@ -280,7 +262,7 @@ const createTourInDB = async (payload: any, userId: string) => {
       slug: tourSlug,
       durationDays,
       maxGroupSize,
-      difficulty: difficulty.toUpperCase(),
+      difficulty: TourDifficulty.MODERATE,
       createdById: userId,
     },
     include: {
@@ -305,8 +287,18 @@ const createTourInDB = async (payload: any, userId: string) => {
   return result;
 };
 
+const deleteTour = async (id: string) => {
+  const result = await prisma.tour.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const TourService = {
   getAllTourFromDB,
   getSingleTour,
   createTourInDB,
+  deleteTour,
 };

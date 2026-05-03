@@ -13,21 +13,26 @@ const tourSchema = {
   description: z
     .string("description is required")
     .min(3, "description should minimum 3 charecters"),
-  category: z.string("category is required"),
-  city: z.string("city is required").min(1, "City is required"),
-  country: z.string("country is required").min(1, "Country is required"),
-  price: z.string("price is required").min(0),
+  category: z.string("category is required").min(1, "category is required"),
+  destinationId: z
+    .string("destination is required")
+    .min(1, "destination is required"),
+  maxGroupSize: z
+    .string("max group size is required")
+    .min(1, "max group size is required"),
+  durationDays: z.string("duration is required").min(1, "duration is required"),
+  priceFrom: z.string("price is required").min(1, "price is required"),
   language: z
     .string("language is required")
     .min(1, "At least one language is required"),
-  isActive: z.boolean().optional().default(false),
-  isFeatured: z.boolean().optional().default(false),
+  isActive: z.boolean().default(false),
+  isFeatured: z.boolean().default(false),
 };
 
 export const createTour = async (prevState: unknown, formData: FormData) => {
   const payload = {
     title: formData.get("title"),
-    images: formData.get("images"),
+    image: formData.get("image"),
     description: formData.get("description"),
     category: formData.get("category"),
     destinationId: formData.get("destinationId"),
@@ -38,12 +43,19 @@ export const createTour = async (prevState: unknown, formData: FormData) => {
     isActive: formData.get("isActive") === "on",
     isFeatured: formData.get("isFeatured") === "on",
   };
+  console.log(payload);
   try {
-    console.log(payload);
-    throw new Error("error");
     const validationResult = zodValidator(
       payload,
-      z.object({ ...tourSchema, images: z.file("image is required") }),
+      z.object({
+        ...tourSchema,
+        image: z.any().refine((data) => {
+          if (data instanceof File && data.size > 0) {
+            return true;
+          }
+          return false;
+        }, "image is required"),
+      }),
     );
     if (!validationResult.success && validationResult.errors) {
       return {
@@ -62,12 +74,13 @@ export const createTour = async (prevState: unknown, formData: FormData) => {
         message: "validation error",
       };
     }
+    console.log(validationResult.data);
 
     const modifiedFormData = new FormData();
 
     modifiedFormData.append("title", payload.title as string);
-    if (payload.images instanceof File) {
-      modifiedFormData.append("images", payload.images as File);
+    if (payload.image instanceof File) {
+      modifiedFormData.append("image", payload.image as File);
     }
     modifiedFormData.append("description", payload.description as string);
     modifiedFormData.append("category", payload.category as string);
@@ -81,6 +94,9 @@ export const createTour = async (prevState: unknown, formData: FormData) => {
       body: modifiedFormData,
     });
     const data = await res.json();
+    if (!data?.success) {
+      throw new Error(data?.message);
+    }
     return data;
   } catch (error: any) {
     return {
@@ -103,17 +119,17 @@ export const updateTour = async (prevState: unknown, formData: FormData) => {
       country: formData.get("country"),
       price: formData.get("price"),
       language: formData.get("language"),
-      isActive: formData.get("isActive"),
-      isFeatured: formData.get("isFeatured"),
+      isActive: formData.get("isActive") === "on",
+      isFeatured: formData.get("isFeatured") === "on",
     };
+
+    console.log(payload);
 
     const validationResult = zodValidator(
       payload,
       z.object({
         ...tourSchema,
         id: z.string("id is required").regex(/^[0-9a-fA-F]{24}$/, "Invalid id"),
-        isActive: z.any().transform((z) => z === "on"),
-        isFeatured: z.any().transform((z) => z === "on"),
       }),
     );
     if (!validationResult.success && validationResult.errors) {
