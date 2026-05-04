@@ -104,3 +104,9 @@ export const languages = [
   { label: "Malay", value: "malay" },
   { label: "Chinese", value: "chinese" },
 ];
+
+export const TOUR_DIFFICULTY = [
+  { label: "Easy", value: "EASY" },
+  { label: "Morderate", value: "MODERATE" },
+  { label: "Hard", value: "HARD" },
+];

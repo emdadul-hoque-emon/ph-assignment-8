@@ -229,7 +229,6 @@ const disable2FA = async (userId: string) => {
     },
   });
 
-  console.log(data);
   return data;
 };
 

@@ -63,7 +63,7 @@ export const toursColumns: IColumn<ITour>[] = [
     header: "Status",
     accessor: (tour) => (
       <StatusBadgeCell
-        isDeleted={tour.isActive}
+        isDeleted={!tour.isPublished}
         deletedText="In-active"
         activeText="Active"
       />

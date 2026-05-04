@@ -4,23 +4,22 @@ import { IResponse } from "@/interfaces";
 import { ITour } from "@/interfaces/tour.interface";
 import { ITrip } from "@/interfaces/trip.interface";
 import { serverFetch } from "@/lib/server-fetch";
-import { zodValidator } from "@/lib/zod-validator";
 import { z } from "zod";
 
 const tourSchema = z.object({
   title: z.string().min(2, "Title is required"),
   description: z.string().min(3, "Description must be at least 3 characters"),
-  category: z.string().min(1, "Category is required"),
+  category: z.string().min(1, "Category is required").toUpperCase(),
   destinationId: z.string().min(1, "Destination is required"),
 
   maxGroupSize: z.coerce.number().min(1, "Must be at least 1"),
   durationDays: z.coerce.number().min(1, "Must be at least 1"),
   priceFrom: z.coerce.number().min(1, "Price is required"),
 
-  language: z.string().min(1, "Language is required"),
+  difficulty: z.string().min(1, "difficulty is required"),
 
-  isActive: z.boolean().optional(),
-  isFeatured: z.boolean().optional(),
+  isPublished: z.boolean().optional().default(false),
+  featured: z.boolean().optional().default(false),
 
   image: z
     .instanceof(File)
@@ -35,21 +34,29 @@ const tourSchema = z.object({
 const extractPayload = (formData: FormData) => ({
   title: formData.get("title"),
   description: formData.get("description"),
-  category: formData.get("category"),
+  category: formData.get("category")?.toString().toUpperCase(),
   destinationId: formData.get("destinationId"),
 
   maxGroupSize: formData.get("maxGroupSize"),
   durationDays: formData.get("durationDays"),
   priceFrom: formData.get("priceFrom"),
 
-  language: formData.get("language"),
+  difficulty: formData.get("difficulty"),
   image: formData.get("image"),
 
-  isActive: formData.get("isActive") === "on",
-  isFeatured: formData.get("isFeatured") === "on",
+  isActive: formData.get("isPublished") === "on",
+  featured: formData.get("featured") === "on",
 });
 
 export const createTour = async (_: unknown, formData: FormData) => {
+  const isPublished = formData.get("isPublished") === "on";
+  const featured = formData.get("featured") === "on";
+  formData.delete("isPublished");
+  formData.delete("featured");
+
+  formData.set("isPublished", isPublished ? "true" : "false");
+  formData.set("featured", featured ? "true" : "false");
+
   const payload = extractPayload(formData);
 
   const parsed = tourSchema.safeParse(payload);
@@ -88,6 +95,13 @@ export const createTour = async (_: unknown, formData: FormData) => {
   }
 };
 export const updateTour = async (_: unknown, formData: FormData) => {
+  const isPublished = formData.get("isPublished") === "on";
+  const featured = formData.get("featured") === "on";
+  formData.delete("isPublished");
+  formData.delete("featured");
+
+  formData.set("isPublished", isPublished ? "true" : "false");
+  formData.set("featured", featured ? "true" : "false");
   const payload = {
     ...extractPayload(formData),
     id: formData.get("tourId"),
@@ -95,8 +109,12 @@ export const updateTour = async (_: unknown, formData: FormData) => {
 
   const schema = tourSchema.extend({
     id: z.string().uuid("Invalid ID"),
-    image: z.instanceof(File).optional(), // optional for update
+    image: z.instanceof(File).nullable().optional(), // optional for update
   });
+
+  if (payload?.image instanceof File) {
+    formData.delete("image");
+  }
 
   const parsed = schema.safeParse(payload);
 

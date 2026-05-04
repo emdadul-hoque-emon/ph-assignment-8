@@ -6,6 +6,7 @@ export interface ITour {
   id: string;
   title: string;
   slug: string;
+  difficulty: string;
   description: string;
   category: string;
   city: string;
@@ -67,6 +68,8 @@ export interface ITour {
       description: string;
     }[];
   }[];
+  isPublished: boolean;
+  featured: boolean;
   isActive: boolean;
   isFeatured: boolean;
   createdAt: Date;

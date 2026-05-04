@@ -1,9 +1,14 @@
 import slugify from "slugify";
-import { Prisma, TourDifficulty } from "../../../../../prisma/generated/client";
+import {
+  Prisma,
+  TourCategory,
+  TourDifficulty,
+} from "../../../../../prisma/generated/client";
 import prisma from "../../../config/db";
 import { paginationHelper } from "../../../helpers/paginationHelper";
 import AppError from "../../../helpers/appError";
 import { uploadFileToCloudinary } from "../../../utils/upload-files";
+import { CreateTourInput } from "./tour.validation";
 
 const getAllTourFromDB = async (options: any, filters: any) => {
   const { limit, skip, page, sortBy, sortOrder } =
@@ -301,6 +306,7 @@ const createTourInDB = async (
     priceFrom,
     durationDays,
     maxGroupSize,
+    language,
   } = payload;
 
   // Validate destination exists
@@ -343,6 +349,7 @@ const createTourInDB = async (
       maxGroupSize,
       difficulty: TourDifficulty.MODERATE,
       createdById: userId,
+      language,
     },
     include: {
       destination: {
@@ -375,9 +382,37 @@ const deleteTour = async (id: string) => {
   return result;
 };
 
+const updateTourInDB = async (id: string, payload: CreateTourInput) => {
+  const { category, difficulty, destinationId, ...body } = payload;
+  const slug = slugify(payload.title, {
+    lower: true,
+    strict: true,
+    trim: true,
+  });
+
+  const result = await prisma.tour.update({
+    where: {
+      id,
+    },
+    data: {
+      ...body,
+      slug,
+      destination: {
+        connect: {
+          id: destinationId,
+        },
+      },
+      category: category as TourCategory,
+      difficulty: difficulty as TourDifficulty,
+    },
+  });
+  return result;
+};
+
 export const TourService = {
   getAllTourFromDB,
   getSingleTour,
   createTourInDB,
   deleteTour,
+  updateTourInDB,
 };

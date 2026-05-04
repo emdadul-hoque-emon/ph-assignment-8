@@ -144,7 +144,6 @@ const resetPassword = async (
   newPassword: string,
   confirmPassword: string,
 ) => {
-  console.log(token, confirmPassword, newPassword);
   const verifiedToken = verifyJwt(token, envVars.JWT_ACCESS_TOKEN_SECRET);
   if (typeof verifiedToken === "string") {
     throw new AppError(400, "Failed to verify token");

@@ -20,7 +20,12 @@ tourRoutes
 tourRoutes
   .route("/:id")
   .get(TourController.getSingleTour)
-  // .put(validateRequest(createTourSchema), TourController.updateTour)
+  .put(
+    uploadImage.single("image"),
+    checkAuth("ADMIN", "GUIDE"),
+    validateRequest(createTourSchema),
+    TourController.updateTour,
+  )
   .delete(TourController.deleteTour);
 
 export default tourRoutes;

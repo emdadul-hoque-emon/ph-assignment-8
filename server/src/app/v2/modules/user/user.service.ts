@@ -28,8 +28,6 @@ const getAllUserFromDB = async (options: any, filters: any) => {
   const { limit, skip, page, sortBy, sortOrder } =
     paginationHelper.calculatePagination(options);
 
-  console.log(filters);
-
   const {
     searchTerm,
     role,

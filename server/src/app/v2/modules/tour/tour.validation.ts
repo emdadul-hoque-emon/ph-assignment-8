@@ -31,13 +31,13 @@ export const createTourSchema = z.object({
     })
     .min(1, "Duration should be greater than 0")
     .transform((z) => parseInt(z.toString())),
-  language: z
+  difficulty: z
     .string({
-      error: "At least one language is required",
+      error: "At least one difficulty is required",
     })
-    .min(1, "At least one language is required"),
-  isActive: z.boolean().default(false),
-  isFeatured: z.boolean().default(false),
+    .min(1, "At least one difficulty is required"),
+  isPublished: z.boolean().default(false),
+  featured: z.boolean().default(false),
 });
 
 export type CreateTourInput = z.infer<typeof createTourSchema>;

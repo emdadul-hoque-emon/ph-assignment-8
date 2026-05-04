@@ -16,39 +16,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { IInputErrorState } from "@/lib/getInputFieldError";
 import { createTour, updateTour } from "@/services/tour/tour.service";
-import {
-  Check,
-  ChevronsUpDown,
-  Edit,
-  Eye,
-  Loader2,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Edit, Eye, Loader2, Trash2, X } from "lucide-react";
 import Image from "next/image";
-import { useActionState, useEffect, useRef, useState } from "react";
+import {
+  useActionState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import languages from "@/data/iso/languages.json";
 import { toast } from "sonner";
 import { ITour } from "@/interfaces/tour.interface";
 import { TOUR_CATEGORIES } from "@/constants/user";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { serverFetch } from "@/lib/server-fetch";
 import {
   Dialog,
   DialogContent,
@@ -56,7 +39,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { set } from "zod";
+import { TextInput } from "../dashboard/tour/TextInput";
+import { DestinationSelect } from "../dashboard/tour/DestinationFilter";
+import { InputNumber } from "../dashboard/tour/NumberInput";
+import { TOUR_DIFFICULTY } from "@/constants/tours";
+import { useRouter } from "next/navigation";
 
 interface TourFormProps {
   tourData?: ITour;
@@ -73,16 +60,17 @@ interface Destination {
 const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
   const isEdit = !!tourData;
   const [category, setCategory] = useState(
-    tourData?.category?.toLowerCase() || "",
+    tourData?.category?.toUpperCase() || "",
   );
   const [tourImage, setTourImage] = useState<File | null>(null);
-  const [selectedLanguage, setSelectedLanguage] = useState<string | null>(
-    tourData?.language || "",
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string>(
+    tourData?.difficulty || "",
   );
   const [selectedDestination, setSelectedDestination] =
     useState<Destination | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const router = useRouter();
 
   const action = !isEdit ? createTour : updateTour;
   const [state, formAction, isPending] = useActionState(action, null);
@@ -90,6 +78,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
   useEffect(() => {
     if (state?.success) {
       toast.success(state.message);
+      router.push(`/admin/dashboard/tours-management`);
       if (formRef?.current) {
         formRef.current.reset();
       }
@@ -109,9 +98,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
         fileInputRef.current.files = dataTransfer.files;
       }
     }
-  }, [state, tourImage]);
-
-  console.log(state);
+  }, [state, tourImage, router]);
 
   useEffect(() => {
     if (!tourImage) return;
@@ -119,18 +106,33 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
     return () => URL.revokeObjectURL(url);
   }, [tourImage]);
 
+  const getDefaultChecked = (field: string) => {
+    return state?.formData?.[field]
+      ? true
+      : isEdit
+        ? tourData[field as keyof ITour]
+          ? true
+          : false
+        : false;
+  };
+
+  const handleRemoveImage = useCallback(() => {
+    setTourImage(null);
+    fileInputRef.current?.value && (fileInputRef.current.value = "");
+  }, []);
+
+  const imagePreview = useMemo(() => {
+    if (tourImage) return URL.createObjectURL(tourImage);
+    if (tourData?.image) return tourData.image;
+    return null;
+  }, [tourImage, tourData]);
+
   return (
     <div className="relative">
       <form ref={formRef} action={formAction} className="space-y-6">
         {isEdit && tourData && (
           <input type="hidden" name="tourId" value={tourData.id} />
         )}
-        <input type="hidden" name="category" value={category} />
-        <input
-          type="hidden"
-          name="language"
-          value={selectedLanguage as string}
-        />
         <input
           type="hidden"
           name="destinationId"
@@ -145,36 +147,29 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
 
         {/* Basic Information */}
         <div className="space-y-4">
-          <Field>
-            <FieldLabel htmlFor="tour_name">Tour Name *</FieldLabel>
-            <Input
-              name="title"
-              id="tour_name"
-              placeholder="e.g. Historic City Walking Tour"
-              defaultValue={
-                state?.formData?.title || (isEdit ? tourData.title : undefined)
-              }
-            />
-            <InputFieldError state={state as IInputErrorState} field="title" />
-          </Field>
+          <TextInput
+            type="text"
+            name="title"
+            defaultValue={
+              state?.formData?.title || (isEdit ? tourData.title : undefined)
+            }
+            id="title"
+            label="Tour Name *"
+            state={state}
+          />
 
-          <Field>
-            <FieldLabel htmlFor="description">Description *</FieldLabel>
-            <Textarea
-              name="description"
-              id="description"
-              placeholder="Describe what makes this tour special..."
-              rows={4}
-              defaultValue={
-                state?.formData?.description ||
-                (isEdit ? tourData.description : undefined)
-              }
-            />
-            <InputFieldError
-              state={state as IInputErrorState}
-              field="description"
-            />
-          </Field>
+          <TextInput
+            type="textarea"
+            name="description"
+            id="description"
+            placeholder="Describe what makes this tour special..."
+            rows={4}
+            defaultValue={
+              state?.formData?.description ||
+              (isEdit ? tourData.description : undefined)
+            }
+            state={state}
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputNumber
@@ -186,7 +181,6 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
               state={state}
               label="Max Group Size *"
               id="maxGroupSize"
-              field="maxGroupSize"
             />
             <InputNumber
               defaultValue={
@@ -197,28 +191,34 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
               state={state}
               label="Price From (USD) *"
               id="priceFrom"
-              field="priceFrom"
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field className="relative">
-              <FieldLabel htmlFor="language">Language *</FieldLabel>
-              <SearchableSelect
-                id="language"
-                options={languages
-                  .map((c) => ({
-                    value: c.name,
-                    label: c.name,
-                  }))
-                  .sort((a, b) => a.value.localeCompare(b.value))}
-                value={selectedLanguage as string}
-                onValueChange={(v) => {
-                  setSelectedLanguage(v);
-                }}
-              />
+              <FieldLabel htmlFor="difficulty">Difficulty *</FieldLabel>
+              <Select
+                value={selectedDifficulty}
+                onValueChange={setSelectedDifficulty}
+                name="difficulty"
+              >
+                <SelectTrigger
+                  name="difficulty"
+                  id="difficulty"
+                  className="w-full"
+                >
+                  <SelectValue placeholder="Select tour difficulty" />
+                </SelectTrigger>
+                <SelectContent>
+                  {TOUR_DIFFICULTY.map((diff) => (
+                    <SelectItem key={diff.value} value={diff.value}>
+                      {diff.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <InputFieldError
                 state={state as IInputErrorState}
-                field="language"
+                field="difficulty"
               />
             </Field>
 
@@ -226,7 +226,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
               <FieldLabel htmlFor="category">Category *</FieldLabel>
               <Select
                 name="category"
-                value={category}
+                value={category.toUpperCase()}
                 onValueChange={setCategory}
               >
                 <SelectTrigger id="category" className="w-full">
@@ -234,7 +234,10 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
                 </SelectTrigger>
                 <SelectContent>
                   {TOUR_CATEGORIES.map((category) => (
-                    <SelectItem key={category.value} value={category.value}>
+                    <SelectItem
+                      key={category.value}
+                      value={category.value.toUpperCase()}
+                    >
                       {category.label}
                     </SelectItem>
                   ))}
@@ -256,23 +259,14 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
               state={state}
               label="Duration Days *"
               id="durationDays"
-              field="durationDays"
             />
             <Field>
               <FieldLabel htmlFor="destinationId">Destination *</FieldLabel>
               <FieldContent>
-                <DestionationsSelect
-                  selectedOption={
-                    selectedDestination ||
-                    (tourData
-                      ? {
-                          id: tourData.destinationId,
-                          city: tourData.destination.city,
-                          country: tourData.destination.country,
-                        }
-                      : null)
-                  }
-                  setSelectedOption={setSelectedDestination}
+                <DestinationSelect
+                  defaultValue={tourData}
+                  selected={selectedDestination}
+                  setSelected={setSelectedDestination}
                 />
               </FieldContent>
               <InputFieldError
@@ -283,7 +277,31 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
           </div>
 
           {/* Tour Images */}
-          {tourData?.image && !tourImage ? (
+          <Field className="space-y-2 gap-0">
+            <Input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              name="image"
+              id="tourImages"
+              placeholder="Tour banner"
+              onChange={(e) => setTourImage(e.target.files?.[0] as File)}
+            />
+            {imagePreview && (
+              <div className="relative w-60 h-60">
+                <Image src={imagePreview} alt="preview" fill />
+                <Button
+                  type="button"
+                  className="absolute top-2 left-2"
+                  onClick={handleRemoveImage}
+                  size="icon"
+                >
+                  <Trash2 />
+                </Button>
+              </div>
+            )}
+          </Field>
+          {/* {tourData?.image && !tourImage ? (
             <div className="relative h-45 w-[60%] mx-auto">
               <Button
                 type="button"
@@ -353,7 +371,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
                 />
               </Field>
             </div>
-          )}
+          )} */}
         </div>
 
         {/* Additional Settings */}
@@ -362,7 +380,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
           <FieldGroup className="space-y-2 gap-0">
             {[
               { label: "Published tour", field: "isPublished" },
-              { label: "Featured tour", field: "isFeatured" },
+              { label: "Featured tour", field: "featured" },
             ].map((setting) => {
               return (
                 <Field
@@ -375,15 +393,7 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
                     name={setting.field}
                     id={setting.field}
                     className="rounded"
-                    defaultChecked={
-                      state?.formData?.[setting.field]
-                        ? true
-                        : isEdit
-                          ? tourData[setting.field as keyof ITour]
-                            ? true
-                            : false
-                          : false
-                    }
+                    defaultChecked={getDefaultChecked(setting.field)}
                   />
                   <FieldLabel
                     htmlFor={setting.field}
@@ -411,147 +421,6 @@ const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
         </div>
       </form>
     </div>
-  );
-};
-
-const DestionationsSelect = ({
-  selectedOption,
-  setSelectedOption,
-}: {
-  selectedOption: Destination | null;
-  setSelectedOption: React.Dispatch<React.SetStateAction<Destination | null>>;
-}) => {
-  const [openPopover, setOpenPopover] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [destionations, setDestinations] = useState<Destination[]>([]);
-  const [loading, setLoading] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  console.log(selectedOption);
-  useEffect(() => {
-    const fetchDestionations = async () => {
-      try {
-        setLoading(true);
-
-        const response = await serverFetch.get("/v2/destinations");
-        const data = await response.json();
-        console.log(data);
-        setDestinations(data.data);
-      } catch (error) {
-        console.error("Error fetching destinations:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (openPopover) fetchDestionations();
-  }, [openPopover]);
-  return (
-    <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          className={cn("w-full justify-between")}
-        >
-          <span className="truncate">
-            {selectedOption
-              ? `${selectedOption.city}, ${selectedOption.country}`
-              : "Select a destination..."}
-          </span>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent
-        className="w-[--radix-popover-trigger-width] p-0"
-        align="start"
-        sideOffset={5}
-        style={{ zIndex: 9999 }}
-        onOpenAutoFocus={(e) => {
-          e.preventDefault();
-          inputRef.current?.focus();
-        }}
-      >
-        <Command>
-          <CommandInput
-            ref={inputRef}
-            placeholder={"Search destinations..."}
-            value={searchQuery}
-            onValueChange={setSearchQuery}
-          />
-          {loading ? (
-            <CommandList className="max-h-75 overflow-y-auto">
-              <CommandEmpty>Loading destinations...</CommandEmpty>
-            </CommandList>
-          ) : destionations.length === 0 ? (
-            <CommandList className="max-h-75 overflow-y-auto">
-              <CommandEmpty>No destinations found.</CommandEmpty>
-            </CommandList>
-          ) : (
-            <CommandList className="max-h-75 overflow-y-auto">
-              <CommandEmpty>{"No results found."}</CommandEmpty>
-              <CommandGroup>
-                {destionations.map((v, index) => (
-                  <CommandItem
-                    key={v.id}
-                    value={v.id}
-                    onSelect={(currentValue) => {
-                      setSelectedOption(
-                        destionations.find((d) => d.id === currentValue) ||
-                          null,
-                      );
-                      setOpenPopover(false);
-                    }}
-                    className="cursor-pointer justify-start"
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        selectedOption?.id === v.id
-                          ? "opacity-100"
-                          : "opacity-0",
-                      )}
-                    />
-                    {v.city}, {v.country}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          )}
-        </Command>
-      </PopoverContent>
-    </Popover>
-  );
-};
-
-interface InputNumberProps {
-  label: string;
-  id: string;
-  field: string;
-  placeholder?: string;
-  state: IInputErrorState | null;
-  defaultValue?: number;
-}
-const InputNumber = ({
-  label,
-  id,
-  state,
-  defaultValue,
-  field,
-  placeholder,
-}: InputNumberProps) => {
-  return (
-    <Field>
-      <FieldLabel htmlFor={id}>{label} </FieldLabel>
-      <Input
-        name={id}
-        id={id}
-        type="number"
-        placeholder={placeholder || "e.g. 1"}
-        min="1"
-        defaultValue={defaultValue}
-      />
-      <InputFieldError state={state as IInputErrorState} field={field} />
-    </Field>
   );
 };
 

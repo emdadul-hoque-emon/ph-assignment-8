@@ -64,9 +64,20 @@ const deleteTour = catchAsync(async (req, res, next) => {
   });
 });
 
+const updateTour = catchAsync(async (req, res, next) => {
+  const data = await TourService.updateTourInDB(req.params.id, req.body);
+  sendResponse(res, {
+    message: "Tour updated successfully",
+    statusCode: 200,
+    success: true,
+    data,
+  });
+});
+
 export const TourController = {
   getAllTours,
   getSingleTour,
   createTour,
   deleteTour,
+  updateTour,
 };

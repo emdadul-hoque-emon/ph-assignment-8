@@ -122,7 +122,6 @@ const getNearbyDestinations = async (
   ORDER BY distance
   LIMIT 2
 `);
-  console.log(destinations);
 
   if (!destinations || (destinations as any[]).length === 0) {
     const fallback = await prisma.destination.findMany({
