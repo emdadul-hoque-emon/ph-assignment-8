@@ -11,7 +11,7 @@ export const tripsColumns: IColumn<ITrip>[] = [
   {
     header: "Trips",
     accessor: (trip) => (
-      <TourInfoCell name={trip.tour.title} photo={trip.tour.images[0]} />
+      <TourInfoCell name={trip.tour.title} photo={trip.tour.image} />
     ),
   },
   {
@@ -77,7 +77,8 @@ export const tripsColumns: IColumn<ITrip>[] = [
     header: "Duration",
     accessor: (trip) => (
       <span className="text-sm capitalize">
-        {formatDuration(trip.duration)}
+        {new Date(trip?.endDate).getDate() -
+          new Date(trip?.startDate).getDate() || 1}
       </span>
     ),
   },

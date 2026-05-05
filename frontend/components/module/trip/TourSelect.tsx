@@ -21,6 +21,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { getSingleTour, getTours } from "@/action/tour";
 import { ITour } from "@/interfaces/tour.interface";
 import Image from "next/image";
+import { serverFetch } from "@/lib/server-fetch";
 
 export interface Tour {
   id: string;
@@ -56,14 +57,15 @@ export function TourSearchSelect({
 
   React.useEffect(() => {
     const fetchTour = async () => {
-      const data = await getSingleTour(value!);
+      const res = await serverFetch.get(`/v2/tours/${value}`);
+      const data = await res.json();
       if (!data?.success) {
         setTours([]);
         return;
       }
       setTours([data.data]); // Adjust based on your API response structure
     };
-    if (value && !tours.some((tour) => tour._id === value)) {
+    if (value && !tours.some((tour) => tour.id === value)) {
       fetchTour();
     }
   }, [value]);
@@ -75,7 +77,10 @@ export function TourSearchSelect({
 
       setIsLoading(true);
       try {
-        const data = await getTours("searchTerm=" + debouncedSearchQuery);
+        const res = await serverFetch.get(
+          `/v2/tours?searchTerm=${debouncedSearchQuery}`,
+        );
+        const data = await res.json();
         if (!data?.success) {
           setTours([]);
           return;
@@ -101,7 +106,7 @@ export function TourSearchSelect({
     }
   }, [open]);
 
-  const selectedTour = tours.find((tour) => tour._id === value);
+  const selectedTour = tours.find((tour) => tour.id === value);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -136,7 +141,7 @@ export function TourSearchSelect({
             value={searchQuery}
             onValueChange={setSearchQuery}
           />
-          <CommandList className="max-h-[300px] overflow-y-auto">
+          <CommandList className="max-h-75 overflow-y-auto">
             {isLoading ? (
               <div className="flex items-center justify-center py-6">
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -151,11 +156,11 @@ export function TourSearchSelect({
               <CommandGroup>
                 {tours.map((tour) => (
                   <CommandItem
-                    key={tour._id}
-                    value={tour._id}
+                    key={tour.id}
+                    value={tour.id}
                     onSelect={(currentValue) => {
                       onValueChange?.(
-                        currentValue === value ? "" : currentValue
+                        currentValue === value ? "" : currentValue,
                       );
                       setOpen(false);
                     }}
@@ -164,11 +169,11 @@ export function TourSearchSelect({
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === tour._id ? "opacity-100" : "opacity-0"
+                        value === tour.id ? "opacity-100" : "opacity-0",
                       )}
                     />
                     <Image
-                      src={tour.images[0]}
+                      src={tour.image}
                       alt={tour.title}
                       width={32}
                       height={32}

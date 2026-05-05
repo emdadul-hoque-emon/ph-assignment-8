@@ -113,7 +113,7 @@ export const updateTour = async (_: unknown, formData: FormData) => {
   });
 
   if (payload?.image instanceof File) {
-    formData.delete("image");
+    if (payload.image.size <= 0) formData.delete("image");
   }
 
   const parsed = schema.safeParse(payload);

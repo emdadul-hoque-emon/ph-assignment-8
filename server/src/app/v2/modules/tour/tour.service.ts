@@ -382,30 +382,43 @@ const deleteTour = async (id: string) => {
   return result;
 };
 
-const updateTourInDB = async (id: string, payload: CreateTourInput) => {
+const updateTourInDB = async (
+  id: string,
+  payload: CreateTourInput,
+  file?: Express.Multer.File,
+) => {
   const { category, difficulty, destinationId, ...body } = payload;
+
   const slug = slugify(payload.title, {
     lower: true,
     strict: true,
     trim: true,
   });
 
+  let imageUrl: string | undefined;
+
+  if (file) {
+    const uploadedRes = await uploadFileToCloudinary(file, "tour-buddy/tours");
+    if (!uploadedRes?.url) {
+      throw new AppError(400, "Image upload failed");
+    }
+    imageUrl = uploadedRes.url;
+  }
+
   const result = await prisma.tour.update({
-    where: {
-      id,
-    },
+    where: { id },
     data: {
       ...body,
       slug,
       destination: {
-        connect: {
-          id: destinationId,
-        },
+        connect: { id: destinationId },
       },
       category: category as TourCategory,
       difficulty: difficulty as TourDifficulty,
+      ...(imageUrl && { image: imageUrl }),
     },
   });
+
   return result;
 };
 

@@ -44,6 +44,7 @@ import { DestinationSelect } from "../dashboard/tour/DestinationFilter";
 import { InputNumber } from "../dashboard/tour/NumberInput";
 import { TOUR_DIFFICULTY } from "@/constants/tours";
 import { useRouter } from "next/navigation";
+import useBeforeUnload from "@/hooks/useBeforeUnload";
 
 interface TourFormProps {
   tourData?: ITour;
@@ -58,6 +59,7 @@ interface Destination {
 }
 
 const TourForm = ({ tourData, onSuccess, onClose }: TourFormProps) => {
+  useBeforeUnload(true);
   const isEdit = !!tourData;
   const [category, setCategory] = useState(
     tourData?.category?.toUpperCase() || "",

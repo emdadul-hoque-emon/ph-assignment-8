@@ -123,6 +123,7 @@ const getAllTripsFromDB = async (options: any, filters: any) => {
           title: true,
           description: true,
           category: true,
+          image: true,
         },
       },
       guide: {

@@ -24,6 +24,7 @@ export interface ITrip<T = string> {
   tour: ITour;
   guideId: string;
   startDate: Date;
+  endDate: Date;
   duration: number;
   maxCapacity: number;
   bookedSeats: number;

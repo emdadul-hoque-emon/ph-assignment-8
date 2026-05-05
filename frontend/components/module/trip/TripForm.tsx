@@ -143,16 +143,16 @@ const TripForm = ({ onClose, onSuccess, trip }: TripFormProps) => {
       </Field>
 
       <Field>
-        <FieldLabel htmlFor="duration">Duration</FieldLabel>
+        <FieldLabel htmlFor="duration_days">Duration</FieldLabel>
         <FieldContent>
           <Select
             value={duration?.toString()}
             onValueChange={(e) => setDuration(parseInt(e))}
           >
-            <SelectTrigger id="duration" className="w-full">
+            <SelectTrigger name="duration_days" className="w-full">
               <SelectValue placeholder="Select a duration" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent id="duration_days">
               {TOUR_DURATIONS.map((duration) => (
                 <SelectItem
                   key={duration.value}

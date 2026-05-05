@@ -136,13 +136,6 @@ export const adminNavItems: INavSection[] = [
         icon: "Edit",
         roles: [UserRole.ADMIN],
       },
-
-      {
-        title: "Destinations",
-        href: "/admin/dashboard/destinations-management",
-        icon: "MapPin",
-        roles: [UserRole.ADMIN],
-      },
     ],
   },
   {
